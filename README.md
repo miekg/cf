@@ -10,3 +10,40 @@ can walk and print.
 Build `cffmt` in the cmd/cffmt and then for an example:
 
     ./cffmt ../../testdata/promtest.cf
+
+If you only want the AST use -a, and throw away standard output:
+
+    ./cffmt -a /home/miek/src/github.com/miekg/playground/cfjson/cf/list.cf > /dev/nul
+
+This lists:
+
+~~~
+ 0 *ast.Specification
+ 2   *ast.Bundle 'bundle'
+ 4     *ast.Identifier 'agent'
+ 4     *ast.Identifier 'one'
+ 4     *ast.PromiseGuard 'reports:'
+ 6       *ast.Promiser '"is_var"'
+ 8         *ast.Constraint 'if'
+10           *ast.FatArrow '=>'
+10           *ast.Function
+12             *ast.Identifier 'isvariable'
+12             *ast.GiveArgItem '"five"'
+ 6       *ast.Promiser '"two"'
+ 8         *ast.Constraint 'depends_on'
+10           *ast.FatArrow '=>'
+10           *ast.List
+12             *ast.ListItem '"handle_one"'
+12             *ast.ListItem '"handle_two"'
+ 6       *ast.Promiser '"one"'
+ 8         *ast.Constraint 'handle'
+10           *ast.FatArrow '=>'
+10           *ast.Qstring '"handle_one"'
+ 6       *ast.Promiser '"three"'
+ 8         *ast.Constraint 'handle'
+10           *ast.FatArrow '=>'
+10           *ast.Qstring '"10.5"'
+~~~
+
+Where the left side number is the number of spaces for the indentation (to easily identify if nodes
+are on the same level).
