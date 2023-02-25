@@ -4,16 +4,17 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"os"
 
+	"github.com/miekg/cf"
 	"github.com/miekg/cf/ast"
 )
 
-var flagDebug = flag.Bool("d", false, "enable debugging")
-var flagPrint = flag.Bool("p", true, "pretty print the file to standard output")
-var flagAst = flag.Bool("a", false, "print AST")
+var (
+	flagPrint = flag.Bool("p", true, "pretty print the file to standard output")
+	flagAst   = flag.Bool("a", false, "print AST to standard error")
+)
 
 func main() {
 	flag.Parse()
@@ -25,22 +26,15 @@ func main() {
 		log.Fatal(err)
 	}
 	defer f.Close()
-	spec := ParseCF3(f)
-	if *flagDebug {
-		fmt.Println("****")
-	}
+
+	spec := cf.Parse(f)
+
 	if *flagAst {
-		ast.Print(os.Stdout, spec)
+		ast.Print(os.Stderr, spec)
 	}
 	if *flagPrint {
 		doc := &bytes.Buffer{}
-		Print(doc, spec)
+		cf.Print(doc, spec)
 		fmt.Print(doc.String())
 	}
-}
-
-func ParseCF3(r io.Reader) ast.Node {
-	l := NewLexer(r, *flagDebug)
-	yyParse(l)
-	return l.Spec
 }

@@ -17,7 +17,7 @@ func TestLexClass(t *testing.T) {
 	l := NewLexer(strings.NewReader(input))
 	l.symbols = []Symbol{identifier, varclass, class, char}
 	last := ast.Token{}
-	for t := l.Scan(); t.Tok != DONE; t = l.Scan() {
+	for t := l.scan(); t.Tok != DONE; t = l.scan() {
 		last = t
 	}
 	if last.Tok != CLASSGUARD {
