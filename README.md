@@ -7,6 +7,6 @@ can walk and print.
 
 ## Usage
 
-Build `cffmt` in the cmd/cf and then for an example:
+Build `cffmt` in the cmd/cffmt and then for an example:
 
     ./cffmt ../../testdata/promtest.cf
