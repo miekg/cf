@@ -27,6 +27,7 @@ func TestParse(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+		t.Logf("looking at testdata/%s", f.Name())
 
 		l := NewLexer(r, false)
 		yyParse(l)
