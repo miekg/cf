@@ -1,5 +1,5 @@
 %{
-package main
+package cf
 
 import (
 	"github.com/miekg/cf/ast"
