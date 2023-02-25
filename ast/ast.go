@@ -22,7 +22,7 @@ func Append(parent Node, child Node) {
 }
 
 // Remove removes the child from parent at index i.
-func RemoveChild(parent Node, index int) {
+func Remove(parent Node, index int) {
 	cs := parent.Children()
 	if index >= len(cs) {
 		return

@@ -1,6 +1,6 @@
 package ast
 
-// don't know if worth keeping, should use WalkFunc
+// don't know if worth keeping, should use WalkFunc?
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// Print pretty prints the CFengine AST in doc.
+// Print prints the CFengine AST.
 func Print(dst io.Writer, doc Node) {
 	for _, c := range doc.Children() {
 		printRecur(dst, c, "  ", 0)
