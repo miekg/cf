@@ -1,0 +1,28 @@
+body common control
+{
+  bundlesequence => { "hello_world" };
+}
+
+body perms system
+{
+      mode => "644";
+      owners => { "root" };
+      groups => { "root" };
+}
+
+body perms mog(mode,user,group)
+{
+      owners => { "$(user)" };
+      groups => { "$(group)" };
+      mode   => "$(mode)";
+}
+
+bundle agent hello_world
+{
+  reports:
+
+    any::
+
+      "Hello World!";
+
+}

@@ -1,0 +1,6 @@
+body perms system
+{
+      mode => "644";
+      owners => { "root" };
+      groups => { "root" };
+}

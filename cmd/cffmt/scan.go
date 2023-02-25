@@ -14,6 +14,7 @@ import (
 var (
 	flagPrint = flag.Bool("p", true, "pretty print the file to standard output")
 	flagAst   = flag.Bool("a", false, "print AST to standard error")
+	flagDebug = flag.Bool("d", false, "enable debugging in the lexer and yacc")
 )
 
 func main() {
@@ -27,7 +28,9 @@ func main() {
 	}
 	defer f.Close()
 
-	spec := cf.Parse(f)
+	l := cf.NewLexer(f)
+	l.D = *flagDebug
+	spec := cf.Parse(l)
 
 	if *flagAst {
 		ast.Print(os.Stderr, spec)

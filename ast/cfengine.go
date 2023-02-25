@@ -16,6 +16,7 @@ type (
 	Identifier    struct{ Leaf }
 	ClassGuard    struct{ Container }
 	Promiser      struct{ Container }
+	Selection     struct{ Container }
 	Qstring       struct{ Leaf }
 	Constraint    struct{ Container }
 	FatArrow      struct{ Leaf }

@@ -4,14 +4,13 @@ package cf
 
 import (
 	"fmt"
-	"io"
 	"os"
 
 	"github.com/miekg/cf/ast"
 )
 
 func (l *Lexer) yydebug(s string, t ...ast.Token) {
-	if !l.d {
+	if !l.D {
 		return
 	}
 	lit := ""
@@ -22,8 +21,7 @@ func (l *Lexer) yydebug(s string, t ...ast.Token) {
 }
 
 // Parse parses a CFengine file in r and returns the AST. The parser is not concurrent safe.
-func Parse(r io.Reader) ast.Node {
-	l := NewLexer(r, false)
+func Parse(l *Lexer) ast.Node {
 	yyParse(l)
 	return l.Spec
 }

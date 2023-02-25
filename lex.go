@@ -86,21 +86,17 @@ type Lexer struct {
 	buf []byte // leftover from last match, deplete first before scanning
 	*bufio.Scanner
 	symbols []Symbol
-	d       bool
+	parent  ast.Node
 
-	Spec   ast.Node // AST of parsed document
-	parent ast.Node
+	D    bool     // If true enable debugging.
+	Spec ast.Node // AST of parsed document.
 }
 
-// NewLexer retursn a pointer to a usuable Lexer.
-func NewLexer(r io.Reader, debug ...bool) *Lexer {
+// NewLexer returns a pointer to a usuable Lexer.
+func NewLexer(r io.Reader) *Lexer {
 	s := bufio.NewScanner(r)
 	s.Split(scanLines)
-	d := false
-	if len(debug) > 0 {
-		d = debug[0]
-	}
-	return &Lexer{Scanner: s, symbols: Symbols, d: d, parent: ast.New(&ast.Specification{}, ast.Token{})}
+	return &Lexer{Scanner: s, symbols: Symbols, D: false, parent: ast.New(&ast.Specification{}, ast.Token{})}
 }
 
 // Implemented for goyacc.
@@ -137,7 +133,7 @@ func (l *Lexer) Error(e string) {
 }
 
 func (l *Lexer) debug(t ast.Token) {
-	if !l.d {
+	if !l.D {
 		return
 	}
 	st := SymbolText[t.Tok]

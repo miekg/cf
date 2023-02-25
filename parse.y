@@ -66,13 +66,16 @@ bundle:                BUNDLE
                        {
                        }
 
-body:                  BODY bodytype bodyid arglist bodybody
+body:                  BODY
                        {
                         yylex.(*Lexer).yydebug("body:BODY", $$.token)
+                        spec := ast.UpTo(yylex.(*Lexer).parent, &ast.Specification{})
+                        yylex.(*Lexer).parent = spec
                         b := ast.New(&ast.Body{}, $$.token)
                         ast.Append(yylex.(*Lexer).parent, b)
                         yylex.(*Lexer).parent = b
                        }
+                       bodytype bodyid arglist bodybody
 
 promise:               PROMISE
                        {
@@ -411,6 +414,9 @@ selection_line:        selection ';'
                        }
 
 selection:             selection_id                         /* BODY/PROMISE ONLY */
+                       {
+                        yylex.(*Lexer).yydebug("selection:selection_id", $$.token)
+                       }
                        assign_arrow
                        {
                         yylex.(*Lexer).yydebug("selection:assign_arrow")
@@ -422,6 +428,14 @@ selection:             selection_id                         /* BODY/PROMISE ONLY
 
 selection_id:          IDENTIFIER
                        {
+                        yylex.(*Lexer).yydebug("selection_id:IDENTIFIER", $$.token)
+                        // need to be parent of body.
+			body := ast.UpTo(yylex.(*Lexer).parent, &ast.Body{})
+                        yylex.(*Lexer).parent = body
+
+                        s := ast.New(&ast.Selection{}, $$.token)
+                        ast.Append(yylex.(*Lexer).parent, s)
+                        yylex.(*Lexer).parent = s
                        }
                      | error
                        {

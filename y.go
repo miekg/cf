@@ -56,7 +56,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parse.y:588
+//line parse.y:602
 
 //line yacctab:1
 var yyExca = [...]int16{
@@ -69,199 +69,199 @@ var yyExca = [...]int16{
 	-1, 2,
 	1, 2,
 	-2, 0,
-	-1, 50,
-	15, 44,
-	16, 44,
-	-2, 37,
-	-1, 57,
-	17, 86,
-	-2, 0,
+	-1, 52,
+	15, 45,
+	16, 45,
+	-2, 38,
 	-1, 59,
-	15, 41,
+	17, 50,
 	-2, 0,
 	-1, 61,
-	17, 49,
+	15, 42,
 	-2, 0,
-	-1, 63,
+	-1, 62,
 	17, 87,
 	-2, 0,
-	-1, 92,
-	7, 58,
-	17, 58,
-	-2, 60,
-	-1, 97,
-	4, 70,
-	19, 70,
+	-1, 72,
+	17, 88,
 	-2, 0,
-	-1, 102,
-	14, 119,
-	-2, 102,
-	-1, 104,
-	14, 120,
-	-2, 104,
-	-1, 114,
-	19, 73,
+	-1, 90,
+	7, 59,
+	17, 59,
+	-2, 61,
+	-1, 95,
+	4, 71,
+	19, 71,
 	-2, 0,
-	-1, 118,
-	16, 111,
-	17, 111,
-	-2, 0,
-	-1, 119,
-	14, 119,
-	-2, 114,
-	-1, 121,
-	14, 120,
-	-2, 116,
-	-1, 128,
+	-1, 106,
 	19, 74,
 	-2, 0,
-	-1, 139,
-	19, 73,
+	-1, 111,
+	14, 121,
+	-2, 104,
+	-1, 113,
+	14, 122,
+	-2, 106,
+	-1, 120,
+	19, 75,
 	-2, 0,
-	-1, 145,
-	15, 126,
-	16, 126,
+	-1, 127,
+	19, 74,
 	-2, 0,
+	-1, 130,
+	16, 113,
+	17, 113,
+	-2, 0,
+	-1, 131,
+	14, 121,
+	-2, 116,
+	-1, 133,
+	14, 122,
+	-2, 118,
 	-1, 150,
-	15, 127,
-	16, 127,
+	15, 128,
+	16, 128,
 	-2, 0,
-	-1, 151,
-	14, 119,
-	-2, 130,
 	-1, 153,
-	14, 120,
+	15, 129,
+	16, 129,
+	-2, 0,
+	-1, 154,
+	14, 121,
 	-2, 132,
+	-1, 156,
+	14, 122,
+	-2, 134,
 }
 
 const yyPrivate = 57344
 
-const yyLast = 177
+const yyLast = 179
 
 var yyAct = [...]uint8{
-	106, 150, 84, 127, 101, 130, 118, 76, 65, 93,
-	64, 48, 44, 49, 45, 36, 25, 107, 83, 102,
-	103, 111, 87, 123, 15, 119, 120, 80, 104, 123,
-	47, 119, 120, 108, 121, 82, 34, 21, 143, 158,
-	121, 135, 134, 30, 116, 41, 46, 50, 43, 53,
-	155, 141, 151, 152, 59, 54, 161, 52, 56, 112,
-	52, 153, 58, 138, 38, 79, 86, 60, 77, 115,
-	7, 72, 159, 79, 81, 85, 8, 9, 10, 133,
-	71, 132, 70, 88, 67, 100, 67, 73, 42, 53,
-	27, 35, 31, 27, 17, 26, 140, 27, 94, 22,
-	16, 17, 17, 3, 136, 157, 11, 149, 145, 122,
-	137, 124, 109, 117, 105, 90, 69, 68, 126, 94,
-	125, 66, 63, 62, 57, 156, 142, 131, 129, 128,
-	114, 139, 113, 99, 98, 97, 122, 96, 95, 110,
-	92, 91, 144, 146, 89, 148, 154, 147, 78, 75,
-	74, 61, 51, 37, 40, 29, 24, 14, 33, 154,
-	162, 160, 20, 39, 28, 18, 23, 13, 55, 32,
-	19, 12, 6, 5, 4, 2, 1,
+	115, 153, 110, 130, 99, 119, 122, 74, 73, 91,
+	65, 50, 51, 56, 57, 41, 30, 116, 87, 111,
+	112, 135, 103, 131, 132, 142, 141, 135, 113, 131,
+	132, 49, 133, 117, 84, 86, 148, 35, 133, 81,
+	161, 39, 128, 138, 52, 163, 55, 48, 61, 44,
+	17, 54, 145, 45, 43, 68, 47, 54, 158, 58,
+	154, 155, 104, 60, 22, 26, 98, 76, 162, 156,
+	7, 101, 107, 69, 66, 82, 8, 9, 10, 68,
+	100, 85, 80, 125, 79, 124, 76, 70, 40, 55,
+	32, 92, 36, 31, 32, 32, 27, 23, 19, 19,
+	18, 3, 19, 143, 11, 137, 160, 152, 150, 144,
+	92, 126, 109, 136, 118, 129, 114, 108, 134, 88,
+	78, 77, 75, 72, 71, 62, 151, 139, 123, 121,
+	120, 106, 127, 140, 105, 97, 96, 95, 94, 93,
+	102, 90, 89, 134, 147, 146, 149, 83, 67, 64,
+	63, 157, 59, 53, 159, 42, 38, 25, 34, 21,
+	29, 16, 157, 164, 37, 24, 14, 33, 20, 13,
+	46, 28, 15, 12, 6, 5, 4, 2, 1,
 }
 
 var yyPact = [...]int16{
-	68, -1000, 68, -1000, -1000, -1000, -1000, -1000, -1000, 98,
-	-1000, -1000, 97, 93, -1000, -1000, -1000, -1000, 90, 89,
-	-1000, -1000, -1000, 50, -1000, -1000, -1000, -1000, 86, -1000,
-	-1000, -1000, 50, -1000, -1000, -1000, 28, 45, -1000, 50,
-	-1000, -1000, -1000, 28, -1000, -1000, -1000, -1000, 42, -1000,
-	-1000, 38, -1000, -1000, 28, -1000, -1000, 78, -1000, 85,
-	-1000, 66, 10, 78, -1000, -1000, -1000, -1000, 16, 64,
-	-1000, -1000, -1000, -1000, 5, 58, -1000, -1000, -1000, -1000,
-	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, 80,
-	15, -1000, -1000, -1000, -1000, -1000, 2, 57, -1000, -1000,
-	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, 27, -1000,
-	80, -1000, -1000, 15, 77, -1000, -1000, 25, 102, -1000,
-	-1000, -1000, -1000, -1000, 49, -1000, -1000, -1000, 94, 35,
-	-1000, -1000, -1000, -1000, -1000, 21, -1000, -1000, -1000, 77,
-	-1000, 77, 64, -1000, -1000, 48, -1000, -1000, -1000, 23,
-	70, -1000, -1000, -1000, -1000, -1000, 15, 41, 48, -1000,
-	-1000, -1000, -1000,
+	68, -1000, 68, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
+	-1000, -1000, 98, 95, 94, 91, -1000, -1000, -1000, -1000,
+	90, -1000, -1000, -1000, 86, -1000, -1000, -1000, 40, -1000,
+	-1000, -1000, -1000, 40, -1000, -1000, -1000, 40, -1000, -1000,
+	-1000, 29, 42, -1000, 29, 29, -1000, -1000, -1000, -1000,
+	36, -1000, -1000, 32, -1000, -1000, -1000, -1000, -1000, 72,
+	-1000, 85, 80, 22, 48, -1000, -1000, -1000, -1000, -1000,
+	-1000, 17, 80, -1000, -1000, -1000, -1000, 16, -1000, -1000,
+	-1000, -1000, -1000, 61, -1000, -1000, -1000, -1000, 69, -1000,
+	-1000, -1000, -1000, -1000, 3, 60, -1000, -1000, -1000, -1000,
+	-1000, -1000, 61, -1000, -1000, 15, 81, -1000, 15, -1000,
+	-1000, -1000, -1000, -1000, -1000, -1000, -1000, 25, -1000, -1000,
+	103, 27, -1000, -1000, -1000, -1000, -1000, 81, -1000, 9,
+	101, -1000, -1000, -1000, -1000, -1000, 38, -1000, 81, 69,
+	-1000, -1000, 19, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
+	56, 15, 24, 66, -1000, -1000, -1000, -1000, -1000, -1000,
+	30, 56, -1000, -1000, -1000,
 }
 
 var yyPgo = [...]uint8{
-	0, 176, 175, 103, 174, 173, 172, 171, 170, 169,
-	15, 168, 167, 166, 12, 165, 164, 163, 162, 24,
-	158, 16, 157, 156, 155, 154, 153, 11, 13, 152,
-	14, 151, 150, 149, 7, 148, 144, 141, 140, 9,
-	139, 8, 138, 137, 135, 134, 133, 132, 4, 131,
-	3, 130, 129, 128, 5, 127, 126, 2, 125, 124,
-	123, 122, 10, 121, 117, 116, 115, 114, 0, 113,
-	6, 112, 111, 110, 108, 107, 105, 1,
+	0, 178, 177, 101, 176, 175, 174, 173, 172, 171,
+	15, 170, 169, 168, 167, 13, 166, 165, 164, 161,
+	50, 160, 16, 159, 158, 157, 156, 155, 11, 12,
+	153, 14, 152, 150, 149, 10, 148, 147, 142, 141,
+	9, 140, 7, 139, 138, 137, 136, 135, 134, 2,
+	132, 5, 131, 130, 129, 6, 128, 127, 4, 126,
+	125, 124, 123, 8, 122, 121, 120, 119, 117, 116,
+	0, 115, 3, 114, 113, 109, 108, 107, 106, 1,
 }
 
 var yyR1 = [...]int8{
 	0, 1, 1, 2, 2, 3, 3, 3, 3, 7,
-	4, 5, 15, 6, 8, 18, 18, 9, 20, 20,
-	12, 22, 22, 13, 23, 23, 16, 24, 24, 17,
-	25, 25, 19, 21, 10, 10, 10, 10, 26, 28,
-	27, 27, 27, 29, 29, 31, 11, 30, 30, 32,
-	32, 33, 33, 33, 36, 34, 35, 37, 37, 38,
-	40, 38, 39, 39, 42, 42, 43, 43, 49, 45,
-	51, 46, 44, 50, 50, 50, 52, 53, 53, 56,
-	58, 54, 55, 55, 59, 14, 60, 60, 61, 61,
-	62, 62, 63, 63, 66, 64, 65, 65, 57, 57,
-	47, 41, 48, 48, 48, 48, 48, 48, 67, 67,
-	67, 69, 69, 69, 70, 70, 70, 70, 70, 71,
-	71, 72, 68, 74, 76, 73, 75, 75, 75, 75,
-	77, 77, 77, 77, 77,
+	4, 12, 5, 16, 6, 8, 19, 19, 9, 21,
+	21, 13, 23, 23, 14, 24, 24, 17, 25, 25,
+	18, 26, 26, 20, 22, 10, 10, 10, 10, 27,
+	29, 28, 28, 28, 30, 30, 32, 11, 31, 31,
+	33, 33, 34, 34, 34, 37, 35, 36, 38, 38,
+	39, 41, 39, 40, 40, 43, 43, 44, 44, 50,
+	46, 52, 47, 45, 51, 51, 51, 53, 54, 54,
+	57, 59, 55, 56, 56, 60, 15, 61, 61, 62,
+	62, 63, 63, 64, 64, 67, 68, 65, 66, 66,
+	58, 58, 48, 42, 49, 49, 49, 49, 49, 49,
+	69, 69, 69, 71, 71, 71, 72, 72, 72, 72,
+	72, 73, 73, 74, 70, 76, 78, 75, 77, 77,
+	77, 77, 79, 79, 79, 79, 79,
 }
 
 var yyR2 = [...]int8{
 	0, 0, 1, 1, 2, 1, 1, 1, 1, 0,
-	6, 5, 0, 6, 1, 1, 1, 1, 1, 1,
+	6, 0, 6, 0, 6, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 0, 3, 2, 2, 1, 1,
-	1, 2, 3, 1, 1, 0, 4, 1, 1, 0,
-	1, 1, 2, 1, 0, 3, 1, 0, 1, 1,
-	0, 3, 1, 1, 2, 2, 1, 1, 0, 5,
-	0, 3, 1, 0, 1, 2, 1, 1, 3, 0,
-	0, 5, 1, 1, 0, 4, 0, 1, 1, 2,
-	1, 1, 2, 2, 0, 4, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 2, 3,
-	4, 1, 3, 2, 1, 1, 1, 1, 1, 1,
-	1, 0, 3, 0, 0, 5, 0, 1, 3, 2,
-	1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 0, 3, 2, 2, 1,
+	1, 1, 2, 3, 1, 1, 0, 4, 1, 1,
+	0, 1, 1, 2, 1, 0, 3, 1, 0, 1,
+	1, 0, 3, 1, 1, 2, 2, 1, 1, 0,
+	5, 0, 3, 1, 0, 1, 2, 1, 1, 3,
+	0, 0, 5, 1, 1, 0, 4, 0, 1, 1,
+	2, 1, 1, 2, 2, 0, 0, 5, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	2, 3, 4, 1, 3, 2, 1, 1, 1, 1,
+	1, 1, 1, 0, 3, 0, 0, 5, 0, 1,
+	3, 2, 1, 1, 1, 1, 1,
 }
 
 var yyChk = [...]int16{
 	-1000, -1, -2, -3, -4, -5, -6, 2, 8, 9,
-	10, -3, -7, -12, -22, -19, 2, 4, -15, -8,
-	-18, -19, 2, -13, -23, -21, 2, 4, -16, -24,
-	-19, 2, -9, -20, -21, 2, -10, -26, 14, -17,
-	-25, -21, 2, -10, -14, -30, 18, 2, -27, -28,
-	2, -29, 15, 4, -10, -11, -30, -59, -28, 16,
-	-14, -31, -60, -61, -62, -41, -63, 6, -64, -65,
-	4, 2, -27, 2, -32, -33, -34, 2, -35, 7,
-	17, -62, 19, 2, -57, 11, 2, 17, -34, -36,
-	-66, -37, -38, -39, -41, -42, -43, -44, -45, -46,
-	5, -48, 4, 5, 13, -67, -68, 2, 18, -71,
-	-40, 19, 2, -47, -51, 12, 17, -69, -70, 4,
-	5, 13, -68, 2, -72, -39, -48, -50, -52, -53,
-	-54, -55, 4, 2, 17, 16, 2, -73, 14, -49,
-	2, 16, -56, 17, -70, -74, -50, -54, -57, -75,
-	-77, 4, 5, 13, -68, 2, -58, -76, 16, 2,
-	-48, 15, -77,
+	10, -3, -7, -12, -16, -8, -19, -20, 2, 4,
+	-13, -23, -20, 2, -17, -25, -20, 2, -9, -21,
+	-22, 2, 4, -14, -24, -22, 2, -18, -26, -22,
+	2, -10, -27, 14, -10, -10, -11, -31, 18, 2,
+	-28, -29, 2, -30, 15, 4, -15, -31, -15, -32,
+	-29, 16, -60, -33, -34, -35, 2, -36, 7, -28,
+	2, -61, -62, -63, -42, -64, 6, -65, -66, 4,
+	2, 17, -35, -37, 17, -63, 19, 2, -67, -38,
+	-39, -40, -42, -43, -44, -45, -46, -47, 5, -58,
+	11, 2, -41, 19, 2, -48, -52, 12, -68, -40,
+	-49, 4, 5, 13, -69, -70, 2, 18, -73, -51,
+	-53, -54, -55, -56, 4, 2, -49, -50, 17, -71,
+	-72, 4, 5, 13, -70, 2, -74, 2, 16, -57,
+	-51, 17, 16, 2, -75, 14, -55, -58, 17, -72,
+	-76, -59, -77, -79, 4, 5, 13, -70, 2, -49,
+	-78, 16, 2, 15, -79,
 }
 
 var yyDef = [...]int16{
-	-2, -2, -2, 3, 5, 6, 7, 8, 9, 0,
-	12, 4, 0, 0, 20, 21, 22, 32, 0, 0,
-	14, 15, 16, 34, 23, 24, 25, 33, 0, 26,
-	27, 28, 34, 17, 18, 19, 0, 0, 38, 34,
-	29, 30, 31, 0, 11, 84, 47, 48, 0, 36,
-	-2, 40, 39, 43, 0, 10, 45, -2, 35, -2,
-	13, -2, 0, -2, 88, 90, 91, 101, 0, 0,
-	96, 97, 42, 44, 0, 50, 51, 53, 54, 56,
-	85, 89, 92, 93, 94, 98, 99, 46, 52, 57,
-	0, 55, -2, 59, 62, 63, 0, -2, 66, 67,
-	72, 95, -2, 103, -2, 105, 106, 107, 0, 121,
-	0, 64, 65, 0, -2, 100, 108, 0, -2, -2,
-	115, -2, 117, 118, 0, 61, 68, 71, -2, 76,
-	77, 79, 82, 83, 109, 0, 113, 122, 123, -2,
-	75, 0, 0, 110, 112, -2, 69, 78, 80, 124,
-	-2, -2, 131, -2, 133, 134, 0, 0, 0, 129,
-	81, 125, 128,
+	-2, -2, -2, 3, 5, 6, 7, 8, 9, 11,
+	13, 4, 0, 0, 0, 0, 15, 16, 17, 33,
+	0, 21, 22, 23, 0, 27, 28, 29, 35, 18,
+	19, 20, 34, 35, 24, 25, 26, 35, 30, 31,
+	32, 0, 0, 39, 0, 0, 10, 46, 48, 49,
+	0, 37, -2, 41, 40, 44, 12, 85, 14, -2,
+	36, -2, -2, 0, 51, 52, 54, 55, 57, 43,
+	45, 0, -2, 89, 91, 92, 103, 0, 95, 98,
+	99, 47, 53, 58, 86, 90, 93, 94, 0, 56,
+	-2, 60, 63, 64, 0, -2, 67, 68, 73, 96,
+	100, 101, 0, 65, 66, 0, -2, 102, 0, 62,
+	69, -2, 105, -2, 107, 108, 109, 0, 123, 72,
+	-2, 77, 78, 80, 83, 84, 97, -2, 110, 0,
+	-2, -2, 117, -2, 119, 120, 0, 76, 0, 0,
+	70, 111, 0, 115, 124, 125, 79, 81, 112, 114,
+	-2, 0, 126, -2, -2, 133, -2, 135, 136, 82,
+	0, 0, 131, 127, 130,
 }
 
 var yyTok1 = [...]int8{
@@ -677,24 +677,21 @@ yydefault:
 		{
 		}
 	case 11:
-		yyDollar = yyS[yypt-5 : yypt+1]
+		yyDollar = yyS[yypt-1 : yypt+1]
 //line parse.y:70
 		{
 			yylex.(*Lexer).yydebug("body:BODY", yyVAL.token)
+			spec := ast.UpTo(yylex.(*Lexer).parent, &ast.Specification{})
+			yylex.(*Lexer).parent = spec
 			b := ast.New(&ast.Body{}, yyVAL.token)
 			ast.Append(yylex.(*Lexer).parent, b)
 			yylex.(*Lexer).parent = b
 		}
-	case 12:
+	case 13:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:78
+//line parse.y:81
 		{
 			yylex.(*Lexer).yydebug("promise:PROMISE")
-		}
-	case 15:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:86
-		{
 		}
 	case 16:
 		yyDollar = yyS[yypt-1 : yypt+1]
@@ -703,22 +700,22 @@ yydefault:
 		}
 	case 17:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:93
+//line parse.y:92
 		{
 		}
-	case 19:
+	case 18:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:98
+//line parse.y:96
 		{
 		}
 	case 20:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:102
+//line parse.y:101
 		{
 		}
 	case 21:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:106
+//line parse.y:105
 		{
 		}
 	case 22:
@@ -728,24 +725,24 @@ yydefault:
 		}
 	case 23:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:113
+//line parse.y:112
 		{
 		}
-	case 25:
+	case 24:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:118
+//line parse.y:116
 		{
 		}
 	case 26:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:122
+//line parse.y:121
 		{
-			yylex.(*Lexer).yydebug("promisecomponent")
 		}
 	case 27:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:127
+//line parse.y:125
 		{
+			yylex.(*Lexer).yydebug("promisecomponent")
 		}
 	case 28:
 		yyDollar = yyS[yypt-1 : yypt+1]
@@ -754,40 +751,45 @@ yydefault:
 		}
 	case 29:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:134
+//line parse.y:133
 		{
 		}
-	case 31:
+	case 30:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:139
+//line parse.y:137
 		{
 		}
 	case 32:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:145
+//line parse.y:142
 		{
-			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, yyVAL.token))
 		}
 	case 33:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:152
+//line parse.y:148
 		{
 			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, yyVAL.token))
 		}
-	case 37:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:160
+	case 34:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:155
 		{
+			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, yyVAL.token))
 		}
 	case 38:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:164
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line parse.y:163
 		{
-			yylex.(*Lexer).yydebug("arglist_begin:(", yyVAL.token)
 		}
 	case 39:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:169
+//line parse.y:167
+		{
+			yylex.(*Lexer).yydebug("arglist_begin:(", yyVAL.token)
+		}
+	case 40:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:172
 		{
 			yylex.(*Lexer).yydebug("arglist_end:)", yyVAL.token)
 			bundle := ast.UpTo(yylex.(*Lexer).parent, &ast.Bundle{})
@@ -799,9 +801,9 @@ yydefault:
 				}
 			}
 		}
-	case 40:
+	case 41:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:182
+//line parse.y:185
 		{
 			if _, ok := yylex.(*Lexer).parent.(*ast.ArgList); !ok {
 				a := ast.New(&ast.ArgList{})
@@ -811,9 +813,9 @@ yydefault:
 			al := ast.New(&ast.ArgListItem{}, yyVAL.token)
 			ast.Append(yylex.(*Lexer).parent, al)
 		}
-	case 42:
+	case 43:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:193
+//line parse.y:196
 		{
 			if _, ok := yylex.(*Lexer).parent.(*ast.ArgList); !ok {
 				a := ast.New(&ast.ArgList{})
@@ -823,11 +825,6 @@ yydefault:
 			al := ast.New(&ast.ArgListItem{}, yyDollar[3].token)
 			ast.Append(yylex.(*Lexer).parent, al)
 		}
-	case 43:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:204
-		{
-		}
 	case 44:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line parse.y:207
@@ -835,17 +832,17 @@ yydefault:
 		}
 	case 45:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:213
+//line parse.y:210
 		{
 		}
 	case 46:
-		yyDollar = yyS[yypt-4 : yypt+1]
-//line parse.y:219
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:216
 		{
 		}
 	case 47:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:225
+		yyDollar = yyS[yypt-4 : yypt+1]
+//line parse.y:222
 		{
 		}
 	case 48:
@@ -853,24 +850,29 @@ yydefault:
 //line parse.y:228
 		{
 		}
-	case 53:
+	case 49:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:242
+//line parse.y:231
 		{
 		}
 	case 54:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:247
+//line parse.y:245
 		{
 		}
 	case 55:
-		yyDollar = yyS[yypt-3 : yypt+1]
+		yyDollar = yyS[yypt-1 : yypt+1]
 //line parse.y:250
 		{
 		}
 	case 56:
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line parse.y:253
+		{
+		}
+	case 57:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:254
+//line parse.y:257
 		{
 			yylex.(*Lexer).yydebug("promise_guard", yyVAL.token)
 			pg := ast.New(&ast.PromiseGuard{}, yyVAL.token)
@@ -882,19 +884,14 @@ yydefault:
 			ast.Append(yylex.(*Lexer).parent, pg)
 			yylex.(*Lexer).parent = pg
 		}
-	case 57:
-		yyDollar = yyS[yypt-0 : yypt+1]
-//line parse.y:267
-		{
-		}
 	case 58:
-		yyDollar = yyS[yypt-1 : yypt+1]
+		yyDollar = yyS[yypt-0 : yypt+1]
 //line parse.y:270
 		{
 		}
 	case 59:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:274
+//line parse.y:273
 		{
 		}
 	case 60:
@@ -903,35 +900,35 @@ yydefault:
 		{
 		}
 	case 61:
-		yyDollar = yyS[yypt-3 : yypt+1]
+		yyDollar = yyS[yypt-1 : yypt+1]
 //line parse.y:280
 		{
 		}
 	case 62:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:284
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line parse.y:283
 		{
-			yylex.(*Lexer).yydebug("classpromise", yyVAL.token)
 		}
 	case 63:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:288
+//line parse.y:287
 		{
+			yylex.(*Lexer).yydebug("classpromise", yyVAL.token)
 		}
 	case 64:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:292
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:291
 		{
-			yylex.(*Lexer).yydebug("promise_decl", yyVAL.token)
 		}
 	case 65:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:296
+//line parse.y:295
 		{
+			yylex.(*Lexer).yydebug("promise_decl", yyVAL.token)
 		}
 	case 66:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:300
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line parse.y:299
 		{
 		}
 	case 67:
@@ -940,25 +937,30 @@ yydefault:
 		{
 		}
 	case 68:
-		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:312
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:306
 		{
 		}
-	case 70:
+	case 69:
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line parse.y:315
+		{
+		}
+	case 71:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:318
+//line parse.y:321
 		{
 			yylex.(*Lexer).yydebug("promise_without_promisee: promiser", yyVAL.token)
 		}
-	case 71:
+	case 72:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:323
+//line parse.y:326
 		{
 			yylex.(*Lexer).yydebug("promise_without_promisee: promise_decl_constraints", yyVAL.token)
 		}
-	case 72:
+	case 73:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:328
+//line parse.y:331
 		{
 			yylex.(*Lexer).yydebug("promiser:QSTRING", yyVAL.token)
 			// same level as previous Promiser, or PromiseGuard
@@ -976,35 +978,35 @@ yydefault:
 			ast.Append(yylex.(*Lexer).parent, p)
 			yylex.(*Lexer).parent = p
 		}
-	case 75:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:349
-		{
-		}
 	case 76:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:353
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line parse.y:352
 		{
 		}
-	case 79:
+	case 77:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:360
+//line parse.y:356
 		{
 		}
 	case 80:
-		yyDollar = yyS[yypt-3 : yypt+1]
+		yyDollar = yyS[yypt-1 : yypt+1]
 //line parse.y:363
 		{
 		}
 	case 81:
-		yyDollar = yyS[yypt-5 : yypt+1]
+		yyDollar = yyS[yypt-3 : yypt+1]
 //line parse.y:366
+		{
+		}
+	case 82:
+		yyDollar = yyS[yypt-5 : yypt+1]
+//line parse.y:369
 		{
 			yylex.(*Lexer).yydebug("contraint:rval")
 		}
-	case 82:
+	case 83:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:371
+//line parse.y:374
 		{
 			yylex.(*Lexer).yydebug("contraint_id:IDENTIFIER", yyVAL.token)
 
@@ -1017,72 +1019,86 @@ yydefault:
 			ast.Append(yylex.(*Lexer).parent, c)
 			yylex.(*Lexer).parent = c
 		}
-	case 83:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:384
-		{
-		}
 	case 84:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:388
+//line parse.y:387
 		{
 		}
 	case 85:
-		yyDollar = yyS[yypt-4 : yypt+1]
-//line parse.y:394
-		{
-		}
-	case 90:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:404
+//line parse.y:391
 		{
 		}
-	case 93:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:410
+	case 86:
+		yyDollar = yyS[yypt-4 : yypt+1]
+//line parse.y:397
+		{
+		}
+	case 91:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:407
 		{
 		}
 	case 94:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:415
+//line parse.y:413
+		{
+		}
+	case 95:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:417
+		{
+			yylex.(*Lexer).yydebug("selection:selection_id", yyVAL.token)
+		}
+	case 96:
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line parse.y:421
 		{
 			yylex.(*Lexer).yydebug("selection:assign_arrow")
 		}
-	case 95:
-		yyDollar = yyS[yypt-4 : yypt+1]
-//line parse.y:419
+	case 97:
+		yyDollar = yyS[yypt-5 : yypt+1]
+//line parse.y:425
 		{
 			yylex.(*Lexer).yydebug("selection:rval", yyVAL.token)
 		}
-	case 96:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:424
-		{
-		}
-	case 97:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:427
-		{
-		}
 	case 98:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:431
+//line parse.y:430
 		{
-			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.FatArrow{}, yyVAL.token))
+			yylex.(*Lexer).yydebug("selection_id:IDENTIFIER", yyVAL.token)
+			// need to be parent of body.
+			body := ast.UpTo(yylex.(*Lexer).parent, &ast.Body{})
+			yylex.(*Lexer).parent = body
+
+			s := ast.New(&ast.Selection{}, yyVAL.token)
+			ast.Append(yylex.(*Lexer).parent, s)
+			yylex.(*Lexer).parent = s
 		}
 	case 99:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:435
+//line parse.y:441
 		{
 		}
 	case 100:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:439
+//line parse.y:445
 		{
+			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.FatArrow{}, yyVAL.token))
 		}
 	case 101:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:443
+//line parse.y:449
+		{
+		}
+	case 102:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:453
+		{
+		}
+	case 103:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:457
 		{
 			yylex.(*Lexer).yydebug("class")
 			gc := ast.New(&ast.ClassGuard{}, yyVAL.token)
@@ -1100,46 +1116,46 @@ yydefault:
 			ast.Append(yylex.(*Lexer).parent, gc)
 			yylex.(*Lexer).parent = gc
 		}
-	case 102:
+	case 104:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:462
+//line parse.y:476
 		{
 			// awkward that these are the only ones here..?
 			yylex.(*Lexer).yydebug("rval:IDENTIFIER", yyVAL.token)
 			i := ast.New(&ast.Identifier{}, yyVAL.token)
 			ast.Append(yylex.(*Lexer).parent, i)
 		}
-	case 103:
+	case 105:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:469
+//line parse.y:483
 		{
 			yylex.(*Lexer).yydebug("rval:QSTRING", yyVAL.token)
 			q := ast.New(&ast.Qstring{}, yyVAL.token)
 			ast.Append(yylex.(*Lexer).parent, q)
 		}
-	case 104:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:475
-		{
-		}
-	case 105:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:478
-		{
-		}
 	case 106:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:481
+//line parse.y:489
 		{
 		}
 	case 107:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:484
+//line parse.y:492
 		{
 		}
-	case 111:
+	case 108:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:493
+//line parse.y:495
+		{
+		}
+	case 109:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:498
+		{
+		}
+	case 113:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:507
 		{
 			// add yylex.(*Lexer).parent list
 			if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
@@ -1150,9 +1166,9 @@ yydefault:
 			l := ast.New(&ast.ListItem{}, yyVAL.token)
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
-	case 112:
+	case 114:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:504
+//line parse.y:518
 		{
 			// add yylex.(*Lexer).parent list
 			if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
@@ -1163,39 +1179,39 @@ yydefault:
 			l := ast.New(&ast.ListItem{}, yyDollar[3].token)
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
-	case 113:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:515
-		{
-		}
-	case 114:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:519
-		{
-		}
 	case 115:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:522
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line parse.y:529
 		{
 		}
 	case 116:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:525
+//line parse.y:533
 		{
 		}
 	case 117:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:528
+//line parse.y:536
 		{
 		}
 	case 118:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:531
+//line parse.y:539
 		{
 		}
 	case 119:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:535
+//line parse.y:542
+		{
+		}
+	case 120:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:545
+		{
+		}
+	case 121:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:549
 		{
 			f := ast.New(&ast.Function{}, ast.Token{})
 			ast.Append(yylex.(*Lexer).parent, f)
@@ -1203,9 +1219,9 @@ yydefault:
 
 			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, yyVAL.token))
 		}
-	case 120:
+	case 122:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:543
+//line parse.y:557
 		{
 			f := ast.New(&ast.Function{}, ast.Token{})
 			ast.Append(yylex.(*Lexer).parent, f)
@@ -1213,43 +1229,43 @@ yydefault:
 
 			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.NakedVar{}, yyVAL.token))
 		}
-	case 121:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:552
-		{
-		}
 	case 123:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:557
-		{
-		}
-	case 124:
-		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:561
+//line parse.y:566
 		{
 		}
 	case 125:
-		yyDollar = yyS[yypt-5 : yypt+1]
-//line parse.y:565
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:571
+		{
+		}
+	case 126:
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line parse.y:575
 		{
 		}
 	case 127:
+		yyDollar = yyS[yypt-5 : yypt+1]
+//line parse.y:579
+		{
+		}
+	case 129:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:570
+//line parse.y:584
 		{
 			l := ast.New(&ast.GiveArgItem{}, yyVAL.token) // single arg
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
-	case 128:
+	case 130:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:575
+//line parse.y:589
 		{
 			l := ast.New(&ast.GiveArgItem{}, yyDollar[3].token) // multiple args
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
-	case 129:
+	case 131:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:580
+//line parse.y:594
 		{
 		}
 	}

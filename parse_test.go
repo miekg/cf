@@ -29,7 +29,7 @@ func TestParse(t *testing.T) {
 		}
 		t.Logf("looking at testdata/%s", f.Name())
 
-		l := NewLexer(r, false)
+		l := NewLexer(r)
 		yyParse(l)
 		r.Close()
 

@@ -86,6 +86,9 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	case *ast.Constraint:
 		fmt.Fprintf(w, "%s%s", indent, v.Token().Lit)
 
+	case *ast.Selection:
+		fmt.Fprintf(w, "\n%s%s", indent, v.Token().Lit)
+
 	case *ast.Function:
 		printChildrenOfType(w, v, "%s", "*ast.Identifier")
 		fmt.Fprint(w, "(")
@@ -149,6 +152,11 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	case *ast.Constraint:
 		if !last {
 			fmt.Fprint(w, ",\n")
+		}
+	case *ast.Selection:
+		fmt.Fprint(w, ";")
+		if last {
+			fmt.Fprint(w, "\n")
 		}
 	}
 }
