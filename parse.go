@@ -21,7 +21,7 @@ func (l *Lexer) yydebug(s string, t ...ast.Token) {
 	fmt.Fprintf(os.Stderr, "yy : token [%s] %q\n", lit, s) // align with lex debug
 }
 
-// Parse parses a CFengine file in r and returns the AST.
+// Parse parses a CFengine file in r and returns the AST. The parser is not concurrent safe.
 func Parse(r io.Reader) ast.Node {
 	l := NewLexer(r, false)
 	yyParse(l)

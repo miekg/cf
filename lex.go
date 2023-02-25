@@ -88,7 +88,8 @@ type Lexer struct {
 	symbols []Symbol
 	d       bool
 
-	Spec ast.Node // AST of parsed document
+	Spec   ast.Node // AST of parsed document
+	parent ast.Node
 }
 
 // NewLexer retursn a pointer to a usuable Lexer.
@@ -99,7 +100,7 @@ func NewLexer(r io.Reader, debug ...bool) *Lexer {
 	if len(debug) > 0 {
 		d = debug[0]
 	}
-	return &Lexer{Scanner: s, symbols: Symbols, d: d}
+	return &Lexer{Scanner: s, symbols: Symbols, d: d, parent: ast.New(&ast.Specification{}, ast.Token{})}
 }
 
 // Implemented for goyacc.

@@ -5,10 +5,6 @@ import (
 	"github.com/miekg/cf/ast"
 )
 
-var (
-    parent = ast.New(&ast.Specification{}, ast.Token{})
-)
-
 %}
 
 // from: cfengine/core/libpromises/cf3parse.y
@@ -28,7 +24,7 @@ specification:       /* empty */
                      | blocks
                      {
                         yylex.(*Lexer).Spec = &ast.Specification{}
-                        yylex.(*Lexer).Spec.SetChildren([]ast.Node{ast.Up(parent)})
+                        yylex.(*Lexer).Spec.SetChildren([]ast.Node{ast.Up(yylex.(*Lexer).parent)})
                      }
 
 blocks:                block
@@ -39,7 +35,7 @@ block:                 bundle
                         yylex.(*Lexer).yydebug("block:bundle", $$.token)
 			// Here we find the actual token, but we get here last. Find original bundle and put
 			// token contents in it. Mostly to get the comments out.
-			bundle := ast.UpTo(parent, &ast.Bundle{})
+			bundle := ast.UpTo(yylex.(*Lexer).parent, &ast.Bundle{})
 			if bundle != nil {
 				bundle.SetToken($$.token)
 			}
@@ -47,7 +43,7 @@ block:                 bundle
                      | body
                      {
                         yylex.(*Lexer).yydebug("block:body", $$.token)
-			body := ast.UpTo(parent, &ast.Body{})
+			body := ast.UpTo(yylex.(*Lexer).parent, &ast.Body{})
 			if body != nil {
 				body.SetToken($$.token)
 			}
@@ -60,11 +56,11 @@ block:                 bundle
 bundle:                BUNDLE
                        {
                         yylex.(*Lexer).yydebug("bundle:BUNDLE", $$.token)
-                        spec := ast.UpTo(parent, &ast.Specification{})
-                        parent = spec
+                        spec := ast.UpTo(yylex.(*Lexer).parent, &ast.Specification{})
+                        yylex.(*Lexer).parent = spec
                         b := ast.New(&ast.Bundle{}, $$.token)
-                        ast.Append(parent, b)
-                        parent = b
+                        ast.Append(yylex.(*Lexer).parent, b)
+                        yylex.(*Lexer).parent = b
                        }
                        bundletype bundleid arglist bundlebody
                        {
@@ -74,8 +70,8 @@ body:                  BODY bodytype bodyid arglist bodybody
                        {
                         yylex.(*Lexer).yydebug("body:BODY", $$.token)
                         b := ast.New(&ast.Body{}, $$.token)
-                        ast.Append(parent, b)
-                        parent = b
+                        ast.Append(yylex.(*Lexer).parent, b)
+                        yylex.(*Lexer).parent = b
                        }
 
 promise:               PROMISE
@@ -147,14 +143,14 @@ promiseid_values:      symbol
 
 typeid:                IDENTIFIER
                        {
-                        ast.Append(parent, ast.New(&ast.Identifier{}, $$.token))
+                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, $$.token))
                        }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 symbol:                IDENTIFIER
                        {
-                        ast.Append(parent, ast.New(&ast.Identifier{}, $$.token))
+                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, $$.token))
                        };
 
 arglist:               /* Empty */
@@ -172,36 +168,36 @@ arglist_begin:         '('
 arglist_end:           ')'
                        {
                         yylex.(*Lexer).yydebug("arglist_end:)", $$.token)
-                        bundle := ast.UpTo(parent, &ast.Bundle{})
+                        bundle := ast.UpTo(yylex.(*Lexer).parent, &ast.Bundle{})
                         if bundle != nil {
-                            parent = bundle
+                            yylex.(*Lexer).parent = bundle
                         } else { // maybe body?
-                            if body := ast.UpTo(parent, &ast.Body{}); body != nil {
-                                parent = body
+                            if body := ast.UpTo(yylex.(*Lexer).parent, &ast.Body{}); body != nil {
+                                yylex.(*Lexer).parent = body
                             }
                         }
                        }
 
 aitems:                aitem
                        {
-		        if _, ok := parent.(*ast.ArgList); !ok {
+		        if _, ok := yylex.(*Lexer).parent.(*ast.ArgList); !ok {
 				a := ast.New(&ast.ArgList{})
-				ast.Append(parent, a)
-				parent = a
+				ast.Append(yylex.(*Lexer).parent, a)
+				yylex.(*Lexer).parent = a
 		        }
                         al := ast.New(&ast.ArgListItem{}, $$.token)
-                        ast.Append(parent, al)
+                        ast.Append(yylex.(*Lexer).parent, al)
                        }
                      | aitem ','
                      | aitem ',' aitems
                        {
-		        if _, ok := parent.(*ast.ArgList); !ok {
+		        if _, ok := yylex.(*Lexer).parent.(*ast.ArgList); !ok {
 				a := ast.New(&ast.ArgList{})
-				ast.Append(parent, a)
-				parent = a
+				ast.Append(yylex.(*Lexer).parent, a)
+				yylex.(*Lexer).parent = a
                         }
                         al := ast.New(&ast.ArgListItem{}, $3.token)
-                        ast.Append(parent, al)
+                        ast.Append(yylex.(*Lexer).parent, al)
 		       }
 
 aitem:                 IDENTIFIER  /* recipient of argument is never a Literal */
@@ -258,13 +254,13 @@ promise_guard:         PROMISEGUARD             /* BUNDLE ONLY */
                        {
                         yylex.(*Lexer).yydebug("promise_guard", $$.token)
                         pg := ast.New(&ast.PromiseGuard{}, $$.token)
-                        // If there is previous promiseguard, this one closes it, and we can reparent this new one, to that _parent_.
-                        prev := ast.UpTo(parent, &ast.PromiseGuard{})
+                        // If there is previous promiseguard, this one closes it, and we can reyylex.(*Lexer).parent this new one, to that _parent_.
+                        prev := ast.UpTo(yylex.(*Lexer).parent, &ast.PromiseGuard{})
                         if prev != nil {
-                            parent = prev.Parent()
+                            yylex.(*Lexer).parent = prev.Parent()
                         }
-                        ast.Append(parent, pg)
-                        parent = pg
+                        ast.Append(yylex.(*Lexer).parent, pg)
+                        yylex.(*Lexer).parent = pg
                        }
 
 classpromises_decl:    /* empty */
@@ -333,18 +329,18 @@ promiser:              QSTRING
                         yylex.(*Lexer).yydebug("promiser:QSTRING", $$.token)
                         // same level as previous Promiser, or PromiseGuard
 
-                        prev := ast.UpTo(parent, &ast.Promiser{})
+                        prev := ast.UpTo(yylex.(*Lexer).parent, &ast.Promiser{})
                         if prev == nil {
-                            if prev = ast.UpTo(parent, &ast.PromiseGuard{}); prev != nil {
-                                parent = prev
+                            if prev = ast.UpTo(yylex.(*Lexer).parent, &ast.PromiseGuard{}); prev != nil {
+                                yylex.(*Lexer).parent = prev
                             }
                         } else {
-                            parent = prev.Parent()
+                            yylex.(*Lexer).parent = prev.Parent()
                         }
 
                         p := ast.New(&ast.Promiser{}, $$.token)
-                        ast.Append(parent, p)
-                        parent = p
+                        ast.Append(yylex.(*Lexer).parent, p)
+                        yylex.(*Lexer).parent = p
                        }
 
 promise_decl_constraints:       /* empty */
@@ -375,14 +371,14 @@ constraint_id:         IDENTIFIER                        /* BUNDLE ONLY */
                        {
                         yylex.(*Lexer).yydebug("contraint_id:IDENTIFIER", $$.token)
 
-                        prev := ast.UpTo(parent, &ast.Promiser{})
+                        prev := ast.UpTo(yylex.(*Lexer).parent, &ast.Promiser{})
                         if prev != nil {
-                            parent = prev
+                            yylex.(*Lexer).parent = prev
                         }
 
                         c := ast.New(&ast.Constraint{}, $$.token)
-                        ast.Append(parent, c)
-                        parent = c
+                        ast.Append(yylex.(*Lexer).parent, c)
+                        yylex.(*Lexer).parent = c
                        }
                      | error
                        {
@@ -433,7 +429,7 @@ selection_id:          IDENTIFIER
 
 assign_arrow:          FATARROW
                        {
-                        ast.Append(parent, ast.New(&ast.FatArrow{}, $$.token))
+                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.FatArrow{}, $$.token))
                        }
                      | error
                        {
@@ -447,19 +443,19 @@ class:                 CLASSGUARD
                        {
                         yylex.(*Lexer).yydebug("class")
                         gc := ast.New(&ast.ClassGuard{}, $$.token)
-                        // If there is previous classguard, this one closes it, and we can reparent this new one, to that _parent_.
-                        prev := ast.UpTo(parent, &ast.ClassGuard{})
-                        // If there is no previous one, look for promise guard, and parent to that.
+                        // If there is previous classguard, this one closes it, and we can reyylex.(*Lexer).parent this new one, to that _parent_.
+                        prev := ast.UpTo(yylex.(*Lexer).parent, &ast.ClassGuard{})
+                        // If there is no previous one, look for promise guard, and yylex.(*Lexer).parent to that.
                         if prev == nil {
-                            prev = ast.UpTo(parent, &ast.PromiseGuard{})
+                            prev = ast.UpTo(yylex.(*Lexer).parent, &ast.PromiseGuard{})
                         }
-                        // re-parent if found
+                        // re-yylex.(*Lexer).parent if found
                         if prev != nil {
-                            parent = prev.Parent()
+                            yylex.(*Lexer).parent = prev.Parent()
                         }
 
-                        ast.Append(parent, gc)
-                        parent = gc
+                        ast.Append(yylex.(*Lexer).parent, gc)
+                        yylex.(*Lexer).parent = gc
                        }
 
 rval:                  IDENTIFIER
@@ -467,13 +463,13 @@ rval:                  IDENTIFIER
                         // awkward that these are the only ones here..?
                         yylex.(*Lexer).yydebug("rval:IDENTIFIER", $$.token)
                         i := ast.New(&ast.Identifier{}, $$.token)
-                        ast.Append(parent, i)
+                        ast.Append(yylex.(*Lexer).parent, i)
                        }
                      | QSTRING
                        {
                         yylex.(*Lexer).yydebug("rval:QSTRING", $$.token)
                         q := ast.New(&ast.Qstring{}, $$.token)
-                        ast.Append(parent, q)
+                        ast.Append(yylex.(*Lexer).parent, q)
                        }
                      | NAKEDVAR
                        {
@@ -495,25 +491,25 @@ list:                  '{' '}'
 Litems:
                        Litem
 		       {
-		        // add parent list
-		        if _, ok := parent.(*ast.List); !ok {
+		        // add yylex.(*Lexer).parent list
+		        if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
 				l := ast.New(&ast.List{})
-				ast.Append(parent, l)
-				parent = l
+				ast.Append(yylex.(*Lexer).parent, l)
+				yylex.(*Lexer).parent = l
 			}
                         l := ast.New(&ast.ListItem{}, $$.token)
-                        ast.Append(parent, l)
+                        ast.Append(yylex.(*Lexer).parent, l)
 		       }
                      | Litems ',' Litem
 		       {
-		        // add parent list
-		        if _, ok := parent.(*ast.List); !ok {
+		        // add yylex.(*Lexer).parent list
+		        if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
 				l := ast.New(&ast.List{})
-				ast.Append(parent, l)
-				parent = l
+				ast.Append(yylex.(*Lexer).parent, l)
+				yylex.(*Lexer).parent = l
 			}
                         l := ast.New(&ast.ListItem{}, $3.token)
-                        ast.Append(parent, l)
+                        ast.Append(yylex.(*Lexer).parent, l)
 		       }
                      | Litem error
                        {
@@ -538,18 +534,18 @@ Litem:                 IDENTIFIER
 functionid:            IDENTIFIER
                        {
                         f := ast.New(&ast.Function{}, ast.Token{})
-                        ast.Append(parent, f)
-                        parent = f
+                        ast.Append(yylex.(*Lexer).parent, f)
+                        yylex.(*Lexer).parent = f
 
-                        ast.Append(parent, ast.New(&ast.Identifier{}, $$.token))
+                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, $$.token))
                        }
                      | NAKEDVAR
                        {
                         f := ast.New(&ast.Function{}, ast.Token{})
-                        ast.Append(parent, f)
-                        parent = f
+                        ast.Append(yylex.(*Lexer).parent, f)
+                        yylex.(*Lexer).parent = f
 
-                        ast.Append(parent, ast.New(&ast.NakedVar{}, $$.token))
+                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.NakedVar{}, $$.token))
                        }
 
 usefunction:           functionid
@@ -573,12 +569,12 @@ gaitems:               /* empty */
                      | gaitem
                        {
                         l:= ast.New(&ast.GiveArgItem{}, $$.token) // single arg
-                        ast.Append(parent, l)
+                        ast.Append(yylex.(*Lexer).parent, l)
                        }
                      | gaitems ',' gaitem
                        {
                         l:= ast.New(&ast.GiveArgItem{}, $3.token) // multiple args
-                        ast.Append(parent, l)
+                        ast.Append(yylex.(*Lexer).parent, l)
                        }
                      | gaitem error
                        {
