@@ -1,3 +1,4 @@
+# the "myfiles" <nothing> => stuff, gives lexer error
 bundle agent hello_world
 {
   vars:
