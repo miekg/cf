@@ -10,9 +10,10 @@ import (
 )
 
 // Print pretty prints the CFengine AST in doc.
-func Print(dst io.Writer, doc ast.Node) {
+func Print(w io.Writer, doc ast.Node) {
+	wr := &tw{w: w}
 	for i, c := range doc.Children() {
-		printRecur(dst, c, -1, i == 0, i == len(doc.Children())-1) // -1 because Specification is the top-level (noop) container.
+		printRecur(wr, c, -1, i == 0, i == len(doc.Children())-1) // -1 because Specification is the top-level (noop) container.
 	}
 }
 
@@ -32,7 +33,10 @@ func printDefault(w io.Writer, indent string, typeName string, token ast.Token) 
 	}
 }
 
-const _Space = "  "
+const (
+	_Space   = "  "
+	_Columns = 100 // max width of printed text
+)
 
 func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	if node == nil {
@@ -105,6 +109,13 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	case *ast.ListItem:
 		fmt.Fprintf(w, "%s", v.Token().Lit)
+		if w.(*tw).col > _Columns {
+			if !last {
+				fmt.Fprint(w, ", ")
+				fmt.Fprintf(w, "\n%s", indent)
+			}
+			break
+		}
 		if !last {
 			fmt.Fprint(w, ", ")
 		}
