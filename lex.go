@@ -64,22 +64,23 @@ var Symbols = []Symbol{bundle, body, promise, identifier, symbol, fatarrow, thin
 
 // from: cfengine/core/libpromises/cf3lex.l
 var (
-	comment         = Symbol{COMMENT, regexp.MustCompilePOSIX(`^#[^\n]*`)}
-	bundle          = Symbol{BUNDLE, regexp.MustCompilePOSIX(`^bundle`)}
-	body            = Symbol{BODY, regexp.MustCompilePOSIX(`^body`)}
-	promise         = Symbol{PROMISE, regexp.MustCompilePOSIX(`^promise`)}
-	nakedvar        = Symbol{NAKEDVAR, regexp.MustCompilePOSIX(`^[$@][(][a-zA-Z0-9_\[\]\200-\377.:]+[)]|^[$@][{][a-zA-Z0-9_\[\]\200-\377.:]+[}]|^[$@][(][a-zA-Z0-9_\200-\377.:]+[\[][a-zA-Z0-9_$(){}\200-\377.:]+[\]]+[)]|^[$@][{][a-zA-Z0-9_\200-\377.:]+[\[][a-zA-Z0-9_$(){}\200-\377.:]+[\]]+[}]`)}
-	identifier      = Symbol{IDENTIFIER, regexp.MustCompilePOSIX(`^[a-zA-Z0-9_]+`)}
-	symbol          = Symbol{IDENTIFIER, regexp.MustCompilePOSIX(`^[a-zA-Z0-9_\200-\377]+[:][a-zA-Z0-9_\200-\377]+`)}
-	fatarrow        = Symbol{FATARROW, regexp.MustCompilePOSIX(`^=>`)}
-	thinarrow       = Symbol{THINARROW, regexp.MustCompilePOSIX(`^->`)}
-	class           = Symbol{CLASSGUARD, regexp.MustCompilePOSIX(`^[.|&!()a-zA-Z0-9_\200-\377:][\t .|&!()a-zA-Z0-9_\200-\377:]*::`)}
-	varclass        = Symbol{CLASSGUARD, regexp.MustCompilePOSIX(`^(\"[^"\0]*\"|\'[^'\0]*\')::`)}
-	promiseguard    = Symbol{PROMISEGUARD, regexp.MustCompilePOSIX(`^[a-zA-Z_]+:`)}
-	qstringsquote   = Symbol{QSTRING, regexp.MustCompilePOSIX(`^'[^']*'`)} // doesn't do the backspacing, of quote symbol
-	qstringquote    = Symbol{QSTRING, regexp.MustCompilePOSIX(`^"[^"]*"`)}
+	comment      = Symbol{COMMENT, regexp.MustCompilePOSIX(`^#[^\n]*`)}
+	bundle       = Symbol{BUNDLE, regexp.MustCompilePOSIX(`^bundle`)}
+	body         = Symbol{BODY, regexp.MustCompilePOSIX(`^body`)}
+	promise      = Symbol{PROMISE, regexp.MustCompilePOSIX(`^promise`)}
+	nakedvar     = Symbol{NAKEDVAR, regexp.MustCompilePOSIX(`^[$@][(][a-zA-Z0-9_\[\]\200-\377.:]+[)]|^[$@][{][a-zA-Z0-9_\[\]\200-\377.:]+[}]|^[$@][(][a-zA-Z0-9_\200-\377.:]+[\[][a-zA-Z0-9_$(){}\200-\377.:]+[\]]+[)]|^[$@][{][a-zA-Z0-9_\200-\377.:]+[\[][a-zA-Z0-9_$(){}\200-\377.:]+[\]]+[}]`)}
+	identifier   = Symbol{IDENTIFIER, regexp.MustCompilePOSIX(`^[a-zA-Z0-9_]+`)}
+	symbol       = Symbol{IDENTIFIER, regexp.MustCompilePOSIX(`^[a-zA-Z0-9_\200-\377]+[:][a-zA-Z0-9_\200-\377]+`)}
+	fatarrow     = Symbol{FATARROW, regexp.MustCompilePOSIX(`^=>`)}
+	thinarrow    = Symbol{THINARROW, regexp.MustCompilePOSIX(`^->`)}
+	class        = Symbol{CLASSGUARD, regexp.MustCompilePOSIX(`^[.|&!()a-zA-Z0-9_\200-\377:][\t .|&!()a-zA-Z0-9_\200-\377:]*::`)}
+	varclass     = Symbol{CLASSGUARD, regexp.MustCompilePOSIX(`^(\"[^"\0]*\"|\'[^'\0]*\')::`)}
+	promiseguard = Symbol{PROMISEGUARD, regexp.MustCompilePOSIX(`^[a-zA-Z_]+:`)}
+	char         = Symbol{CHAR, regexp.MustCompilePOSIX(`^.`)}
+	// original qstring regexp: \"((\\(.|\n))|[^"\\])*\"|\'((\\(.|\n))|[^'\\])*\'|`[^`]*`
+	qstringsquote   = Symbol{QSTRING, regexp.MustCompilePOSIX(`^\'((\\(.|\n))|[^'\\])*\'`)}
+	qstringquote    = Symbol{QSTRING, regexp.MustCompilePOSIX(`^\"((\\(.|\n))|[^"\\])*\"`)}
 	qstringbacktick = Symbol{QSTRING, regexp.MustCompilePOSIX("^`[^`]*`")}
-	char            = Symbol{CHAR, regexp.MustCompilePOSIX(`^.`)}
 )
 
 // Lexer is steered from yacc to deliver tokens.
