@@ -110,6 +110,9 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		}
 
 	case *ast.ArgList:
+		// We receive the arg list in reverse, becauwe the grammar has 'item, items' (all other lists have
+		// 'items, item). So reverse all children here (there can only be ArgListItem's)
+		ast.Reverse(v)
 		fmt.Fprint(w, "(")
 
 	case *ast.ArgListItem:

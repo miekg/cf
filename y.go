@@ -822,7 +822,7 @@ yydefault:
 				ast.Append(yylex.(*Lexer).parent, a)
 				yylex.(*Lexer).parent = a
 			}
-			al := ast.New(&ast.ArgListItem{}, yyDollar[3].token)
+			al := ast.New(&ast.ArgListItem{}, yyVAL.token)
 			ast.Append(yylex.(*Lexer).parent, al)
 		}
 	case 44:

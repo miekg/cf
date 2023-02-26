@@ -199,7 +199,7 @@ aitems:                aitem
 				ast.Append(yylex.(*Lexer).parent, a)
 				yylex.(*Lexer).parent = a
                         }
-                        al := ast.New(&ast.ArgListItem{}, $3.token)
+                        al := ast.New(&ast.ArgListItem{}, $$.token)
                         ast.Append(yylex.(*Lexer).parent, al)
 		       }
 

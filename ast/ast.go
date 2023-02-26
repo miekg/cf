@@ -32,6 +32,19 @@ func Remove(parent Node, index int) {
 	parent.SetChildren(cs)
 }
 
+// Reverse reverse the order of the child nodes in parent. Only use is for ArgList.
+func Reverse(arglist Node) {
+	cs := arglist.Children()
+	rs := make([]Node, len(cs))
+	j := 0
+	for i := len(cs) - 1; i >= 0; i-- {
+		rs[j] = cs[i]
+		j++
+	}
+	arglist.SetChildren(rs)
+
+}
+
 // Container is a type of node that can contain children.
 type Container struct {
 	parent   Node
