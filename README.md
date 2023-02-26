@@ -7,6 +7,13 @@ can walk and print.
 
 Install with: `go install github.com/miekg/cf/cmd/cffmt@latest`
 
+## Autofmt in (neo)vim
+
+~~~
+au Filetype cf3 normal zR
+au FileType cf3 command! Fmt call Fmt("cffmt /dev/stdin")
+~~~
+
 ## Usage
 
 Build `cffmt` in the cmd/cffmt and then for an example:
