@@ -138,7 +138,7 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	// On Leave
 	switch /*v :=*/ node.(type) {
 	case *ast.Bundle, *ast.Body:
-		fmt.Fprint(w, " }\n")
+		fmt.Fprint(w, "}\n")
 
 	case *ast.Promiser:
 		fmt.Fprint(w, ";\n")
@@ -147,7 +147,7 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		fmt.Fprint(w, ")")
 
 	case *ast.List:
-		fmt.Fprint(w, "}")
+		fmt.Fprint(w, " }")
 
 	case *ast.ArgList:
 		fmt.Fprint(w, ")\n{")
