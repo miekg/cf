@@ -114,10 +114,11 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	case *ast.ListItem:
 		fmt.Fprintf(w, "%s", v.Token().Lit)
+		// wrapping
 		if w.(*tw).col > w.(*tw).width {
 			if !last {
 				fmt.Fprint(w, ", ")
-				fmt.Fprintf(w, "\n%s", indent)
+				fmt.Fprintf(w, "\n%s%s", indent, _Space) // slightly deeper indent
 			}
 			break
 		}
