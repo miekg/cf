@@ -10,9 +10,18 @@ import (
 )
 
 // Print pretty prints the CFengine AST in doc.
-func Print(dst io.Writer, doc ast.Node) {
+func Print(w io.Writer, doc ast.Node) {
+	wr := &tw{w: w, width: 100}
 	for i, c := range doc.Children() {
-		printRecur(dst, c, -1, i == 0, i == len(doc.Children())-1) // -1 because Specification is the top-level (noop) container.
+		printRecur(wr, c, -1, i == 0, i == len(doc.Children())-1) // -1 because Specification is the top-level (noop) container.
+	}
+}
+
+// PrintWithWidth pretty prints the CFengine AST in doc, but allows setting a custom width.
+func PrintWithWidth(w io.Writer, width uint, doc ast.Node) {
+	wr := &tw{w: w, width: int(width)}
+	for i, c := range doc.Children() {
+		printRecur(wr, c, -1, i == 0, i == len(doc.Children())-1) // -1 because Specification is the top-level (noop) container.
 	}
 }
 
@@ -43,8 +52,8 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		indent = strings.Repeat(_Space, depth)
 	}
 
-	for _, c := range node.Token().Comment {
-		fmt.Fprintf(w, "%s%s\n", indent, c)
+	if len(node.Token().Comment) > 0 {
+		fmt.Fprintf(w, "%s\n", wrap(node.Token().Comment, indent, w.(*tw).width))
 	}
 
 	// On Enter
@@ -105,6 +114,13 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	case *ast.ListItem:
 		fmt.Fprintf(w, "%s", v.Token().Lit)
+		if w.(*tw).col > w.(*tw).width {
+			if !last {
+				fmt.Fprint(w, ", ")
+				fmt.Fprintf(w, "\n%s", indent)
+			}
+			break
+		}
 		if !last {
 			fmt.Fprint(w, ", ")
 		}

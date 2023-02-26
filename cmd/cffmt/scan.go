@@ -15,6 +15,7 @@ var (
 	flagPrint = flag.Bool("p", true, "pretty print the file to standard output")
 	flagAst   = flag.Bool("a", false, "print AST to standard error")
 	flagDebug = flag.Bool("d", false, "enable debugging in the lexer and yacc")
+	flagWidth = flag.Uint("w", 100, "width to use for list wrapping")
 )
 
 func main() {
@@ -45,7 +46,7 @@ func main() {
 	}
 	if *flagPrint {
 		doc := &bytes.Buffer{}
-		cf.Print(doc, spec)
+		cf.PrintWithWidth(doc, *flagWidth, spec)
 		fmt.Print(doc.String())
 	}
 }
