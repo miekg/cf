@@ -52,8 +52,8 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		indent = strings.Repeat(_Space, depth)
 	}
 
-	for _, c := range node.Token().Comment {
-		fmt.Fprintf(w, "%s%s\n", indent, c)
+	if len(node.Token().Comment) > 0 {
+		fmt.Fprintf(w, "%s\n", wrap(node.Token().Comment, indent, w.(*tw).width))
 	}
 
 	// On Enter
