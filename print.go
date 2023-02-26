@@ -101,7 +101,7 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	case *ast.List:
 		printChildrenOfType(w, v, "%s", "*ast.Identifier")
-		fmt.Fprint(w, "{")
+		fmt.Fprint(w, "{ ")
 
 	case *ast.ListItem:
 		fmt.Fprintf(w, "%s", v.Token().Lit)
@@ -138,7 +138,7 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	// On Leave
 	switch /*v :=*/ node.(type) {
 	case *ast.Bundle, *ast.Body:
-		fmt.Fprint(w, "}\n")
+		fmt.Fprint(w, " }\n")
 
 	case *ast.Promiser:
 		fmt.Fprint(w, ";\n")
