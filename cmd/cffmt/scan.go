@@ -30,7 +30,10 @@ func main() {
 
 	l := cf.NewLexer(f)
 	l.D = *flagDebug
-	spec := cf.Parse(l)
+	spec, err := cf.Parse(l)
+	if err != nil {
+		log.Fatalf("Error while parsing: %s", err)
+	}
 
 	if *flagAst {
 		ast.Print(os.Stderr, spec)

@@ -21,7 +21,7 @@ func (l *Lexer) yydebug(s string, t ...ast.Token) {
 }
 
 // Parse parses a CFengine file in r and returns the AST. The parser is not concurrent safe.
-func Parse(l *Lexer) ast.Node {
+func Parse(l *Lexer) (ast.Node, error) {
 	yyParse(l)
-	return l.Spec
+	return l.Spec, l.Err
 }

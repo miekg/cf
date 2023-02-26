@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"regexp"
 
@@ -90,6 +91,7 @@ type Lexer struct {
 
 	D    bool     // If true enable debugging.
 	Spec ast.Node // AST of parsed document.
+	Err  error    // Set to the last error we see.
 }
 
 // NewLexer returns a pointer to a usuable Lexer.
@@ -126,10 +128,12 @@ Rescan:
 // Implemented for goyacc.
 func (l *Lexer) Error(e string) {
 	if len(l.buf) > 0 {
-		fmt.Printf("error while parsing (left: %q): %s\n", l.buf, e)
+		l.Err = fmt.Errorf("error while parsing (left: %q): %s\n", l.buf, e)
+		log.Printf("%s", l.Err)
 		return
 	}
-	fmt.Printf("error while parsing %s\n", e)
+	l.Err = fmt.Errorf("error while parsing %s\n", e)
+	log.Printf("%s", l.Err)
 }
 
 func (l *Lexer) debug(t ast.Token) {
