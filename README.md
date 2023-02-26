@@ -1,8 +1,12 @@
 # CFengine pretty printer
 
-Experimental for now - but I believe I got *most* of the syntax elements right.
+Experimental for now - but I believe I got *most* of the syntax elements right. Found a few examples
+of CFEngine files that are now placed in 'unparseable'.
 
-This extracts the lexer and parser from CFengine's source and converts it into a (Go) AST that we
+It will reformat comments and list using the max line width (default: 100). Everything element is
+indented by 2 spaces, no tabs are used.
+
+miekg/cf uses the lexer and parser from CFengine's source and converts it into a (Go) AST that we
 can walk and print.
 
 Install with: `go install github.com/miekg/cf/cmd/cffmt@latest`
