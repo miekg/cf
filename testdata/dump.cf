@@ -1,6 +1,4 @@
-# set right permissions for ubuntu-guest users to
-# run tcpdump / wireshark
-
+# set right permissions for ubuntu-guest users to run tcpdump / wireshark
 bundle agent dumpcapabilities
 {
 

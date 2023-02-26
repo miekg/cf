@@ -3,8 +3,7 @@ bundle agent prometheus_server
 {
  files:
 
-  # define the prome stuff
-  # that we care about
+  # define the prome stuff that we care about
   IsPrometheusServer::
    "/etc/prometheus/sd_configs/node_servers.json" # picked up automatically by prometheus
 		copy_from => no_backup_rdcp("$(def.distr_files_dir)/etc/prometheus/sd_configs/node_servers.json",$(sys.policy_hub)),
