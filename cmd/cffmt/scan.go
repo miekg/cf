@@ -19,14 +19,19 @@ var (
 
 func main() {
 	flag.Parse()
-	if flag.NArg() == 0 {
-		log.Fatal("Expect cf file")
+	f := os.Stdin
+	switch flag.NArg() {
+	case 0:
+	case 1:
+		f1, err := os.Open(flag.Arg(0))
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer f1.Close()
+		f = f1
+	default:
+		log.Fatal("Too many arguments")
 	}
-	f, err := os.Open(flag.Arg(0))
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
 
 	l := cf.NewLexer(f)
 	l.D = *flagDebug
