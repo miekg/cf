@@ -7,8 +7,9 @@ import (
 
 // tw tracks how far indented the current write is.
 type tw struct {
-	col int // current column position
-	w   io.Writer
+	width int
+	col   int // current column position
+	w     io.Writer
 }
 
 func (t *tw) Write(p []byte) (int, error) {
