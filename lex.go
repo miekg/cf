@@ -118,6 +118,25 @@ Rescan:
 		// skip
 		goto Rescan
 	default:
+		// rescan how many times? Have limit?
+		if t.Lit == `"` {
+			// ugly hack to scan for multiline qstrings, currently only handles "-qstrings.
+			// do for ` and ' as well??. Scan until t.Lit == "`"` again
+			multiline := ""
+			for t := l.scan(); t.Lit != `"`; t = l.scan() {
+				if t.Tok == SPACE {
+					multiline += " "
+				} else {
+					multiline += t.Lit
+				}
+				if t.Newline {
+					multiline += "\n"
+				}
+			}
+			t.Lit = `"` + multiline + `"`
+			t.Tok = QSTRING
+		}
+
 		t.Comment = rem
 	}
 
@@ -169,16 +188,25 @@ func (l *Lexer) scan() ast.Token {
 			switch s.tok {
 			case CHAR:
 				lit := bytes.TrimSpace(match)
+
 				if len(lit) == 0 { // hack around parse errors
 					t = ast.Token{Tok: SPACE, Lit: string(lit)} // single literal character
 				} else {
 					t = ast.Token{Tok: int(match[0]), Lit: string(lit)} // single literal character
 				}
+
 			default:
 				lit := bytes.TrimSpace(match)
 				t = ast.Token{Tok: s.tok, Lit: string(lit)}
 			}
 		}
+	}
+
+	if max == len(l.buf) {
+		t.Newline = true
+	}
+	if max < len(l.buf)-1 && l.buf[max+1] == '\n' {
+		t.Newline = true
 	}
 	l.buf = l.buf[max:]
 	return t
@@ -191,20 +219,20 @@ func scanLines(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	}
 	if i := bytes.IndexByte(data, '\n'); i >= 0 {
 		// We have a full newline-terminated line.
-		return i + 1, dropCR(data[0:i]), nil
+		if data[0] == '"' {
+			println("QUOTE")
+		}
+		return i + 1, trim(data[0:i]), nil
 	}
 	// If we're at EOF, we have a final, non-terminated line. Return it.
 	if atEOF {
-		return len(data), dropCR(data), nil
+		return len(data), trim(data), nil
 	}
 	// Request more data.
 	return 0, nil, nil
 }
 
-func dropCR(data []byte) []byte {
-	if len(data) > 0 && data[len(data)-1] == '\r' {
-		return bytes.TrimSpace(data[0 : len(data)-1])
-	}
+func trim(data []byte) []byte {
 	if len(data) > 0 {
 		return bytes.TrimSpace(data)
 	}
