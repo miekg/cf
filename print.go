@@ -53,18 +53,13 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	}
 
 	// Comments
-	switch node.(type) {
-	case *ast.Bundle, *ast.Body:
-		if !first {
+	commentNoNewline := "\n"
+	for i := range node.Token().Comment {
+		if !first && i == 0 {
 			fmt.Fprintln(w)
 		}
-		for i := range node.Token().Comment {
-			fmt.Fprintf(w, "%s%s\n", indent, node.Token().Comment[i])
-		}
-	default:
-		for i := range node.Token().Comment {
-			fmt.Fprintf(w, "%s%s\n", indent, node.Token().Comment[i])
-		}
+		fmt.Fprintf(w, "%s%s\n", indent, node.Token().Comment[i])
+		commentNoNewline = ""
 	}
 
 	// On Enter
@@ -85,29 +80,26 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		}
 
 	case *ast.PromiseGuard:
-		fmt.Fprintf(w, "\n%s%s\n\n", indent, v.Token().Lit)
+		fmt.Fprintf(w, "%s%s%s\n", commentNoNewline, indent, v.Token().Lit)
 
 	case *ast.ClassGuard:
-		fmt.Fprintf(w, "%s%s\n", indent, v.Token().Lit)
+		fmt.Fprintf(w, "%s%s%s\n", commentNoNewline, indent, v.Token().Lit)
 
 	case *ast.Promiser:
-		if first {
-			fmt.Fprintln(w)
-		}
-		// this can be multiline
 		children := len(v.Children()) != 0
 		newline := ""
 		if children {
 			newline = "\n"
 		}
+		// this can be multiline
 		multiline := strings.Replace(v.Token().Lit, "\n", "\n"+indent, -1)
-		fmt.Fprintf(w, "%s%s%s", indent, multiline, newline)
+		fmt.Fprintf(w, "%s%s%s%s", commentNoNewline, indent, multiline, newline)
 
 	case *ast.Constraint:
 		fmt.Fprintf(w, "%s%s", indent, v.Token().Lit)
 
 	case *ast.Selection:
-		fmt.Fprintf(w, "\n%s%s", indent, v.Token().Lit)
+		fmt.Fprintf(w, "%s%s%s", commentNoNewline, indent, v.Token().Lit)
 
 	case *ast.Function:
 		printChildrenOfType(w, v, "%s", "*ast.Identifier")
