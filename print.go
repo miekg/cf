@@ -91,6 +91,9 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		fmt.Fprintf(w, "%s%s\n", indent, v.Token().Lit)
 
 	case *ast.Promiser:
+		if first {
+			fmt.Fprintln(w)
+		}
 		// this can be multiline
 		children := len(v.Children()) != 0
 		newline := ""
