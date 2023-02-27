@@ -121,7 +121,8 @@ Rescan:
 		// rescan how many times? Have limit?
 		if t.Lit == `"` {
 			// ugly hack to scan for multiline qstrings, currently only handles "-qstrings.
-			// do for ` and ' as well??. Scan until t.Lit == "`"` again
+			// do for ` and ' as well??. Scan until t.Lit == "`"` again, and make a multiline string work
+			// again.
 			multiline := ""
 			for t := l.scan(); t.Lit != `"`; t = l.scan() {
 				if t.Tok == SPACE {
