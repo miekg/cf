@@ -4,7 +4,8 @@ package ast
 type Token struct {
 	Tok     int      // Token identifier.
 	Lit     string   // String parsed for this token.
-	Comment []string // possible comment attached to Token, unformatted as such.
+	Comment []string // Possible comment attached to Token, unformatted as such.
+	Newline bool     // We have a newline at the end, important for multiline qstrings.
 }
 
 // CFEngine AST Types.

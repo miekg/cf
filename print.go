@@ -52,21 +52,23 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		indent = strings.Repeat(_Space, depth)
 	}
 
+	// Comments
 	switch node.(type) {
 	case *ast.Bundle, *ast.Body:
 		if !first {
 			fmt.Fprintln(w)
 		}
-		if len(node.Token().Comment) > 0 {
-			fmt.Fprintf(w, "%s\n", wrap(node.Token().Comment, indent, w.(*tw).width))
+		for i := range node.Token().Comment {
+			fmt.Fprintf(w, "%s%s\n", indent, node.Token().Comment[i])
 		}
 	default:
-		if len(node.Token().Comment) > 0 {
-			fmt.Fprintf(w, "%s\n", wrap(node.Token().Comment, indent, w.(*tw).width))
+		for i := range node.Token().Comment {
+			fmt.Fprintf(w, "%s%s\n", indent, node.Token().Comment[i])
 		}
 	}
 
 	// On Enter
+	// Some nodes can be multline - but this is a relative experimental addition, so not sure which ones are that.
 	switch v := node.(type) {
 	case *ast.Specification: // start of the tree, ignore
 
@@ -83,21 +85,23 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		}
 
 	case *ast.PromiseGuard:
-		fmt.Fprintf(w, "\n%s%s\n", indent, v.Token().Lit)
+		fmt.Fprintf(w, "\n%s%s\n\n", indent, v.Token().Lit)
 
 	case *ast.ClassGuard:
-		if !first {
-			fmt.Fprintln(w)
-		}
 		fmt.Fprintf(w, "%s%s\n", indent, v.Token().Lit)
 
 	case *ast.Promiser:
+		if first {
+			fmt.Fprintln(w)
+		}
+		// this can be multiline
 		children := len(v.Children()) != 0
 		newline := ""
 		if children {
 			newline = "\n"
 		}
-		fmt.Fprintf(w, "%s%s%s", indent, v.Token().Lit, newline)
+		multiline := strings.Replace(v.Token().Lit, "\n", "\n"+indent, -1)
+		fmt.Fprintf(w, "%s%s%s", indent, multiline, newline)
 
 	case *ast.Constraint:
 		fmt.Fprintf(w, "%s%s", indent, v.Token().Lit)
@@ -148,7 +152,12 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	case *ast.FatArrow, *ast.ThinArrow:
 		fmt.Fprintf(w, " %s ", v.Token().Lit)
 
-	case *ast.Qstring, *ast.Identifier:
+	case *ast.Qstring:
+		// this can be multiline
+		multiline := strings.Replace(v.Token().Lit, "\n", "\n"+indent, -1)
+		fmt.Fprintf(w, "%s", multiline)
+
+	case *ast.Identifier:
 		fmt.Fprintf(w, "%s", v.Token().Lit)
 
 	default:

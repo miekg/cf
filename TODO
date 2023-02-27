@@ -1,4 +1,0 @@
-- make long lists print nicely - maybe even comments.
-- line comments, #keep on the same line
-- multiline comments are not picked up, because the regexps don't match, read next line?
-- anything else that doesn't parse
