@@ -220,6 +220,10 @@ bundlebody:            body_begin
 
                        '}'
                        {
+                        // only here for comments.
+                        if bundle := ast.UpTo(yylex.(*Lexer).parent, &ast.Bundle{}); bundle != nil {
+                            bundle.SetToken($$.token)
+                        }
                        }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

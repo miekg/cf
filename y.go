@@ -56,7 +56,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parse.y:602
+//line parse.y:606
 
 //line yacctab:1
 var yyExca = [...]int16{
@@ -844,35 +844,39 @@ yydefault:
 		yyDollar = yyS[yypt-4 : yypt+1]
 //line parse.y:222
 		{
+			// only here for comments.
+			if bundle := ast.UpTo(yylex.(*Lexer).parent, &ast.Bundle{}); bundle != nil {
+				bundle.SetToken(yyVAL.token)
+			}
 		}
 	case 48:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:228
+//line parse.y:232
 		{
 		}
 	case 49:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:231
+//line parse.y:235
 		{
 		}
 	case 54:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:245
+//line parse.y:249
 		{
 		}
 	case 55:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:250
+//line parse.y:254
 		{
 		}
 	case 56:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:253
+//line parse.y:257
 		{
 		}
 	case 57:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:257
+//line parse.y:261
 		{
 			yylex.(*Lexer).yydebug("promise_guard", yyVAL.token)
 			pg := ast.New(&ast.PromiseGuard{}, yyVAL.token)
@@ -886,81 +890,81 @@ yydefault:
 		}
 	case 58:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line parse.y:270
+//line parse.y:274
 		{
 		}
 	case 59:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:273
+//line parse.y:277
 		{
 		}
 	case 60:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:277
+//line parse.y:281
 		{
 		}
 	case 61:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:280
+//line parse.y:284
 		{
 		}
 	case 62:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:283
+//line parse.y:287
 		{
 		}
 	case 63:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:287
+//line parse.y:291
 		{
 			yylex.(*Lexer).yydebug("classpromise", yyVAL.token)
 		}
 	case 64:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:291
+//line parse.y:295
 		{
 		}
 	case 65:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:295
+//line parse.y:299
 		{
 			yylex.(*Lexer).yydebug("promise_decl", yyVAL.token)
 		}
 	case 66:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:299
+//line parse.y:303
 		{
 		}
 	case 67:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:303
+//line parse.y:307
 		{
 		}
 	case 68:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:306
+//line parse.y:310
 		{
 		}
 	case 69:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:315
+//line parse.y:319
 		{
 		}
 	case 71:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:321
+//line parse.y:325
 		{
 			yylex.(*Lexer).yydebug("promise_without_promisee: promiser", yyVAL.token)
 		}
 	case 72:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:326
+//line parse.y:330
 		{
 			yylex.(*Lexer).yydebug("promise_without_promisee: promise_decl_constraints", yyVAL.token)
 		}
 	case 73:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:331
+//line parse.y:335
 		{
 			yylex.(*Lexer).yydebug("promiser:QSTRING", yyVAL.token)
 			// same level as previous Promiser, or PromiseGuard
@@ -980,33 +984,33 @@ yydefault:
 		}
 	case 76:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:352
+//line parse.y:356
 		{
 		}
 	case 77:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:356
+//line parse.y:360
 		{
 		}
 	case 80:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:363
+//line parse.y:367
 		{
 		}
 	case 81:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:366
+//line parse.y:370
 		{
 		}
 	case 82:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line parse.y:369
+//line parse.y:373
 		{
 			yylex.(*Lexer).yydebug("contraint:rval")
 		}
 	case 83:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:374
+//line parse.y:378
 		{
 			yylex.(*Lexer).yydebug("contraint_id:IDENTIFIER", yyVAL.token)
 
@@ -1021,50 +1025,50 @@ yydefault:
 		}
 	case 84:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:387
+//line parse.y:391
 		{
 		}
 	case 85:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:391
+//line parse.y:395
 		{
 		}
 	case 86:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line parse.y:397
+//line parse.y:401
 		{
 		}
 	case 91:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:407
+//line parse.y:411
 		{
 		}
 	case 94:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:413
+//line parse.y:417
 		{
 		}
 	case 95:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:417
+//line parse.y:421
 		{
 			yylex.(*Lexer).yydebug("selection:selection_id", yyVAL.token)
 		}
 	case 96:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:421
+//line parse.y:425
 		{
 			yylex.(*Lexer).yydebug("selection:assign_arrow")
 		}
 	case 97:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line parse.y:425
+//line parse.y:429
 		{
 			yylex.(*Lexer).yydebug("selection:rval", yyVAL.token)
 		}
 	case 98:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:430
+//line parse.y:434
 		{
 			yylex.(*Lexer).yydebug("selection_id:IDENTIFIER", yyVAL.token)
 			// need to be parent of body.
@@ -1077,28 +1081,28 @@ yydefault:
 		}
 	case 99:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:441
+//line parse.y:445
 		{
 		}
 	case 100:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:445
+//line parse.y:449
 		{
 			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.FatArrow{}, yyVAL.token))
 		}
 	case 101:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:449
+//line parse.y:453
 		{
 		}
 	case 102:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:453
+//line parse.y:457
 		{
 		}
 	case 103:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:457
+//line parse.y:461
 		{
 			yylex.(*Lexer).yydebug("class")
 			gc := ast.New(&ast.ClassGuard{}, yyVAL.token)
@@ -1118,7 +1122,7 @@ yydefault:
 		}
 	case 104:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:476
+//line parse.y:480
 		{
 			// awkward that these are the only ones here..?
 			yylex.(*Lexer).yydebug("rval:IDENTIFIER", yyVAL.token)
@@ -1127,7 +1131,7 @@ yydefault:
 		}
 	case 105:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:483
+//line parse.y:487
 		{
 			yylex.(*Lexer).yydebug("rval:QSTRING", yyVAL.token)
 			q := ast.New(&ast.Qstring{}, yyVAL.token)
@@ -1135,27 +1139,27 @@ yydefault:
 		}
 	case 106:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:489
+//line parse.y:493
 		{
 		}
 	case 107:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:492
+//line parse.y:496
 		{
 		}
 	case 108:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:495
+//line parse.y:499
 		{
 		}
 	case 109:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:498
+//line parse.y:502
 		{
 		}
 	case 113:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:507
+//line parse.y:511
 		{
 			// add yylex.(*Lexer).parent list
 			if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
@@ -1168,7 +1172,7 @@ yydefault:
 		}
 	case 114:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:518
+//line parse.y:522
 		{
 			// add yylex.(*Lexer).parent list
 			if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
@@ -1181,37 +1185,37 @@ yydefault:
 		}
 	case 115:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:529
+//line parse.y:533
 		{
 		}
 	case 116:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:533
+//line parse.y:537
 		{
 		}
 	case 117:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:536
+//line parse.y:540
 		{
 		}
 	case 118:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:539
+//line parse.y:543
 		{
 		}
 	case 119:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:542
+//line parse.y:546
 		{
 		}
 	case 120:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:545
+//line parse.y:549
 		{
 		}
 	case 121:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:549
+//line parse.y:553
 		{
 			f := ast.New(&ast.Function{}, ast.Token{})
 			ast.Append(yylex.(*Lexer).parent, f)
@@ -1221,7 +1225,7 @@ yydefault:
 		}
 	case 122:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:557
+//line parse.y:561
 		{
 			f := ast.New(&ast.Function{}, ast.Token{})
 			ast.Append(yylex.(*Lexer).parent, f)
@@ -1231,41 +1235,41 @@ yydefault:
 		}
 	case 123:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:566
+//line parse.y:570
 		{
 		}
 	case 125:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:571
+//line parse.y:575
 		{
 		}
 	case 126:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:575
+//line parse.y:579
 		{
 		}
 	case 127:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line parse.y:579
+//line parse.y:583
 		{
 		}
 	case 129:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:584
+//line parse.y:588
 		{
 			l := ast.New(&ast.GiveArgItem{}, yyVAL.token) // single arg
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
 	case 130:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:589
+//line parse.y:593
 		{
 			l := ast.New(&ast.GiveArgItem{}, yyDollar[3].token) // multiple args
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
 	case 131:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:594
+//line parse.y:598
 		{
 		}
 	}

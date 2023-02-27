@@ -176,7 +176,7 @@ func (l *Lexer) scan() ast.Token {
 				}
 			default:
 				lit := bytes.TrimSpace(match)
-				t = ast.Token{Tok: s.tok, Lit: string(lit)} // single literal character
+				t = ast.Token{Tok: s.tok, Lit: string(lit)}
 			}
 		}
 	}

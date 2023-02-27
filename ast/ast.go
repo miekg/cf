@@ -58,9 +58,14 @@ func (c *Container) Parent() Node          { return c.parent }
 func (c *Container) Children() []Node      { return c.children }
 func (c *Container) SetParent(p Node)      { c.parent = p }
 func (c *Container) SetChildren(cs []Node) { c.children = cs }
-func (c *Container) SetToken(t Token)      { c.token = t }
 func (c *Container) Token() Token          { return c.token }
 func (c *Container) Type() string          { return container }
+func (c *Container) SetToken(t Token) {
+	c.token.Lit = t.Lit
+	c.token.Tok = t.Tok
+	// prepend or postpend?
+	c.token.Comment = append(t.Comment, c.token.Comment...)
+}
 
 // Leaf is a type of node that cannot have children.
 type Leaf struct {
@@ -74,9 +79,13 @@ func (l *Leaf) Parent() Node          { return l.parent }
 func (l *Leaf) Children() []Node      { return nil }
 func (l *Leaf) SetParent(p Node)      { l.parent = p }
 func (l *Leaf) SetChildren(cs []Node) { panic("ast: leaf can't have children") }
-func (l *Leaf) SetToken(t Token)      { l.token = t }
 func (l *Leaf) Token() Token          { return l.token }
 func (c *Leaf) Type() string          { return leaf }
+func (c *Leaf) SetToken(t Token) {
+	c.token.Lit = t.Lit
+	c.token.Tok = t.Tok
+	c.token.Comment = append(t.Comment, c.token.Comment...)
+}
 
 // New returns a new Node, with an optional token.
 func New(n Node, t ...Token) Node {
