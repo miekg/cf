@@ -399,6 +399,10 @@ bodybody:              body_begin
 
                        '}'
                        {
+                        // only here for comments.
+                        if body := ast.UpTo(yylex.(*Lexer).parent, &ast.Body{}); body != nil {
+                            body.SetToken($$.token)
+                        }
                        }
 
 bodybody_inner:        /* empty */

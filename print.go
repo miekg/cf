@@ -52,8 +52,18 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		indent = strings.Repeat(_Space, depth)
 	}
 
-	if len(node.Token().Comment) > 0 {
-		fmt.Fprintf(w, "%s\n", wrap(node.Token().Comment, indent, w.(*tw).width))
+	switch node.(type) {
+	case *ast.Bundle, *ast.Body:
+		if !first {
+			fmt.Fprintln(w)
+		}
+		if len(node.Token().Comment) > 0 {
+			fmt.Fprintf(w, "%s\n", wrap(node.Token().Comment, indent, w.(*tw).width))
+		}
+	default:
+		if len(node.Token().Comment) > 0 {
+			fmt.Fprintf(w, "%s\n", wrap(node.Token().Comment, indent, w.(*tw).width))
+		}
 	}
 
 	// On Enter
@@ -61,9 +71,6 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	case *ast.Specification: // start of the tree, ignore
 
 	case *ast.Bundle, *ast.Body:
-		if !first && len(v.Token().Comment) == 0 {
-			fmt.Fprintln(w)
-		}
 		fmt.Fprintf(w, "%s", v.Token().Lit)
 		printChildrenOfType(w, v, " %s", "*ast.Identifier")
 		// First child is either ArgList or not, if not, end the bundle/body, otherwise print the list and end the
