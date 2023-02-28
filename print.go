@@ -21,6 +21,7 @@ func Print(w io.Writer, doc ast.Node) {
 func PrintWithWidth(w io.Writer, width uint, doc ast.Node) {
 	wr := &tw{w: w, width: int(width)}
 	for i, c := range doc.Children() {
+		// we also need a last-of-my-kind, prolly instead of 'last'
 		printRecur(wr, c, -1, i == 0, i == len(doc.Children())-1) // -1 because Specification is the top-level (noop) container.
 	}
 }
