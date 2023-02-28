@@ -17,19 +17,16 @@ func Print(dst io.Writer, doc Node) {
 
 // older debug function, might be removed at some point.
 func printDefault(w io.Writer, indent string, typeName string, token Token) {
-	if len(token.Lit) > 0 {
-		if len(token.Comment) > 0 {
-			for i := range token.Comment {
-				fmt.Fprintf(w, "%2d %s->%s\n", len(indent), indent, token.Comment[i])
-			}
-		}
-		fmt.Fprintf(w, "%2d %s%s '%s'\n", len(indent), indent, typeName, token.Lit)
-	} else {
+	if len(token.Comment) > 0 {
 		for i := range token.Comment {
-			fmt.Fprintf(w, "%2d %s->%s\n", len(indent), indent, token.Comment[i])
+			fmt.Fprintf(w, "%2d %s  %s\n", len(indent), indent, token.Comment[i])
 		}
-		fmt.Fprintf(w, "%2d %s%s\n", len(indent), indent, typeName)
 	}
+	if len(token.Lit) > 0 {
+		fmt.Fprintf(w, "%2d %s%s '%s'\n", len(indent), indent, typeName, token.Lit)
+		return
+	}
+	fmt.Fprintf(w, "%2d %s%s\n", len(indent), indent, typeName)
 }
 
 func printRecur(w io.Writer, node Node, prefix string, depth int) {
