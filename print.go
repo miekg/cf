@@ -54,10 +54,10 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	// Comments
 	commentNoNewline := "\n"
+	if len(node.Token().Comment) > 0 && depth > 0 {
+		fmt.Fprintln(w)
+	}
 	for i := range node.Token().Comment {
-		if !first && i == 0 {
-			fmt.Fprintln(w)
-		}
 		fmt.Fprintf(w, "%s%s\n", indent, node.Token().Comment[i])
 		commentNoNewline = ""
 	}
