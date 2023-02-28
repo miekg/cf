@@ -118,16 +118,17 @@ Rescan:
 		// skip
 		goto Rescan
 	default:
-		// rescan how many times? Have limit?
 		if t.Lit == `"` {
 			// ugly hack to scan for multiline qstrings, currently only handles "-qstrings.
-			// do for ` and ' as well??. Scan until t.Lit == "`"` again, and make a multiline string work
-			// again.
+			// do for ` and ' as well??. Scan until we see t.Lit == "`"` again, and restich the lines.
 			multiline := ""
 			for t := l.scan(); t.Lit != `"`; t = l.scan() {
-				if t.Tok == SPACE {
+				switch t.Tok {
+				case SPACE:
 					multiline += " "
-				} else {
+				case DONE:
+					goto End
+				default:
 					multiline += t.Lit
 				}
 				if t.Newline {
@@ -141,6 +142,7 @@ Rescan:
 		t.Comment = rem
 	}
 
+End:
 	l.debug(t)
 	lval.token = t
 	return t.Tok
