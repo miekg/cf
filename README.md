@@ -3,7 +3,9 @@
 'cf' can handle most CFEngine files, a few files I found that aren't parseable are stored in the
 'unparseable' directory.
 
-'cf' will allign fat-arrows in a constraint. And long lists are wrapped.
+'cf' will align fat-arrows in a constraint. And long lists are wrapped. If there is only 1
+constraint it is printede on the same line and the promisers are aligned instead.
+TODO(miek): maybe make an exception for "contain => in_shell" ?
 
 miekg/cf uses the lexer and parser from CFengine's source and converts it into a (Go) AST that we
 can walk and print.
