@@ -1,8 +1,0 @@
-# the "myfiles" <nothing> => stuff, gives lexer error
-bundle agent hello_world
-{
-  vars:
-      "myfiles"     => "/tmp/world.txt";
-      "desired_content" string => "hello";
-      "userinfo" data => parsejson('{ "mark": 10, "jeang":20, "jonhenrik":30, "thomas":40, "eben":-1 }');
-}
