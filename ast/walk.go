@@ -23,10 +23,10 @@ type NodeVisitor interface {
 	Visit(node Node, entering bool) WalkStatus
 }
 
-// NodeVisitorFunc casts a function to match NodeVisitor interface
+// NodeVisitorFunc casts a function to match NodeVisitor interface.
 type NodeVisitorFunc func(node Node, entering bool) WalkStatus
 
-// Walk traverses tree recursively
+// Walk traverses tree recursively.
 func Walk(n Node, visitor NodeVisitor) WalkStatus {
 
 	isContainer := n.Type() == container
@@ -56,10 +56,10 @@ func Walk(n Node, visitor NodeVisitor) WalkStatus {
 	return GoToNext
 }
 
-// Visit calls visitor function
+// Visit calls visitor function.
 func (f NodeVisitorFunc) Visit(node Node, entering bool) WalkStatus { return f(node, entering) }
 
-// WalkFunc is like Walk but accepts just a callback function
+// WalkFunc is like Walk but accepts just a callback function.
 func WalkFunc(n Node, f NodeVisitorFunc) {
 	visitor := NodeVisitorFunc(f)
 	Walk(n, visitor)
