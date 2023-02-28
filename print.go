@@ -11,6 +11,8 @@ import (
 
 // Print pretty prints the CFengine AST in doc.
 func Print(w io.Writer, doc ast.Node) {
+	fatArrowAlign(doc)
+
 	wr := &tw{w: w, width: 100}
 	for i, c := range doc.Children() {
 		printRecur(wr, c, -1, i == 0, i == len(doc.Children())-1) // -1 because Specification is the top-level (noop) container.
@@ -19,6 +21,8 @@ func Print(w io.Writer, doc ast.Node) {
 
 // PrintWithWidth pretty prints the CFengine AST in doc, but allows setting a custom width.
 func PrintWithWidth(w io.Writer, width uint, doc ast.Node) {
+	fatArrowAlign(doc)
+
 	wr := &tw{w: w, width: int(width)}
 	for i, c := range doc.Children() {
 		// we also need a last-of-my-kind, prolly instead of 'last'
