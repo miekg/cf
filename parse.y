@@ -437,9 +437,12 @@ selection:             selection_id                         /* BODY/PROMISE ONLY
 selection_id:          IDENTIFIER
                        {
                         yylex.(*Lexer).yydebug("selection_id:IDENTIFIER", $$.token)
-                        // need to be parent of body.
-			body := ast.UpTo(yylex.(*Lexer).parent, &ast.Body{})
-                        yylex.(*Lexer).parent = body
+                        // need to be parent of body _or_ classguard
+                        prev := ast.UpTo(yylex.(*Lexer).parent, &ast.ClassGuard{})
+                        if prev == nil {
+			    prev = ast.UpTo(yylex.(*Lexer).parent, &ast.Body{})
+                        }
+                        yylex.(*Lexer).parent = prev
 
                         s := ast.New(&ast.Selection{}, $$.token)
                         ast.Append(yylex.(*Lexer).parent, s)
@@ -465,19 +468,26 @@ class:                 CLASSGUARD
                        {
                         yylex.(*Lexer).yydebug("class")
                         gc := ast.New(&ast.ClassGuard{}, $$.token)
-                        // If there is previous classguard, this one closes it, and we can reyylex.(*Lexer).parent this new one, to that _parent_.
-                        prev := ast.UpTo(yylex.(*Lexer).parent, &ast.ClassGuard{})
-                        // If there is no previous one, look for promise guard, and yylex.(*Lexer).parent to that.
-                        if prev == nil {
-                            prev = ast.UpTo(yylex.(*Lexer).parent, &ast.PromiseGuard{})
-                        }
-                        // re-yylex.(*Lexer).parent if found
-                        if prev != nil {
-                            yylex.(*Lexer).parent = prev.Parent()
-                        }
 
-                        ast.Append(yylex.(*Lexer).parent, gc)
-                        yylex.(*Lexer).parent = gc
+			if _, ok := yylex.(*Lexer).parent.(*ast.Selection); ok { // in body, because selection
+                            println("SELECTION") // need to look better, not Parent()
+                            ast.Append(yylex.(*Lexer).parent.Parent(), gc)
+                            yylex.(*Lexer).parent = gc
+                        } else {
+                            // If there is previous classguard, this one closes it, and we can reyylex.(*Lexer).parent this new one, to that _parent_.
+                            prev := ast.UpTo(yylex.(*Lexer).parent, &ast.ClassGuard{})
+                            // If there is no previous one, look for promise guard, and yylex.(*Lexer).parent to that.
+                            if prev == nil {
+                                prev = ast.UpTo(yylex.(*Lexer).parent, &ast.PromiseGuard{})
+                            }
+                            // re-yylex.(*Lexer).parent if found
+                            if prev != nil {
+                                yylex.(*Lexer).parent = prev.Parent()
+                            }
+
+                            ast.Append(yylex.(*Lexer).parent, gc)
+                            yylex.(*Lexer).parent = gc
+                        }
                        }
 
 rval:                  IDENTIFIER
