@@ -91,9 +91,14 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		if children {
 			newline = "\n"
 		}
+		// if my parent is directly a promise guard, insert newline.
+		promisenewline := ""
+		if _, ok := v.Parent().(*ast.PromiseGuard); ok {
+			promisenewline = "\n"
+		}
 		// this can be multiline
 		multiline := strings.Replace(v.Token().Lit, "\n", "\n"+indent, -1)
-		fmt.Fprintf(w, "%s%s%s%s", commentNoNewline, indent, multiline, newline)
+		fmt.Fprintf(w, "%s%s%s%s", promisenewline, indent, multiline, newline)
 
 	case *ast.Constraint:
 		fmt.Fprintf(w, "%s%s", indent, v.Token().Lit)
