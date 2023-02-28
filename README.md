@@ -14,7 +14,7 @@ Install with: `go install github.com/miekg/cf/cmd/cffmt@latest`
 Will not correctly parse:
 
 - drops comments that are placed in a bundle/body but at the end.
-- we add too many newlines sometimes.
+- thinarrow is not parsed yet.
 
 ## Autofmt in (neo)vim
 

@@ -11,8 +11,8 @@ import (
 	"github.com/miekg/cf/ast"
 )
 
-// Symbol is used to construct the regular expressions used in the lexer.
-type Symbol struct {
+// sym is used to construct the regular expressions used in the lexer.
+type sym struct {
 	tok int
 	exp *regexp.Regexp
 }
@@ -38,7 +38,7 @@ const (
 	*/
 )
 
-var SymbolText = map[int]string{
+var symbolText = map[int]string{
 	DONE:    "",
 	NONE:    "",
 	COMMENT: "comment",
@@ -57,36 +57,36 @@ var SymbolText = map[int]string{
 	PROMISEGUARD: "promiseguard",
 }
 
-// Symbols for cfengine, order of list taken from cf3lex.l, excluding 'space'
-var Symbols = []Symbol{bundle, body, promise, identifier, symbol, fatarrow, thinarrow, varclass, class, promiseguard,
+// syms for cfengine, order of list taken from cf3lex.l, excluding 'space'
+var syms = []sym{bundle, body, promise, identifier, symbol, fatarrow, thinarrow, varclass, class, promiseguard,
 	qstringquote, qstringsquote, qstringbacktick, nakedvar, comment, char}
 
 // from: cfengine/core/libpromises/cf3lex.l
 var (
-	comment      = Symbol{COMMENT, regexp.MustCompilePOSIX(`^#[^\n]*`)}
-	bundle       = Symbol{BUNDLE, regexp.MustCompilePOSIX(`^bundle`)}
-	body         = Symbol{BODY, regexp.MustCompilePOSIX(`^body`)}
-	promise      = Symbol{PROMISE, regexp.MustCompilePOSIX(`^promise`)}
-	nakedvar     = Symbol{NAKEDVAR, regexp.MustCompilePOSIX(`^[$@][(][a-zA-Z0-9_\[\]\200-\377.:]+[)]|^[$@][{][a-zA-Z0-9_\[\]\200-\377.:]+[}]|^[$@][(][a-zA-Z0-9_\200-\377.:]+[\[][a-zA-Z0-9_$(){}\200-\377.:]+[\]]+[)]|^[$@][{][a-zA-Z0-9_\200-\377.:]+[\[][a-zA-Z0-9_$(){}\200-\377.:]+[\]]+[}]`)}
-	identifier   = Symbol{IDENTIFIER, regexp.MustCompilePOSIX(`^[a-zA-Z0-9_]+`)}
-	symbol       = Symbol{IDENTIFIER, regexp.MustCompilePOSIX(`^[a-zA-Z0-9_\200-\377]+[:][a-zA-Z0-9_\200-\377]+`)}
-	fatarrow     = Symbol{FATARROW, regexp.MustCompilePOSIX(`^=>`)}
-	thinarrow    = Symbol{THINARROW, regexp.MustCompilePOSIX(`^->`)}
-	class        = Symbol{CLASSGUARD, regexp.MustCompilePOSIX(`^[.|&!()a-zA-Z0-9_\200-\377:][\t .|&!()a-zA-Z0-9_\200-\377:]*::`)}
-	varclass     = Symbol{CLASSGUARD, regexp.MustCompilePOSIX(`^(\"[^"\0]*\"|\'[^'\0]*\')::`)}
-	promiseguard = Symbol{PROMISEGUARD, regexp.MustCompilePOSIX(`^[a-zA-Z_]+:`)}
-	char         = Symbol{CHAR, regexp.MustCompilePOSIX(`^.`)}
+	comment      = sym{COMMENT, regexp.MustCompilePOSIX(`^#[^\n]*`)}
+	bundle       = sym{BUNDLE, regexp.MustCompilePOSIX(`^bundle`)}
+	body         = sym{BODY, regexp.MustCompilePOSIX(`^body`)}
+	promise      = sym{PROMISE, regexp.MustCompilePOSIX(`^promise`)}
+	nakedvar     = sym{NAKEDVAR, regexp.MustCompilePOSIX(`^[$@][(][a-zA-Z0-9_\[\]\200-\377.:]+[)]|^[$@][{][a-zA-Z0-9_\[\]\200-\377.:]+[}]|^[$@][(][a-zA-Z0-9_\200-\377.:]+[\[][a-zA-Z0-9_$(){}\200-\377.:]+[\]]+[)]|^[$@][{][a-zA-Z0-9_\200-\377.:]+[\[][a-zA-Z0-9_$(){}\200-\377.:]+[\]]+[}]`)}
+	identifier   = sym{IDENTIFIER, regexp.MustCompilePOSIX(`^[a-zA-Z0-9_]+`)}
+	symbol       = sym{IDENTIFIER, regexp.MustCompilePOSIX(`^[a-zA-Z0-9_\200-\377]+[:][a-zA-Z0-9_\200-\377]+`)}
+	fatarrow     = sym{FATARROW, regexp.MustCompilePOSIX(`^=>`)}
+	thinarrow    = sym{THINARROW, regexp.MustCompilePOSIX(`^->`)}
+	class        = sym{CLASSGUARD, regexp.MustCompilePOSIX(`^[.|&!()a-zA-Z0-9_\200-\377:][\t .|&!()a-zA-Z0-9_\200-\377:]*::`)}
+	varclass     = sym{CLASSGUARD, regexp.MustCompilePOSIX(`^(\"[^"\0]*\"|\'[^'\0]*\')::`)}
+	promiseguard = sym{PROMISEGUARD, regexp.MustCompilePOSIX(`^[a-zA-Z_]+:`)}
+	char         = sym{CHAR, regexp.MustCompilePOSIX(`^.`)}
 	// original qstring regexp: \"((\\(.|\n))|[^"\\])*\"|\'((\\(.|\n))|[^'\\])*\'|`[^`]*`
-	qstringsquote   = Symbol{QSTRING, regexp.MustCompilePOSIX(`^\'((\\(.|\n))|[^'\\])*\'`)}
-	qstringquote    = Symbol{QSTRING, regexp.MustCompilePOSIX(`^\"((\\(.|\n))|[^"\\])*\"`)}
-	qstringbacktick = Symbol{QSTRING, regexp.MustCompilePOSIX("^`[^`]*`")}
+	qstringsquote   = sym{QSTRING, regexp.MustCompilePOSIX(`^\'((\\(.|\n))|[^'\\])*\'`)}
+	qstringquote    = sym{QSTRING, regexp.MustCompilePOSIX(`^\"((\\(.|\n))|[^"\\])*\"`)}
+	qstringbacktick = sym{QSTRING, regexp.MustCompilePOSIX("^`[^`]*`")}
 )
 
 // Lexer is steered from yacc to deliver tokens.
 type Lexer struct {
 	buf []byte // leftover from last match, deplete first before scanning
 	*bufio.Scanner
-	symbols []Symbol
+	symbols []sym
 	parent  ast.Node
 
 	D    bool     // If true enable debugging.
@@ -98,7 +98,7 @@ type Lexer struct {
 func NewLexer(r io.Reader) *Lexer {
 	s := bufio.NewScanner(r)
 	s.Split(scanLines)
-	return &Lexer{Scanner: s, symbols: Symbols, D: false, parent: ast.New(&ast.Specification{}, ast.Token{})}
+	return &Lexer{Scanner: s, symbols: syms, D: false, parent: ast.New(&ast.Specification{}, ast.Token{})}
 }
 
 // Implemented for goyacc.
@@ -160,7 +160,7 @@ func (l *Lexer) debug(t ast.Token) {
 	if !l.D {
 		return
 	}
-	st := SymbolText[t.Tok]
+	st := symbolText[t.Tok]
 	if st == "" {
 		st = t.Lit
 	}
@@ -178,7 +178,7 @@ func (l *Lexer) scan() ast.Token {
 
 	max := 0
 	t := ast.Token{Tok: SPACE, Lit: ""} // will be skipped when nothing matches, happens on newlines or empty lines
-	for _, s := range Symbols {
+	for _, s := range syms {
 		match := s.exp.Find(l.buf)
 		if match == nil {
 			continue
