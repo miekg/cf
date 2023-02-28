@@ -1,10 +1,9 @@
 # CFengine pretty printer
 
-Experimental for now - but I believe I got *most* of the syntax elements right. Found a few examples
-of CFEngine files that are now placed in 'unparseable'.
+'cf' can handle most CFEngine files, a few files I found that aren't parseable are stored in the
+'unparseable' directory.
 
-Comments are left alone and outputted as-is. This may change in the future and we might do something
-that is similar to what Go is doing. Long lists are wrapped and indented slightly.
+'cf' will allign fat-arrows in a constraint. And long lists are wrapped.
 
 miekg/cf uses the lexer and parser from CFengine's source and converts it into a (Go) AST that we
 can walk and print.
@@ -67,3 +66,7 @@ easily identify if nodes are on the same level).
 10           *ast.FatArrow '=>'
 10           *ast.Qstring '"10.5"'
 ~~~
+
+## Developing
+
+You'll need goyacc, and then 'go generate', go build and then possibly also build cmd/cffmt.
