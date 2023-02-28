@@ -6,7 +6,8 @@ type Node interface {
 	Children() []Node
 	SetParent(Node)
 	SetChildren([]Node)
-	SetToken(t Token)
+	SetToken(t Token)   // SetToken sets the token and appends any (new) comment lines to the Token
+	ResetToken(t Token) // ResetToken overwrites the current token in the node.
 	Token() Token
 	Type() string // return type, container, or leaf
 }
@@ -59,13 +60,14 @@ func (c *Container) Children() []Node      { return c.children }
 func (c *Container) SetParent(p Node)      { c.parent = p }
 func (c *Container) SetChildren(cs []Node) { c.children = cs }
 func (c *Container) Token() Token          { return c.token }
-func (c *Container) Type() string          { return container }
+func (_ *Container) Type() string          { return container }
 func (c *Container) SetToken(t Token) {
 	c.token.Lit = t.Lit
 	c.token.Tok = t.Tok
 	// prepend or postpend?
 	c.token.Comment = append(t.Comment, c.token.Comment...)
 }
+func (c *Container) ResetToken(t Token) { c.token = t }
 
 // Leaf is a type of node that cannot have children.
 type Leaf struct {
@@ -80,12 +82,13 @@ func (l *Leaf) Children() []Node      { return nil }
 func (l *Leaf) SetParent(p Node)      { l.parent = p }
 func (l *Leaf) SetChildren(cs []Node) { panic("ast: leaf can't have children") }
 func (l *Leaf) Token() Token          { return l.token }
-func (c *Leaf) Type() string          { return leaf }
-func (c *Leaf) SetToken(t Token) {
-	c.token.Lit = t.Lit
-	c.token.Tok = t.Tok
-	c.token.Comment = append(t.Comment, c.token.Comment...)
+func (_ *Leaf) Type() string          { return leaf }
+func (l *Leaf) SetToken(t Token) {
+	l.token.Lit = t.Lit
+	l.token.Tok = t.Tok
+	l.token.Comment = append(t.Comment, l.token.Comment...)
 }
+func (l *Leaf) ResetToken(t Token) { l.token = t }
 
 // New returns a new Node, with an optional token.
 func New(n Node, t ...Token) Node {
