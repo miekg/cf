@@ -14,13 +14,17 @@ Install with: `go install github.com/miekg/cf/cmd/cffmt@latest`
 Will not correctly parse:
 
 - drops comments that are placed in a bundle/body but at the end.
+
+## TODO
+
 - thinarrow is not parsed yet.
+- add tests with malformed content
 
 ## Autofmt in (neo)vim
 
 ~~~
-au Filetype cf3 normal zR
-au FileType cf3 command! Fmt call Fmt("cffmt /dev/stdin")
+au FileType cf3 command! Fmt call Fmt("cffmt /dev/stdin") " fmt
+au BufWritePost *.cf silent call Fmt("cffmt /dev/stdin") " fmt on save
 ~~~
 
 ## Usage
@@ -33,7 +37,8 @@ If you only want the AST use -a, and throw away standard output:
 
     ./cffmt -a /home/miek/src/github.com/miekg/playground/cfjson/cf/list.cf > /dev/nul
 
-This lists:
+This shows the following. The left side number is the number of spaces for the indentation (to
+easily identify if nodes are on the same level).
 
 ~~~
  0 *ast.Specification
@@ -62,6 +67,3 @@ This lists:
 10           *ast.FatArrow '=>'
 10           *ast.Qstring '"10.5"'
 ~~~
-
-Where the left side number is the number of spaces for the indentation (to easily identify if nodes
-are on the same level).
