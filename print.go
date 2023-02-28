@@ -68,6 +68,9 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	case *ast.Specification: // start of the tree, ignore
 
 	case *ast.Bundle, *ast.Body:
+		if !first {
+			fmt.Fprintln(w)
+		}
 		fmt.Fprintf(w, "%s", v.Token().Lit)
 		printChildrenOfType(w, v, " %s", "*ast.Identifier")
 		// First child is either ArgList or not, if not, end the bundle/body, otherwise print the list and end the
