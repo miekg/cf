@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"regexp"
 
@@ -152,11 +151,9 @@ End:
 func (l *Lexer) Error(e string) {
 	if len(l.buf) > 0 {
 		l.Err = fmt.Errorf("error while parsing (left: %q): %s\n", l.buf, e)
-		log.Printf("%s", l.Err)
 		return
 	}
 	l.Err = fmt.Errorf("error while parsing %s\n", e)
-	log.Printf("%s", l.Err)
 }
 
 func (l *Lexer) debug(t ast.Token) {
