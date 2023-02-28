@@ -437,9 +437,12 @@ selection:             selection_id                         /* BODY/PROMISE ONLY
 selection_id:          IDENTIFIER
                        {
                         yylex.(*Lexer).yydebug("selection_id:IDENTIFIER", $$.token)
-                        // need to be parent of body.
-			body := ast.UpTo(yylex.(*Lexer).parent, &ast.Body{})
-                        yylex.(*Lexer).parent = body
+                        // need to be parent of body or classguard
+                        prev := ast.UpTo(yylex.(*Lexer).parent, &ast.ClassGuard{})
+                        if prev == nil {
+			    prev = ast.UpTo(yylex.(*Lexer).parent, &ast.Body{})
+                        }
+                        yylex.(*Lexer).parent = prev // should never be nil
 
                         s := ast.New(&ast.Selection{}, $$.token)
                         ast.Append(yylex.(*Lexer).parent, s)
@@ -465,15 +468,27 @@ class:                 CLASSGUARD
                        {
                         yylex.(*Lexer).yydebug("class")
                         gc := ast.New(&ast.ClassGuard{}, $$.token)
-                        // If there is previous classguard, this one closes it, and we can reyylex.(*Lexer).parent this new one, to that _parent_.
+                        // If there is previous classguard, this one closes it, and we can yylex.(*Lexer).parent this new one, to that _parent_.
                         prev := ast.UpTo(yylex.(*Lexer).parent, &ast.ClassGuard{})
                         // If there is no previous one, look for promise guard, and yylex.(*Lexer).parent to that.
                         if prev == nil {
                             prev = ast.UpTo(yylex.(*Lexer).parent, &ast.PromiseGuard{})
                         }
+                        // still not found, then body, bundle
+                        if prev == nil {
+                            prev = ast.UpTo(yylex.(*Lexer).parent, &ast.Bundle{})
+                        }
+                        if prev == nil {
+                            prev = ast.UpTo(yylex.(*Lexer).parent, &ast.Body{})
+                        }
                         // re-yylex.(*Lexer).parent if found
                         if prev != nil {
-                            yylex.(*Lexer).parent = prev.Parent()
+                            switch prev.(type) {
+                            case *ast.Body, *ast.Bundle: // no .Parent() for these.
+                                yylex.(*Lexer).parent = prev
+                            default:
+                                yylex.(*Lexer).parent = prev.Parent()
+                            }
                         }
 
                         ast.Append(yylex.(*Lexer).parent, gc)
