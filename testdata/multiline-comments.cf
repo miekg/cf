@@ -1,4 +1,3 @@
-# multiline qstrings (i.e.) the string after 'comment =>' isn't supported.
 bundle agent ensure_file_has_content(file, content)
 {
   files:

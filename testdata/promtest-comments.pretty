@@ -1,0 +1,36 @@
+# hier nog meer commentaar
+bundle agent prometheus_server
+{
+  files:
+
+  # define the prome stuff that we care about
+  IsPrometheusServer::
+    "/etc/prometheus/sd_configs/node_servers.json"
+
+      # picked up automatically by prometheus
+      copy_from => no_backup_rdcp("$(def.distr_files_dir)/etc/prometheus/sd_configs/node_servers.json", $(sys.policy_hub)),
+      perms     => mog(0444, root, bin);
+    "/etc/prometheus/prometheus.yml"              
+      copy_from => no_backup_rdcp("$(def.distr_files_dir)/etc/prometheus/prometheus.yml", $(sys.policy_hub)),
+      perms     => mog(0444, root, bin),
+      classes   => if_repaired("prometheus_updated");
+
+    # Nog beetje meer commentaar
+    "/etc/prometheus/alertmanager.yml"            
+      copy_from => no_backup_rdcp("$(def.distr_files_dir)/etc/prometheus/alertmanager.yml", $(sys.policy_hub)),
+      perms     => mog(0444, root, bin),
+      classes   => if_repaired("alertmanager_updated");
+
+  commands:
+
+  prometheus_updated::
+    "/usr/sbin/systemctl reload prometheus";
+
+  alertmanager_updated::
+    "/usr/sbin/systemctl reload alertmanager";
+
+  reports:
+
+  cfengine_3.Verbose::
+    "--> CFE running on $(sys.fqhost) has done cf/prometheus_server";
+}

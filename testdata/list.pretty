@@ -1,0 +1,12 @@
+bundle agent one
+{
+  reports:
+
+    "is_var"      if => isvariable("five");
+
+    "two"         depends_on => { "handle_one", "handle_two" };
+
+    "one"         handle => "handle_one";
+
+    "three"       handle => "10.5";
+}

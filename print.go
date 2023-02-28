@@ -94,9 +94,13 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		fmt.Fprintf(w, "%s%s%s\n", commentNoNewline, indent, v.Token().Lit)
 
 	case *ast.Promiser:
-		children := len(v.Children()) != 0
+		// If only 1 child (constraint, put on the same line)
+		children := len(v.Children()) > 1
 		newline := ""
 		if children {
+			newline = "\n"
+		}
+		if constraintPreventSingleLine(v) {
 			newline = "\n"
 		}
 		// if my parent is directly a promise guard, insert newline.
