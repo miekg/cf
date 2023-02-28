@@ -6,6 +6,28 @@ import (
 	"github.com/miekg/cf/ast"
 )
 
+// These contraint's are prevented from being put on a single line, even if there are the only child.
+var preventSingleLine = []string{"contain"}
+
+// constraintPreventSingleLine looks at the children of promiser and if only 1 _and_ contains a preventSingleLine
+// keyword return true.
+func constraintPreventSingleLine(promiser ast.Node) bool {
+	cs := promiser.Children()
+	if len(cs) != 1 {
+		return false
+	}
+	constraint, ok := cs[0].(*ast.Constraint)
+	if !ok {
+		return false
+	}
+	for _, w := range preventSingleLine {
+		if constraint.Token().Lit == w {
+			return true
+		}
+	}
+	return false
+}
+
 // fatArrowAlign walks the Spec and for all Promisers with more than one Constraint, will align the contraint text
 // in such a way the fat arrow (=>) align.
 func fatArrowAlign(doc ast.Node) {
@@ -105,14 +127,12 @@ func alignPromisers(node ast.Node) {
 	if max == -1 {
 		return
 	}
-	// if still here, range over the node again and pad each contraint entry op to max.
 	for _, c := range node.Children() {
 		_, ok := c.(*ast.Promiser)
 		if !ok {
 			continue
 		}
 		pad := max - len(c.Token().Lit)
-		// c.Token() doesn't return a pointer, so use this roundabout way.
 		t := c.Token()
 		t.Lit += strings.Repeat(" ", pad)
 		c.ResetToken(t)

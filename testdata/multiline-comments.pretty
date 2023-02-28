@@ -1,0 +1,12 @@
+bundle agent ensure_file_has_content(file, content)
+{
+  files:
+
+    "$(file)"
+      handle        => "$(this.bundle)_file_content",
+      create        => "true",
+      edit_defaults => empty,
+      edit_line     => append_if_no_line("$(content)"),
+      comment       => "Ensure that the given parameter for file '$(file)' has only
+        the contents of the given parameter for content '$(content)'";
+}

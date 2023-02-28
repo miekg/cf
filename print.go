@@ -100,6 +100,9 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		if children {
 			newline = "\n"
 		}
+		if constraintPreventSingleLine(v) {
+			newline = "\n"
+		}
 		// if my parent is directly a promise guard, insert newline.
 		promisenewline := ""
 		if _, ok := v.Parent().(*ast.PromiseGuard); ok {
