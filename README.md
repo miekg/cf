@@ -22,7 +22,7 @@ Will not correctly parse:
 
 - Thinarrow is not parsed yet. And possibly others syntax elements.
 - Add tests with malformed content.
-
+- Emit line/column numbers on errors.
 
 ## Usage
 
