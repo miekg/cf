@@ -7,7 +7,7 @@ import (
 )
 
 // These contraint's are prevented from being put on a single line, even if there are the only child.
-var preventSingleLine = []string{"contain"}
+var preventSingleLine = []string{"contain", "comment"}
 
 // constraintPreventSingleLine looks at the children of promiser and if only 1 _and_ contains a preventSingleLine
 // keyword return true.

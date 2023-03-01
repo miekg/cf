@@ -5,8 +5,8 @@
 
 'cf' will align fat-arrows in a constraint. And long lists are wrapped. If there is only 1
 constraint it is printed on the same line and the promisers are aligned instead, an exception is
-made for constraint that have 'contain => ...' which is usually 'in_shell' or some such as those
-are considered important enough to be put "on the left".
+made for constraint that have 'contain => ...' or 'comment => ....'. Those are considered important
+enough to be put "on the left".
 
 Package cf uses the lexer and parser from CFengine's source and converts it into a (Go) AST that we
 can walk and print.
