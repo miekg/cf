@@ -117,11 +117,12 @@ Rescan:
 		// skip
 		goto Rescan
 	default:
-		if t.Lit == `"` {
-			// ugly hack to scan for multiline qstrings, currently only handles "-qstrings.
-			// do for ` and ' as well??. Scan until we see t.Lit == "`"` again, and restich the lines.
-			multiline := ""
-			for t := l.scan(); t.Lit != `"`; t = l.scan() {
+		// Hack to scan for multiline qstrings, currently only handles "-qstrings.
+		// Scan until we see t.Lit == " or ' again, and restich the lines.
+		multiline := ""
+		switch q := t.Lit; q {
+		case `"`, "'", "`":
+			for t := l.scan(); t.Lit != q; t = l.scan() {
 				switch t.Tok {
 				case SPACE:
 					multiline += " "
@@ -134,7 +135,7 @@ Rescan:
 					multiline += "\n"
 				}
 			}
-			t.Lit = `"` + multiline + `"`
+			t.Lit = q + multiline + q
 			t.Tok = QSTRING
 		}
 

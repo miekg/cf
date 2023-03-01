@@ -15,19 +15,14 @@ Install with: `go install github.com/miekg/cf/cmd/cffmt@latest`
 
 Will not correctly parse:
 
-- drops comments that are placed in a bundle/body but at the end.
+- Comments that are placed in a bundle/body but at the end. These will be dropped.
+- Multiline comments with escaped quoting characters.
 
 ## TODO
 
-- thinarrow is not parsed yet.
-- add tests with malformed content
-
-## Autofmt in (neo)vim
-
-~~~
-au FileType cf3 command! Fmt call Fmt("cffmt /dev/stdin") " fmt
-au BufWritePost *.cf silent call Fmt("cffmt /dev/stdin") " fmt on save
-~~~
+- Thinarrow is not parsed yet. And possibly others syntax elements.
+- Add tests with malformed content.
+- Emit line/column numbers on errors.
 
 ## Usage
 
@@ -68,6 +63,13 @@ easily identify if nodes are on the same level).
  8         *ast.Constraint 'handle'
 10           *ast.FatArrow '=>'
 10           *ast.Qstring '"10.5"'
+~~~
+
+## Autofmt in (neo)vim
+
+~~~
+au FileType cf3 command! Fmt call Fmt("cffmt /dev/stdin") " fmt
+au BufWritePost *.cf silent call Fmt("cffmt /dev/stdin") " fmt on save
 ~~~
 
 ## Developing

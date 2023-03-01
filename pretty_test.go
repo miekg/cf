@@ -31,11 +31,15 @@ func TestPrettyPrint(t *testing.T) {
 		t.Logf("looking at testdata/%s", f.Name())
 
 		l := NewLexer(r)
-		yyParse(l)
+		spec, err := Parse(l)
 		r.Close()
+		if err != nil {
+			t.Errorf("failed to parse document: %s", err)
+			continue
+		}
 
 		doc := &bytes.Buffer{}
-		Print(doc, l.Spec)
+		Print(doc, spec)
 
 		// check for .pretty file
 		fp := f.Name()[:len(f.Name())-3] + ".pretty"

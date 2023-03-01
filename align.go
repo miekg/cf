@@ -28,9 +28,9 @@ func constraintPreventSingleLine(promiser ast.Node) bool {
 	return false
 }
 
-// fatArrowAlign walks the Spec and for all Promisers with more than one Constraint, will align the contraint text
+// align walks the Spec and for all Promisers with more than one Constraint, will align the contraint text
 // in such a way the fat arrow (=>) align.
-func fatArrowAlign(doc ast.Node) {
+func align(doc ast.Node) {
 	nvf := ast.NodeVisitorFunc(func(node ast.Node, entering bool) ast.WalkStatus {
 		alignContraints(node) // align on '=>' for multiple constraints
 		alignSelections(node) // align on '=>' for multiple selection (body)

@@ -30,11 +30,15 @@ func TestParse(t *testing.T) {
 		t.Logf("looking at testdata/%s", f.Name())
 
 		l := NewLexer(r)
-		yyParse(l)
+		spec, err := Parse(l)
 		r.Close()
+		if err != nil {
+			t.Errorf("failed to parse document: %s", err)
+			continue
+		}
 
 		doc := &bytes.Buffer{}
-		Print(doc, l.Spec)
+		Print(doc, spec)
 		dbuf := removeSpace(doc.Bytes())
 
 		fbuf, _ := os.ReadFile("testdata/" + f.Name())
