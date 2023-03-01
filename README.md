@@ -17,6 +17,7 @@ Will not correctly parse:
 
 - Comments that are placed in a bundle/body but at the end. These will be dropped.
 - Multiline comments with escaped quoting characters.
+- Will probably not work with Windows line endings.
 
 ## TODO
 
