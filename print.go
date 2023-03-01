@@ -11,6 +11,9 @@ import (
 
 // Print pretty prints the CFengine AST in doc.
 func Print(w io.Writer, doc ast.Node) {
+	if doc == nil {
+		return // empty spec
+	}
 	align(doc)
 
 	wr := &tw{w: w, width: 100}
@@ -21,6 +24,9 @@ func Print(w io.Writer, doc ast.Node) {
 
 // PrintWithWidth pretty prints the CFengine AST in doc, but allows setting a custom width.
 func PrintWithWidth(w io.Writer, width uint, doc ast.Node) {
+	if doc == nil {
+		return // empty spec
+	}
 	align(doc)
 
 	wr := &tw{w: w, width: int(width)}
@@ -85,6 +91,9 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 			if _, ok := children[0].(*ast.ArgList); !ok {
 				fmt.Fprint(w, "\n{")
 			}
+		}
+		if len(children) == 0 { // empty body/bundle
+			fmt.Fprintf(w, "\n{\n") // on Leave adds the closing one
 		}
 
 	case *ast.PromiseGuard:
@@ -160,6 +169,11 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	case *ast.FatArrow, *ast.ThinArrow:
 		fmt.Fprintf(w, " %s ", v.Token().Lit)
+		// something should follow a fat/thin error, if there isn't a token, we have seen an empty list {}, we
+		// could make those token as well, or just output an empty list here: {}
+		if last {
+			fmt.Fprint(w, "{}")
+		}
 
 	case *ast.Qstring:
 		// this can be multiline
