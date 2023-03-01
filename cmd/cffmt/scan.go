@@ -20,25 +20,25 @@ var (
 
 func main() {
 	flag.Parse()
-	f := os.Stdin
+	l := &cf.Lexer{}
 	switch flag.NArg() {
 	case 0:
+		l = cf.NewLexer(os.Stdin)
 	case 1:
-		f1, err := os.Open(flag.Arg(0))
+		f, err := os.Open(flag.Arg(0))
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer f1.Close()
-		f = f1
+		defer f.Close()
+		l = cf.NewLexer(f, flag.Arg(0))
 	default:
 		log.Fatal("Too many arguments")
 	}
 
-	l := cf.NewLexer(f)
 	l.D = *flagDebug
 	spec, err := cf.Parse(l)
 	if err != nil {
-		log.Fatalf("Error while parsing: %s", err)
+		log.Fatalf("%s", err)
 	}
 
 	if *flagAst {

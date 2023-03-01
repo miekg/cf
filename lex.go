@@ -84,7 +84,8 @@ var (
 
 // Lexer is steered from yacc to deliver tokens.
 type Lexer struct {
-	buf []byte // leftover from last match, deplete first before scanning
+	buf  []byte // leftover from last match, deplete first before scanning
+	name string // potential filename
 	*bufio.Scanner
 	symbols []sym
 	parent  ast.Node
@@ -92,13 +93,20 @@ type Lexer struct {
 	D    bool     // If true enable debugging.
 	Spec ast.Node // AST of parsed document.
 	Err  error    // Set to the last error we see.
+
+	col  int // position of token
+	line int
 }
 
 // NewLexer returns a pointer to a usuable Lexer.
-func NewLexer(r io.Reader) *Lexer {
+func NewLexer(r io.Reader, filename ...string) *Lexer {
 	s := bufio.NewScanner(r)
 	s.Split(scanLines)
-	return &Lexer{Scanner: s, symbols: syms, D: false, parent: ast.New(&ast.Specification{}, ast.Token{})}
+	f := "<stdin>"
+	if len(filename) > 0 {
+		f = filename[0]
+	}
+	return &Lexer{Scanner: s, symbols: syms, D: false, name: f, parent: ast.New(&ast.Specification{}, ast.Token{})}
 }
 
 // Implemented for goyacc.
@@ -151,10 +159,10 @@ End:
 // Implemented for goyacc.
 func (l *Lexer) Error(e string) {
 	if len(l.buf) > 0 {
-		l.Err = fmt.Errorf("error while parsing (left: %q): %s\n", l.buf, e)
+		l.Err = fmt.Errorf("%s:%d:%d: error while parsing (left in buffer: %q): %s\n", l.name, l.line, l.col, l.buf, e)
 		return
 	}
-	l.Err = fmt.Errorf("error while parsing %s\n", e)
+	l.Err = fmt.Errorf("%s:%d:%d error while parsing: %s\n", l.name, l.line, l.col, e)
 }
 
 func (l *Lexer) debug(t ast.Token) {
@@ -174,6 +182,8 @@ func (l *Lexer) scan() ast.Token {
 		if !more {
 			return ast.Token{Tok: DONE, Lit: ""}
 		}
+		l.line++
+		l.col = 0
 		l.buf = l.Bytes()
 	}
 
@@ -209,6 +219,7 @@ func (l *Lexer) scan() ast.Token {
 	if max < len(l.buf)-1 && l.buf[max+1] == '\n' {
 		t.Newline = true
 	}
+	l.col += max
 	l.buf = l.buf[max:]
 	return t
 }
