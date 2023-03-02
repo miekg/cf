@@ -47,7 +47,6 @@ func TestParse(t *testing.T) {
 		if string(dbuf) != string(fbuf) {
 			t.Errorf("file %s, pretty printed output is different from souce", f.Name())
 			t.Logf("test with: wdiff -123 -s <(tr -d '[:space:]' < testdata/%s) <(cmd/cf/cf testdata/%s | tr -d '[:space:]')", f.Name(), f.Name())
-			t.Logf("\n%s\n%s\n", dbuf, fbuf)
 		}
 	}
 }
