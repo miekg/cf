@@ -510,12 +510,15 @@ rval:                  IDENTIFIER
                        }
                      | NAKEDVAR
                        {
+                        yylex.(*Lexer).yydebug("rval:NAKEDVAR", $$.token)
                        }
                      | list
                        {
+                        yylex.(*Lexer).yydebug("rval:LIST", $$.token)
                        }
                      | usefunction
                        {
+                        yylex.(*Lexer).yydebug("rval:usefunction", $$.token)
                        }
                      | error
                        {

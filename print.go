@@ -180,11 +180,6 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	case *ast.FatArrow, *ast.ThinArrow:
 		fmt.Fprintf(w, " %s ", v.Token().Lit)
-		// something should follow a fat/thin error, if there isn't a token, we have seen an empty list {}, we
-		// could make those token as well, or just output an empty list here: {}
-		if last {
-			fmt.Fprint(w, "{}")
-		}
 
 	case *ast.Qstring:
 		// this can be multiline
