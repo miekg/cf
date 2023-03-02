@@ -56,7 +56,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parse.y:633
+//line parse.y:634
 
 //line yacctab:1
 var yyExca = [...]int16{
@@ -1183,15 +1183,16 @@ yydefault:
 		yyDollar = yyS[yypt-2 : yypt+1]
 //line parse.y:528
 		{
+			yylex.(*Lexer).yydebug("list:{}", yyVAL.token)
 			// empty list, add, but do not make parent
 			l := ast.New(&ast.List{})
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
 	case 113:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:538
+//line parse.y:539
 		{
-			// add yylex.(*Lexer).parent list
+			yylex.(*Lexer).yydebug("Litems:Litem", yyVAL.token)
 			if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
 				l := ast.New(&ast.List{})
 				ast.Append(yylex.(*Lexer).parent, l)
@@ -1202,9 +1203,9 @@ yydefault:
 		}
 	case 114:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:549
+//line parse.y:550
 		{
-			// add yylex.(*Lexer).parent list
+			yylex.(*Lexer).yydebug("Litems:Litems,Litem", yyVAL.token)
 			if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
 				l := ast.New(&ast.List{})
 				ast.Append(yylex.(*Lexer).parent, l)
@@ -1215,37 +1216,37 @@ yydefault:
 		}
 	case 115:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:560
+//line parse.y:561
 		{
 		}
 	case 116:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:564
+//line parse.y:565
 		{
 		}
 	case 117:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:567
+//line parse.y:568
 		{
 		}
 	case 118:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:570
+//line parse.y:571
 		{
 		}
 	case 119:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:573
+//line parse.y:574
 		{
 		}
 	case 120:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:576
+//line parse.y:577
 		{
 		}
 	case 121:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:580
+//line parse.y:581
 		{
 			f := ast.New(&ast.Function{}, ast.Token{})
 			ast.Append(yylex.(*Lexer).parent, f)
@@ -1255,7 +1256,7 @@ yydefault:
 		}
 	case 122:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:588
+//line parse.y:589
 		{
 			f := ast.New(&ast.Function{}, ast.Token{})
 			ast.Append(yylex.(*Lexer).parent, f)
@@ -1265,41 +1266,41 @@ yydefault:
 		}
 	case 123:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:597
+//line parse.y:598
 		{
 		}
 	case 125:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:602
+//line parse.y:603
 		{
 		}
 	case 126:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:606
+//line parse.y:607
 		{
 		}
 	case 127:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line parse.y:610
+//line parse.y:611
 		{
 		}
 	case 129:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:615
+//line parse.y:616
 		{
 			l := ast.New(&ast.GiveArgItem{}, yyVAL.token) // single arg
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
 	case 130:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:620
+//line parse.y:621
 		{
 			l := ast.New(&ast.GiveArgItem{}, yyDollar[3].token) // multiple args
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
 	case 131:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:625
+//line parse.y:626
 		{
 		}
 	}
