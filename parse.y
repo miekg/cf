@@ -525,6 +525,11 @@ rval:                  IDENTIFIER
                        }
 
 list:                  '{' '}'
+                       {
+                        // empty list, add, but do not make parent
+			l := ast.New(&ast.List{})
+			ast.Append(yylex.(*Lexer).parent, l)
+                       }
                      | '{' Litems '}'
                      | '{' Litems ',' '}'
 

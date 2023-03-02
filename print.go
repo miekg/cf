@@ -149,8 +149,11 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		}
 
 	case *ast.List:
-		printChildrenOfType(w, v, "%s", "*ast.Identifier")
-		fmt.Fprint(w, "{ ")
+		if len(v.Children()) == 0 {
+			fmt.Fprint(w, "{")
+		} else {
+			fmt.Fprint(w, "{ ")
+		}
 
 	case *ast.ListItem:
 		fmt.Fprintf(w, "%s", v.Token().Lit)
@@ -198,7 +201,7 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	}
 
 	// On Leave
-	switch /*v :=*/ node.(type) {
+	switch v := node.(type) {
 	case *ast.Bundle, *ast.Body:
 		fmt.Fprint(w, "}\n")
 
@@ -209,7 +212,11 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		fmt.Fprint(w, ")")
 
 	case *ast.List:
-		fmt.Fprint(w, " }")
+		if len(v.Children()) == 0 {
+			fmt.Fprint(w, "}")
+		} else {
+			fmt.Fprint(w, " }")
+		}
 
 	case *ast.ArgList:
 		fmt.Fprint(w, ")\n{")
