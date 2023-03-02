@@ -3,27 +3,27 @@ bundle agent dumpcapabilities
 {
   classes:
 
-    "getcapExists"       expression => fileexists("/sbin/getcap");
+    "getcapExists"  expression => fileexists("/sbin/getcap");
 
-    "setcapExists"       expression => fileexists("/sbin/setcap");
+    "setcapExists"  expression => fileexists("/sbin/setcap");
 
-    "dumpcapExists"      expression => fileexists("/usr/bin/dumpcap");
+    "dumpcapExists" expression => fileexists("/usr/bin/dumpcap");
 
-    "tcpdumpExists"      expression => fileexists("/usr/sbin/tcpdump");
+    "tcpdumpExists" expression => fileexists("/usr/sbin/tcpdump");
 
   getcapExists.dumpcapExists::
-    "FileCapOnDumpcap"      expression => returnszero("/sbin/getcap  /usr/bin/dumpcap  | grep -q '^/usr/bin/dumpcap = cap_net_admin,cap_net_raw+eip$'", "useshell");
+    "FileCapOnDumpcap" expression => returnszero("/sbin/getcap  /usr/bin/dumpcap  | grep -q '^/usr/bin/dumpcap = cap_net_admin,cap_net_raw+eip$'", "useshell");
 
   getcapExists.tcpdumpExists::
-    "FileCapOnTcpdump"      expression => returnszero("/sbin/getcap  /usr/sbin/tcpdump | grep -q '^/usr/sbin/tcpdump = cap_net_admin,cap_net_raw+eip$'", "useshell");
+    "FileCapOnTcpdump" expression => returnszero("/sbin/getcap  /usr/sbin/tcpdump | grep -q '^/usr/sbin/tcpdump = cap_net_admin,cap_net_raw+eip$'", "useshell");
 
   files:
 
   dumpcapExists::
-    "/usr/bin/dumpcap"      perms => mog(0555, root, root);
+    "/usr/bin/dumpcap" perms => mog(0555, root, root);
 
   tcpdumpExists::
-    "/usr/sbin/tcpdump"      perms => mog(0555, root, root);
+    "/usr/sbin/tcpdump" perms => mog(0555, root, root);
 
   HasDumpCapabilities::
 

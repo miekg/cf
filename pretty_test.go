@@ -34,7 +34,7 @@ func TestPrettyPrint(t *testing.T) {
 		spec, err := Parse(l)
 		r.Close()
 		if err != nil {
-			t.Errorf("failed to parse document: %s", err)
+			t.Fatalf("failed to parse document: %s", err)
 			continue
 		}
 
@@ -50,7 +50,7 @@ func TestPrettyPrint(t *testing.T) {
 		}
 
 		if doc.String() != string(pretty) {
-			t.Errorf("Pretty print of %s, doesn't match", f.Name())
+			t.Fatalf("Pretty print of %s, doesn't match", f.Name())
 		}
 	}
 }
