@@ -21,9 +21,14 @@ Cffmt will take a CFengine file out of **FILE** or from standard input and will 
 
 Options are:
 
-- `-a` print the AST to standard error
-- `-p` print the pretty printed document to standard output (defaults to true)
-- `-d` show lexer/yacc debug will parsing
+`-a`
+:   print the AST to standard error
+
+`-p`
+:   print the pretty printed document to standard output (defaults to true)
+
+`-d`
+:   show lexer/yacc debug will parsing
 
 ## Author
 
