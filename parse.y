@@ -614,11 +614,13 @@ givearglist:           '('
 gaitems:               /* empty */
                      | gaitem
                        {
+                        yylex.(*Lexer).yydebug("gaitems:gaitem", $$.token)
                         l:= ast.New(&ast.GiveArgItem{}, $$.token) // single arg
                         ast.Append(yylex.(*Lexer).parent, l)
                        }
                      | gaitems ',' gaitem
                        {
+                        yylex.(*Lexer).yydebug("gaitems:gaitems,gaitem", $3.token)
                         l:= ast.New(&ast.GiveArgItem{}, $3.token) // multiple args
                         ast.Append(yylex.(*Lexer).parent, l)
                        }

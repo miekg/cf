@@ -56,7 +56,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parse.y:634
+//line parse.y:636
 
 //line yacctab:1
 var yyExca = [...]int16{
@@ -1288,19 +1288,21 @@ yydefault:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line parse.y:616
 		{
+			yylex.(*Lexer).yydebug("gaitems:gaitem", yyVAL.token)
 			l := ast.New(&ast.GiveArgItem{}, yyVAL.token) // single arg
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
 	case 130:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:621
+//line parse.y:622
 		{
+			yylex.(*Lexer).yydebug("gaitems:gaitems,gaitem", yyDollar[3].token)
 			l := ast.New(&ast.GiveArgItem{}, yyDollar[3].token) // multiple args
 			ast.Append(yylex.(*Lexer).parent, l)
 		}
 	case 131:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:626
+//line parse.y:628
 		{
 		}
 	}

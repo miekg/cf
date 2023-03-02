@@ -1,0 +1,6 @@
+bundle bla bla
+{
+
+ vars:
+    "installed_names_canonified" slist => maplist(canonify("$(this)"), @(installed_names));
+}
