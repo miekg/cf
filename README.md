@@ -1,4 +1,4 @@
-# CFengine pretty printer
+# CFEngine pretty printer
 
 'cf' can handle most CFEngine files, a few files I found that aren't parseable are stored in the
 'unparseable' directory.
@@ -10,7 +10,7 @@ enough to be put "on the left".
 
 Trailing commas of lists are removed.
 
-Package cf uses the lexer and parser from CFengine's source and converts it into a (Go) AST that we
+Package cf uses the lexer and parser from CFEngine's source and converts it into a (Go) AST that we
 can walk and print.
 
 Install with: `go install github.com/miekg/cf/cmd/cffmt@latest`
