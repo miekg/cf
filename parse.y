@@ -579,19 +579,15 @@ Litem:                 IDENTIFIER
 
 functionid:            IDENTIFIER
                        {
-                        f := ast.New(&ast.Function{}, ast.Token{})
+                        f := ast.New(&ast.Function{}, $$.token)
                         ast.Append(yylex.(*Lexer).parent, f)
                         yylex.(*Lexer).parent = f
-
-                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, $$.token))
                        }
                      | NAKEDVAR
                        {
-                        f := ast.New(&ast.Function{}, ast.Token{})
+                        f := ast.New(&ast.Function{}, $$.token)
                         ast.Append(yylex.(*Lexer).parent, f)
                         yylex.(*Lexer).parent = f
-
-                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.NakedVar{}, $$.token))
                        }
 
 usefunction:           functionid

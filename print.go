@@ -139,8 +139,7 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		fmt.Fprintf(w, "%s%s%s", commentNoNewline, indent, v.Token().Lit)
 
 	case *ast.Function:
-		printChildrenOfType(w, v, "%s", "*ast.Identifier")
-		fmt.Fprint(w, "(")
+		fmt.Fprintf(w, "%s(", v.Token().Lit)
 
 	case *ast.GiveArgItem:
 		fmt.Fprintf(w, "%s", v.Token().Lit)
