@@ -526,6 +526,7 @@ rval:                  IDENTIFIER
 
 list:                  '{' '}'
                        {
+                        yylex.(*Lexer).yydebug("list:{}", $$.token)
                         // empty list, add, but do not make parent
 			l := ast.New(&ast.List{})
 			ast.Append(yylex.(*Lexer).parent, l)
@@ -536,7 +537,7 @@ list:                  '{' '}'
 Litems:
                        Litem
 		       {
-		        // add yylex.(*Lexer).parent list
+                        yylex.(*Lexer).yydebug("Litems:Litem", $$.token)
 		        if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
 				l := ast.New(&ast.List{})
 				ast.Append(yylex.(*Lexer).parent, l)
@@ -547,7 +548,7 @@ Litems:
 		       }
                      | Litems ',' Litem
 		       {
-		        // add yylex.(*Lexer).parent list
+                        yylex.(*Lexer).yydebug("Litems:Litems,Litem", $$.token)
 		        if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
 				l := ast.New(&ast.List{})
 				ast.Append(yylex.(*Lexer).parent, l)
