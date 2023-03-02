@@ -230,10 +230,6 @@ func scanLines(data []byte, atEOF bool) (advance int, token []byte, err error) {
 		return 0, nil, nil
 	}
 	if i := bytes.IndexByte(data, '\n'); i >= 0 {
-		// We have a full newline-terminated line.
-		if data[0] == '"' {
-			println("QUOTE")
-		}
 		return i + 1, trim(data[0:i]), nil
 	}
 	// If we're at EOF, we have a final, non-terminated line. Return it.

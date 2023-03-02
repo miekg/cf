@@ -24,7 +24,7 @@ Will not correctly parse:
 
 - Thinarrow is not parsed yet. And possibly others syntax elements.
 - Add tests with malformed content.
-- promise guards don't have classguards as children.
+- promise guards don't have classguards as children, and they should.
 
 ## Usage
 

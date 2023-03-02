@@ -19,7 +19,6 @@ type (
 	Promiser      struct{ Container }
 	Selection     struct{ Container }
 	Qstring       struct{ Leaf }
-	Constraint    struct{ Container }
 	FatArrow      struct{ Leaf }
 	ThinArrow     struct{ Leaf }
 	Function      struct{ Container }
@@ -29,4 +28,8 @@ type (
 	ListItem      struct{ Leaf }
 	ArgList       struct{ Container }
 	ArgListItem   struct{ Leaf }
+	Constraint    struct {
+		Container
+		SingleLine bool // True when we want to print this on a single line.
+	}
 )

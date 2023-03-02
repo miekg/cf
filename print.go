@@ -74,7 +74,9 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 	}
 
 	// On Enter
-	// Some nodes can be multline - but this is a relative experimental addition, so not sure which ones are that.
+	// Some nodes can be multline - but this is a relative experimental addition, so not sure which ones can have
+	// that property.
+
 	switch v := node.(type) {
 	case *ast.Specification: // start of the tree, ignore
 
@@ -112,17 +114,26 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		if constraintPreventSingleLine(v) {
 			newline = "\n"
 		}
+		if len(v.Children()) == 1 && newline == "" {
+			c, ok := v.Children()[0].(*ast.Constraint)
+			if ok {
+				c.SingleLine = true
+			}
+		}
 		// if my parent is directly a promise guard, insert newline.
 		promisenewline := ""
 		if _, ok := v.Parent().(*ast.PromiseGuard); ok {
 			promisenewline = "\n"
 		}
-		// this can be multiline
-		multiline := strings.Replace(v.Token().Lit, "\n", "\n"+indent, -1)
+		multiline := strings.Replace(v.Token().Lit, "\n", "\n"+indent, -1) // this can be multiline
 		fmt.Fprintf(w, "%s%s%s%s", promisenewline, indent, multiline, newline)
 
 	case *ast.Constraint:
-		fmt.Fprintf(w, "%s%s", indent, v.Token().Lit)
+		if v.SingleLine {
+			fmt.Fprintf(w, " %s", v.Token().Lit)
+		} else {
+			fmt.Fprintf(w, "%s%s", indent, v.Token().Lit)
+		}
 
 	case *ast.Selection:
 		fmt.Fprintf(w, "%s%s%s", commentNoNewline, indent, v.Token().Lit)
