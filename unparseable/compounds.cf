@@ -1,0 +1,9 @@
+bundle common compounds
+{
+ classes:
+
+   # TPM (Trusted Platform Module) test want niet aan of actief (in BIOS)
+   # pas evalueren na volledige installatie omdat device aanwezig moet zijn:
+   # https://github.com/linuxkit/linuxkit/blob/master/docs/trusted-computing.md
+   "HasTpmDevice"			and	 => { fileexists("/dev/tpm0"), returnszero("/usr/bin/test ! -f /etc/cfengine/RunAll", "useshell") };
+}

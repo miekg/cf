@@ -173,7 +173,7 @@ func (l *Lexer) debug(t ast.Token) {
 	if st == "" {
 		st = t.Lit
 	}
-	fmt.Fprintf(os.Stderr, "lex: token [%s] %q\n", st, t.Lit)
+	fmt.Fprintf(os.Stderr, "lex: token [%s] %q (Comment: %d)\n", st, t.Lit, len(t.Comment))
 }
 
 func (l *Lexer) scan() ast.Token {

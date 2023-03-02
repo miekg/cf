@@ -221,6 +221,7 @@ bundlebody:            body_begin
                        '}'
                        {
                         // only here for comments.
+			println("sET TOKEN")
                         if bundle := ast.UpTo(yylex.(*Lexer).parent, &ast.Bundle{}); bundle != nil {
                             bundle.SetToken($$.token)
                         }

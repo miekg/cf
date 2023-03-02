@@ -1,0 +1,9 @@
+bundle agent cups
+{
+
+ commands:
+
+  IsCupsServer.cupsd_out_of_range::
+   "/usr/sbin/service cups restart";
+   # why not
+}
