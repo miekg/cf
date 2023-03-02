@@ -8,6 +8,8 @@ constraint it is printed on the same line and the promisers are aligned instead,
 made for constraint that have 'contain => ...' or 'comment => ....'. Those are considered important
 enough to be put "on the left".
 
+Trailing commas of lists are removed.
+
 Package cf uses the lexer and parser from CFengine's source and converts it into a (Go) AST that we
 can walk and print.
 
