@@ -623,19 +623,13 @@ givearglist:           '('
                         debug(yylex, "givearglist:)", $$.token)
                         // close function by reparenting
 			function := ast.UpTo(p(yylex), &ast.Function{})
-                        Printf("Reparent to %T\n", function.Parent())
                         setP(yylex, function.Parent())
                        }
 
 gaitems:               /* empty */
                      | gaitem
                        {
-                        /*
                         yylex.(*Lexer).yydebug("gaitems:gaitem", $$.token)
-                        ga := ast.New(&ast.GiveArgItem{})
-                        ast.Append(yylex.(*Lexer).parent, ga)
-                        yylex.(*Lexer).parent = ga
-                        */
                        }
                      | gaitems ',' gaitem
                        {
@@ -674,10 +668,7 @@ gaitem:                IDENTIFIER
                      | usefunction
                        {
                        /*
-                        yylex.(*Lexer).yydebug("gaitem:usefunction", $$.token)
-                        f := ast.New(&ast.Function{}, $$.token)
-                        ast.Append(yylex.(*Lexer).parent, f)
-                        yylex.(*Lexer).parent = f
+                            adding functions here leads to dups, because we already do this.
                         */
                        }
                      | error

@@ -208,6 +208,10 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	case *ast.Function:
 		fmt.Fprint(w, ")")
+		_, ok := v.Parent().(*ast.GiveArgItem)
+		if ok && !last {
+			fmt.Fprint(w, ", ")
+		}
 
 	case *ast.List:
 		if len(v.Children()) == 0 {

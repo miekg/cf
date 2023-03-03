@@ -56,7 +56,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parse.y:684
+//line parse.y:675
 
 //line yacctab:1
 var yyExca = [...]int16{
@@ -1297,34 +1297,28 @@ yydefault:
 			debug(yylex, "givearglist:)", yyVAL.token)
 			// close function by reparenting
 			function := ast.UpTo(p(yylex), &ast.Function{})
-			Printf("Reparent to %T\n", function.Parent())
 			setP(yylex, function.Parent())
 		}
 	case 129:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:632
+//line parse.y:631
 		{
-			/*
-			   yylex.(*Lexer).yydebug("gaitems:gaitem", $$.token)
-			   ga := ast.New(&ast.GiveArgItem{})
-			   ast.Append(yylex.(*Lexer).parent, ga)
-			   yylex.(*Lexer).parent = ga
-			*/
+			yylex.(*Lexer).yydebug("gaitems:gaitem", yyVAL.token)
 		}
 	case 130:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:641
+//line parse.y:635
 		{
 			yylex.(*Lexer).yydebug("gaitems:gaitems,gaitem", yyDollar[3].token)
 		}
 	case 131:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:645
+//line parse.y:639
 		{
 		}
 	case 132:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:649
+//line parse.y:643
 		{
 			yylex.(*Lexer).yydebug("gaitem:IDENTIFIER", yyVAL.token)
 
@@ -1336,7 +1330,7 @@ yydefault:
 		}
 	case 133:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:659
+//line parse.y:653
 		{
 			yylex.(*Lexer).yydebug("gaitem:QSTRING", yyVAL.token)
 			ga := ast.New(&ast.GiveArgItem{})
@@ -1346,7 +1340,7 @@ yydefault:
 		}
 	case 134:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:667
+//line parse.y:661
 		{
 			yylex.(*Lexer).yydebug("gaitem:NAKEDVAR", yyVAL.token)
 			ga := ast.New(&ast.GiveArgItem{})
@@ -1356,13 +1350,10 @@ yydefault:
 		}
 	case 135:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:675
+//line parse.y:669
 		{
 			/*
-			   yylex.(*Lexer).yydebug("gaitem:usefunction", $$.token)
-			   f := ast.New(&ast.Function{}, $$.token)
-			   ast.Append(yylex.(*Lexer).parent, f)
-			   yylex.(*Lexer).parent = f
+			   adding functions here leads to dups, because we already do this.
 			*/
 		}
 	}
