@@ -1,25 +1,79 @@
 # CFEngine pretty printer
 
-'cf' can handle most CFEngine files, a few files I found that aren't parseable are stored in the
+Cf is a formatter for CFEngine files, think of it as 'gofmt' for .cf files.
+
+Cf can handle most CFEngine files, a few files I found that aren't parseable are stored in the
 'unparseable' directory.
 
-'cf' will align fat-arrows in a constraint. And long lists are wrapped. If there is only 1
-constraint it is printed on the same line and the promisers are aligned instead, an exception is
-made for constraint that have 'contain => ...' or 'comment => ....'. Those are considered important
-enough to be put "on the left".
+Cf aligns fat-arrows in a constraint:
+
+
+~~~ cf
+"/etc/apparmor.d"
+             delete => tidy,
+ 	depth_search => recurse("0"),
+             file_select => by_name("session");
+~~~
+
+becomes:
+
+~~~ cfengine
+"/etc/apparmor.d"
+  delete       => tidy,
+  depth_search => recurse("0"),
+  file_select  => by_name("lightdm-guest-session");
+~~~
+
+If there is only a single constraint it will be printed on the same line:
+
+~~~ cfengine
+   "getcapExists"
+        expression => fileexists("/sbin/getcap");
+~~~
+
+becomes:
+
+~~~ cfengine
+"getcapExists"  expression => fileexists("/sbin/getcap");
+~~~
+
+If there are multiple promises and they all have single constraints, the promises themselves are
+aligned:
+
+~~~ cfengine
+"getcapExists"
+     expression => fileexists("/sbin/getcap");
+
+"setcapExists"  expression => fileexists("/sbin/setcap");
+~~~
+
+to:
+
+~~~ cfengine
+"getcapExists" expression => fileexists("/sbin/getcap");
+
+"setcapExists" expression => fileexists("/sbin/setcap");
+~~~
+
+If a single constraint has a 'contain =>' or 'comment =>' they will _not_ be printed on the same
+line. This is to show important things on the left hand side. (See align.go for details).
 
 Trailing commas of lists are removed.
 
 Package cf uses the lexer and parser from CFEngine's source and converts it into a (Go) AST that we
-can walk and print.
+can walk and print. The AST is also exported and available to consumers of this package.
 
-Install with: `go install github.com/miekg/cf/cmd/cffmt@latest`
+Install the `cffmt` binary with: `go install github.com/miekg/cf/cmd/cffmt@main`. Then use it by
+giving it a filename or piping to standard input. The pretty printed document is printed to standard
+output.
 
-Will not correctly parse:
+    ./cffmt ../../testdata/promtest.cf
+
+Notes that cf will _not correctly parse_:
 
 - Comments that are placed in a bundle/body but at the end. These will be dropped.
-- Multiline comments with escaped quoting characters.
-- Will probably not work with Windows line endings.
+- Multiline comments with an _escaped_ quoting characters.
+- Likely doesn't work with Windows line endings.
 - Macros are not parsed at all.
 
 ## TODO
@@ -28,45 +82,44 @@ Will not correctly parse:
 - Add tests with malformed content.
 - promise guards don't have classguards as children, and they should.
 
-## Usage
+## Abstract Syntax Tree
 
-Build `cffmt` in the cmd/cffmt and then for an example:
+If you only want see the AST use -a, and throw away standard output:
 
-    ./cffmt ../../testdata/promtest.cf
-
-If you only want the AST use -a, and throw away standard output:
-
-    ./cffmt -a /home/miek/src/github.com/miekg/playground/cfjson/cf/list.cf > /dev/nul
+~~~
+cmd/cffmt/cffmt -a testdata/arglist.cf >/dev/null
+~~~
 
 This shows the following. The left side number is the number of spaces for the indentation (to
 easily identify if nodes are on the same level).
 
-~~~
+~~~ txt
  0 *ast.Specification
  2   *ast.Bundle 'bundle'
- 4     *ast.Identifier 'agent'
- 4     *ast.Identifier 'one'
- 4     *ast.PromiseGuard 'reports:'
- 6       *ast.Promiser '"is_var"'
- 8         *ast.Constraint 'if'
+ 4     *ast.Identifier 'bla'
+ 4     *ast.Identifier 'bla'
+ 4     *ast.PromiseGuard 'vars:'
+ 6       *ast.Promiser '"installed_names_canonified"'
+ 8         *ast.Constraint 'slist'
 10           *ast.FatArrow '=>'
-10           *ast.Function
-12             *ast.Identifier 'isvariable'
-12             *ast.GiveArgItem '"five"'
- 6       *ast.Promiser '"two"'
- 8         *ast.Constraint 'depends_on'
+10           *ast.Function 'maplist'
+12             *ast.GiveArgItem
+14               *ast.Function 'canonify'
+16                 *ast.GiveArgItem
+18                   *ast.Qstring '"$(this)"'
+14               *ast.GiveArgItem
+16                 *ast.NakedVar '@(installed_names)'
+ 4     *ast.PromiseGuard 'classes:'
+ 6       *ast.Promiser '"/usr/sbin/tcpdump"'
+ 8         *ast.Constraint 'perms'
 10           *ast.FatArrow '=>'
-10           *ast.List
-12             *ast.ListItem '"handle_one"'
-12             *ast.ListItem '"handle_two"'
- 6       *ast.Promiser '"one"'
- 8         *ast.Constraint 'handle'
-10           *ast.FatArrow '=>'
-10           *ast.Qstring '"handle_one"'
- 6       *ast.Promiser '"three"'
- 8         *ast.Constraint 'handle'
-10           *ast.FatArrow '=>'
-10           *ast.Qstring '"10.5"'
+10           *ast.Function 'mog'
+12             *ast.GiveArgItem
+14               *ast.Identifier '0555'
+12             *ast.GiveArgItem
+14               *ast.Identifier 'root'
+12             *ast.GiveArgItem
+14               *ast.Identifier 'root'
 ~~~
 
 ## Autofmt in (neo)vim
@@ -78,4 +131,5 @@ au BufWritePost *.cf silent call Fmt("cffmt /dev/stdin") " fmt on save
 
 ## Developing
 
-You'll need goyacc, and then 'go generate', go build and then possibly also build cmd/cffmt.
+You'll need goyacc, and then 'go generate', go build and then possibly also build cmd/cffmt. Files
+of most interest are `parse.y` and `print.go`. The lexer (`lex.go`) is mostly doing the right thing.

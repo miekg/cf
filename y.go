@@ -56,7 +56,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parse.y:636
+//line parse.y:673
 
 //line yacctab:1
 var yyExca = [...]int16{
@@ -1248,62 +1248,111 @@ yydefault:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line parse.y:581
 		{
-			f := ast.New(&ast.Function{}, ast.Token{})
-			ast.Append(yylex.(*Lexer).parent, f)
-			yylex.(*Lexer).parent = f
-
-			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, yyVAL.token))
+			debug(yylex, "functionid:IDENTIFIER", yyVAL.token)
+			infunc := ast.UpTo(p(yylex), &ast.Function{}) != nil
+			if infunc {
+				ga := ast.New(&ast.GiveArgItem{})
+				ast.Append(p(yylex), ga)
+				setP(yylex, ga)
+			}
+			f := ast.New(&ast.Function{}, yyVAL.token)
+			ast.Append(p(yylex), f)
+			setP(yylex, f)
 		}
 	case 122:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:589
+//line parse.y:594
 		{
-			f := ast.New(&ast.Function{}, ast.Token{})
+			yylex.(*Lexer).yydebug("functionid:NAKEDVAR", yyVAL.token)
+
+			infunc := ast.UpTo(yylex.(*Lexer).parent, &ast.Function{}) != nil
+			if infunc {
+				ga := ast.New(&ast.GiveArgItem{})
+				ast.Append(yylex.(*Lexer).parent, ga)
+				yylex.(*Lexer).parent = ga
+			}
+			f := ast.New(&ast.Function{}, yyVAL.token)
 			ast.Append(yylex.(*Lexer).parent, f)
 			yylex.(*Lexer).parent = f
-
-			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.NakedVar{}, yyVAL.token))
 		}
 	case 123:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:598
+//line parse.y:609
 		{
 		}
 	case 125:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:603
+//line parse.y:614
 		{
 		}
 	case 126:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:607
+//line parse.y:618
 		{
 		}
 	case 127:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line parse.y:611
+//line parse.y:622
 		{
+			debug(yylex, "givearglist:)", yyVAL.token)
+			// close function by reparenting
+			function := ast.UpTo(p(yylex), &ast.Function{})
+			setP(yylex, function.Parent())
 		}
 	case 129:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:616
+//line parse.y:631
 		{
 			yylex.(*Lexer).yydebug("gaitems:gaitem", yyVAL.token)
-			l := ast.New(&ast.GiveArgItem{}, yyVAL.token) // single arg
-			ast.Append(yylex.(*Lexer).parent, l)
 		}
 	case 130:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:622
+//line parse.y:635
 		{
 			yylex.(*Lexer).yydebug("gaitems:gaitems,gaitem", yyDollar[3].token)
-			l := ast.New(&ast.GiveArgItem{}, yyDollar[3].token) // multiple args
-			ast.Append(yylex.(*Lexer).parent, l)
 		}
 	case 131:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:628
+//line parse.y:639
 		{
+		}
+	case 132:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:643
+		{
+			yylex.(*Lexer).yydebug("gaitem:IDENTIFIER", yyVAL.token)
+
+			ga := ast.New(&ast.GiveArgItem{})
+			ast.Append(yylex.(*Lexer).parent, ga)
+			ast.Append(ga, ast.New(&ast.Identifier{}, yyVAL.token))
+		}
+	case 133:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:651
+		{
+			yylex.(*Lexer).yydebug("gaitem:QSTRING", yyVAL.token)
+
+			ga := ast.New(&ast.GiveArgItem{})
+			ast.Append(yylex.(*Lexer).parent, ga)
+			ast.Append(ga, ast.New(&ast.Qstring{}, yyVAL.token))
+		}
+	case 134:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:659
+		{
+			yylex.(*Lexer).yydebug("gaitem:NAKEDVAR", yyVAL.token)
+
+			ga := ast.New(&ast.GiveArgItem{})
+			ast.Append(yylex.(*Lexer).parent, ga)
+			ast.Append(ga, ast.New(&ast.NakedVar{}, yyVAL.token))
+		}
+	case 135:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parse.y:667
+		{
+			/*
+			   adding functions here leads to dups, because we already do this.
+			*/
 		}
 	}
 	goto yystack /* stack new state and value */

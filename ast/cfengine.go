@@ -14,20 +14,20 @@ type (
 	Bundle        struct{ Container }
 	Body          struct{ Container }
 	PromiseGuard  struct{ Container }
-	Identifier    struct{ Leaf }
 	ClassGuard    struct{ Container }
 	Promiser      struct{ Container }
 	Selection     struct{ Container }
 	Qstring       struct{ Leaf }
 	FatArrow      struct{ Leaf }
 	ThinArrow     struct{ Leaf }
-	Function      struct{ Container }
-	GiveArgItem   struct{ Leaf }
 	NakedVar      struct{ Leaf }
+	Identifier    struct{ Leaf }
+	Function      struct{ Container }
+	GiveArgItem   struct{ Container }
 	List          struct{ Container }
-	ListItem      struct{ Leaf }
+	ListItem      struct{ Container }
 	ArgList       struct{ Container }
-	ArgListItem   struct{ Leaf }
+	ArgListItem   struct{ Container }
 	Constraint    struct {
 		Container
 		SingleLine bool // True when we want to print this on a single line.

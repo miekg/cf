@@ -27,6 +27,12 @@ func (l *Lexer) yydebug(s string, t ...ast.Token) {
 	fmt.Fprintf(os.Stderr, "yy : token [%s] %q\n", lit, s) // align with lex debug
 }
 
+// Some helper functions for parser usage. Mostly to make code smaller.
+func printf(format string, v ...interface{})    { fmt.Printf(format, v...) }
+func debug(y yyLexer, s string, t ...ast.Token) { y.(*Lexer).yydebug(s, t...) }
+func p(y yyLexer) ast.Node                      { return y.(*Lexer).parent }
+func setP(y yyLexer, p ast.Node)                { y.(*Lexer).parent = p }
+
 // Parse parses a CFengine file in r and returns the AST. The parser is not concurrent safe, but can be re-used.
 func Parse(l *Lexer) (ast.Node, error) {
 	yyParse(l)

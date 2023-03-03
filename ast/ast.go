@@ -14,6 +14,7 @@ type Node interface {
 
 // Append appends child to the children of parent. It panics if either node is nil.
 func Append(parent Node, child Node) {
+	// DEBUG fmt.Fprintf(os.Stderr, "**Adding %T (Lit: %s) to %T\n", child, child.Token().Lit, parent)
 	child.SetParent(parent)
 	if parent.Children() == nil {
 		parent.SetChildren([]Node{child})

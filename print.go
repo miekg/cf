@@ -139,14 +139,10 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		fmt.Fprintf(w, "%s%s%s", commentNoNewline, indent, v.Token().Lit)
 
 	case *ast.Function:
-		printChildrenOfType(w, v, "%s", "*ast.Identifier")
-		fmt.Fprint(w, "(")
+		fmt.Fprintf(w, "%s(", v.Token().Lit)
 
 	case *ast.GiveArgItem:
-		fmt.Fprintf(w, "%s", v.Token().Lit)
-		if !last {
-			fmt.Fprint(w, ", ")
-		}
+		// here to not fall in 'default'
 
 	case *ast.List:
 		if len(v.Children()) == 0 {
@@ -189,7 +185,7 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		multiline := strings.Replace(v.Token().Lit, "\n", "\n"+indent, -1)
 		fmt.Fprintf(w, "%s", multiline)
 
-	case *ast.Identifier:
+	case *ast.Identifier, *ast.NakedVar:
 		fmt.Fprintf(w, "%s", v.Token().Lit)
 
 	default:
@@ -210,6 +206,10 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	case *ast.Function:
 		fmt.Fprint(w, ")")
+		_, ok := v.Parent().(*ast.GiveArgItem)
+		if ok && !last {
+			fmt.Fprint(w, ", ")
+		}
 
 	case *ast.List:
 		if len(v.Children()) == 0 {
@@ -220,6 +220,11 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	case *ast.ArgList:
 		fmt.Fprint(w, ")\n{")
+
+	case *ast.GiveArgItem:
+		if !last {
+			fmt.Fprint(w, ", ")
+		}
 
 	case *ast.Constraint:
 		if !last {
