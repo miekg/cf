@@ -16,7 +16,7 @@ bundle agent prometheus_server
       classes   => if_repaired("prometheus_updated");
 
     # Nog beetje meer commentaar
-    "/etc/prometheus/alertmanager.yml"            
+    "/etc/prometheus/alertmanager.yml"
       copy_from => no_backup_rdcp("$(def.distr_files_dir)/etc/prometheus/alertmanager.yml", $(sys.policy_hub)),
       perms     => mog(0444, root, bin),
       classes   => if_repaired("alertmanager_updated");

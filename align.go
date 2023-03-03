@@ -6,7 +6,7 @@ import (
 	"github.com/miekg/cf/ast"
 )
 
-// These contraint's are prevented from being put on a single line, even if there are the only child.
+// These constraints are prevented from being put on a single line, even if there are the only child.
 var preventSingleLine = []string{"contain", "comment"}
 
 // constraintPreventSingleLine looks at the children of promiser and if only 1 _and_ contains a preventSingleLine
@@ -28,7 +28,7 @@ func constraintPreventSingleLine(promiser ast.Node) bool {
 	return false
 }
 
-// align walks the Spec and for all Promisers with more than one Constraint, will align the contraint text
+// align walks the Spec and for all Promisers with more than one Constraint, will align the constraint text
 // in such a way the fat arrow (=>) align.
 func align(doc ast.Node) {
 	nvf := ast.NodeVisitorFunc(func(node ast.Node, entering bool) ast.WalkStatus {
@@ -48,35 +48,21 @@ func alignContraints(node ast.Node) {
 
 	if len(node.Children()) == 1 {
 		// only a single child, we will print this one 1 line, so there is no need to
-		// align fat arrow, we do need to align all contraints them selves so it looks nice
+		// align fat arrow, we do need to align all constraints them selves so it looks nice
 		return
 	}
 
 	max := -1
+	align := []ast.Node{}
 	for _, c := range node.Children() {
-		_, ok := c.(*ast.Constraint)
-		if !ok {
-			continue
-		}
-		if l := len(c.Token().Lit); l > max {
-			max = l
+		if _, ok := c.(*ast.Constraint); ok {
+			if l := len(c.Token().Lit); l > max {
+				max = l
+			}
+			align = append(align, c)
 		}
 	}
-	if max == -1 {
-		return
-	}
-	// if still here, range over the node again and pad each contraint entry op to max.
-	for _, c := range node.Children() {
-		_, ok := c.(*ast.Constraint)
-		if !ok {
-			continue
-		}
-		pad := max - len(c.Token().Lit)
-		// c.Token() doesn't return a pointer, so use this roundabout way.
-		t := c.Token()
-		t.Lit += strings.Repeat(" ", pad)
-		c.ResetToken(t)
-	}
+	pad(align, max)
 }
 
 func alignSelections(node ast.Node) {
@@ -86,53 +72,51 @@ func alignSelections(node ast.Node) {
 		return
 	}
 	max := -1
+	align := []ast.Node{}
 	for _, c := range node.Children() {
-		_, ok := c.(*ast.Selection)
-		if !ok {
-			continue
-		}
-		if l := len(c.Token().Lit); l > max {
-			max = l
+		if _, ok := c.(*ast.Selection); ok {
+			if l := len(c.Token().Lit); l > max {
+				max = l
+			}
+			align = append(align, c)
 		}
 	}
-	if max == -1 {
-		return
-	}
-	// if still here, range over the node again and pad each contraint entry op to max.
-	for _, c := range node.Children() {
-		_, ok := c.(*ast.Selection)
-		if !ok {
-			continue
-		}
-		pad := max - len(c.Token().Lit)
-		// c.Token() doesn't return a pointer, so use this roundabout way.
-		t := c.Token()
-		t.Lit += strings.Repeat(" ", pad)
-		c.ResetToken(t)
-	}
+	pad(align, max)
 }
 
 func alignPromisers(node ast.Node) {
 	// don't care which nodes has promises, just align them if they are direct children.
 	max := -1
+	align := []ast.Node{}
 	for _, c := range node.Children() {
-		_, ok := c.(*ast.Promiser)
-		if !ok {
-			continue
-		}
-		if l := len(c.Token().Lit); l > max {
-			max = l
+		if _, ok := c.(*ast.Promiser); ok {
+			if len(c.Token().Comment) > 0 {
+				// this promisers have comments between them, pad each section separately.
+				// pad previous ones, as comments are attached to NEXT token. See lex.go where this is
+				// done.
+				pad(align, max)
+
+				align = []ast.Node{}
+				max = -1
+			}
+
+			if l := len(c.Token().Lit); l > max {
+				max = l
+			}
+			align = append(align, c)
+
 		}
 	}
+	pad(align, max)
+}
+
+func pad(nodes []ast.Node, max int) {
 	if max == -1 {
 		return
 	}
-	for _, c := range node.Children() {
-		_, ok := c.(*ast.Promiser)
-		if !ok {
-			continue
-		}
+	for _, c := range nodes {
 		pad := max - len(c.Token().Lit)
+		// c.Token() doesn't return a pointer, so use this roundabout way.
 		t := c.Token()
 		t.Lit += strings.Repeat(" ", pad)
 		c.ResetToken(t)
