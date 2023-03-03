@@ -142,9 +142,7 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		fmt.Fprintf(w, "%s(", v.Token().Lit)
 
 	case *ast.GiveArgItem:
-		if !last {
-			fmt.Fprint(w, ", ")
-		}
+		// here to not fall in 'default'
 
 	case *ast.List:
 		if len(v.Children()) == 0 {
@@ -222,6 +220,11 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 
 	case *ast.ArgList:
 		fmt.Fprint(w, ")\n{")
+
+	case *ast.GiveArgItem:
+		if !last {
+			fmt.Fprint(w, ", ")
+		}
 
 	case *ast.Constraint:
 		if !last {

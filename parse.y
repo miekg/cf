@@ -188,7 +188,7 @@ aitems:                aitem
 				ast.Append(yylex.(*Lexer).parent, a)
 				yylex.(*Lexer).parent = a
 		        }
-                        al := ast.New(&ast.ArgListItem{})
+                        al := ast.New(&ast.ArgListItem{}, $$.token)
                         ast.Append(yylex.(*Lexer).parent, al)
                        }
                      | aitem ','
@@ -199,7 +199,7 @@ aitems:                aitem
 				ast.Append(yylex.(*Lexer).parent, a)
 				yylex.(*Lexer).parent = a
                         }
-                        al := ast.New(&ast.ArgListItem{})
+                        al := ast.New(&ast.ArgListItem{}, $$.token)
                         ast.Append(yylex.(*Lexer).parent, al)
 		       }
 
@@ -645,25 +645,23 @@ gaitem:                IDENTIFIER
 
                         ga := ast.New(&ast.GiveArgItem{})
                         ast.Append(yylex.(*Lexer).parent, ga)
-                        yylex.(*Lexer).parent = ga
-
-                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, $$.token))
+                        ast.Append(ga, ast.New(&ast.Identifier{}, $$.token))
                        }
                      | QSTRING
                        {
                         yylex.(*Lexer).yydebug("gaitem:QSTRING", $$.token)
+
                         ga := ast.New(&ast.GiveArgItem{})
                         ast.Append(yylex.(*Lexer).parent, ga)
-                        yylex.(*Lexer).parent = ga
-                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Qstring{}, $$.token))
+                        ast.Append(ga, ast.New(&ast.Qstring{}, $$.token))
                        }
                      | NAKEDVAR
                        {
                         yylex.(*Lexer).yydebug("gaitem:NAKEDVAR", $$.token)
+
                         ga := ast.New(&ast.GiveArgItem{})
                         ast.Append(yylex.(*Lexer).parent, ga)
-                        yylex.(*Lexer).parent = ga
-                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.NakedVar{}, $$.token))
+                        ast.Append(ga, ast.New(&ast.NakedVar{}, $$.token))
                        }
                      | usefunction
                        {

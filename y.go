@@ -56,7 +56,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parse.y:675
+//line parse.y:673
 
 //line yacctab:1
 var yyExca = [...]int16{
@@ -810,7 +810,7 @@ yydefault:
 				ast.Append(yylex.(*Lexer).parent, a)
 				yylex.(*Lexer).parent = a
 			}
-			al := ast.New(&ast.ArgListItem{})
+			al := ast.New(&ast.ArgListItem{}, yyVAL.token)
 			ast.Append(yylex.(*Lexer).parent, al)
 		}
 	case 43:
@@ -822,7 +822,7 @@ yydefault:
 				ast.Append(yylex.(*Lexer).parent, a)
 				yylex.(*Lexer).parent = a
 			}
-			al := ast.New(&ast.ArgListItem{})
+			al := ast.New(&ast.ArgListItem{}, yyVAL.token)
 			ast.Append(yylex.(*Lexer).parent, al)
 		}
 	case 44:
@@ -1324,33 +1324,31 @@ yydefault:
 
 			ga := ast.New(&ast.GiveArgItem{})
 			ast.Append(yylex.(*Lexer).parent, ga)
-			yylex.(*Lexer).parent = ga
-
-			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, yyVAL.token))
+			ast.Append(ga, ast.New(&ast.Identifier{}, yyVAL.token))
 		}
 	case 133:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:653
+//line parse.y:651
 		{
 			yylex.(*Lexer).yydebug("gaitem:QSTRING", yyVAL.token)
+
 			ga := ast.New(&ast.GiveArgItem{})
 			ast.Append(yylex.(*Lexer).parent, ga)
-			yylex.(*Lexer).parent = ga
-			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Qstring{}, yyVAL.token))
+			ast.Append(ga, ast.New(&ast.Qstring{}, yyVAL.token))
 		}
 	case 134:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:661
+//line parse.y:659
 		{
 			yylex.(*Lexer).yydebug("gaitem:NAKEDVAR", yyVAL.token)
+
 			ga := ast.New(&ast.GiveArgItem{})
 			ast.Append(yylex.(*Lexer).parent, ga)
-			yylex.(*Lexer).parent = ga
-			ast.Append(yylex.(*Lexer).parent, ast.New(&ast.NakedVar{}, yyVAL.token))
+			ast.Append(ga, ast.New(&ast.NakedVar{}, yyVAL.token))
 		}
 	case 135:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:669
+//line parse.y:667
 		{
 			/*
 			   adding functions here leads to dups, because we already do this.
