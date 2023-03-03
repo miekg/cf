@@ -1168,7 +1168,7 @@ yydefault:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line parse.y:518
 		{
-			yylex.(*Lexer).yydebug("rval:LIST", yyVAL.token)
+			yylex.(*Lexer).yydebug("rval:list", yyVAL.token)
 		}
 	case 108:
 		yyDollar = yyS[yypt-1 : yypt+1]
