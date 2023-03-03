@@ -188,7 +188,7 @@ aitems:                aitem
 				ast.Append(yylex.(*Lexer).parent, a)
 				yylex.(*Lexer).parent = a
 		        }
-                        al := ast.New(&ast.ArgListItem{}, $$.token)
+                        al := ast.New(&ast.ArgListItem{})
                         ast.Append(yylex.(*Lexer).parent, al)
                        }
                      | aitem ','
@@ -199,7 +199,7 @@ aitems:                aitem
 				ast.Append(yylex.(*Lexer).parent, a)
 				yylex.(*Lexer).parent = a
                         }
-                        al := ast.New(&ast.ArgListItem{}, $$.token)
+                        al := ast.New(&ast.ArgListItem{})
                         ast.Append(yylex.(*Lexer).parent, al)
 		       }
 
@@ -579,12 +579,27 @@ Litem:                 IDENTIFIER
 
 functionid:            IDENTIFIER
                        {
+                        debug(yylex, "functionid:IDENTIFIER", $$.token)
+                        infunc := ast.UpTo(p(yylex), &ast.Function{}) != nil
+                        if infunc {
+                            ga := ast.New(&ast.GiveArgItem{})
+                            ast.Append(p(yylex), ga)
+                            setP(yylex, ga)
+                        }
                         f := ast.New(&ast.Function{}, $$.token)
-                        ast.Append(yylex.(*Lexer).parent, f)
-                        yylex.(*Lexer).parent = f
+                        ast.Append(p(yylex), f)
+                        setP(yylex, f)
                        }
                      | NAKEDVAR
                        {
+                        yylex.(*Lexer).yydebug("functionid:NAKEDVAR", $$.token)
+
+                        infunc := ast.UpTo(yylex.(*Lexer).parent, &ast.Function{}) != nil
+                        if infunc {
+                            ga := ast.New(&ast.GiveArgItem{})
+                            ast.Append(yylex.(*Lexer).parent, ga)
+                            yylex.(*Lexer).parent = ga
+                        }
                         f := ast.New(&ast.Function{}, $$.token)
                         ast.Append(yylex.(*Lexer).parent, f)
                         yylex.(*Lexer).parent = f
@@ -605,28 +620,65 @@ givearglist:           '('
 
                        ')'
                        {
+                        debug(yylex, "givearglist:)", $$.token)
+                        // close function by reparenting
+			function := ast.UpTo(p(yylex), &ast.Function{})
+                        Printf("Reparent to %T\n", function.Parent())
+                        setP(yylex, function.Parent())
                        }
 
 gaitems:               /* empty */
                      | gaitem
                        {
+                        /*
                         yylex.(*Lexer).yydebug("gaitems:gaitem", $$.token)
-                        l:= ast.New(&ast.GiveArgItem{}, $$.token) // single arg
-                        ast.Append(yylex.(*Lexer).parent, l)
+                        ga := ast.New(&ast.GiveArgItem{})
+                        ast.Append(yylex.(*Lexer).parent, ga)
+                        yylex.(*Lexer).parent = ga
+                        */
                        }
                      | gaitems ',' gaitem
                        {
                         yylex.(*Lexer).yydebug("gaitems:gaitems,gaitem", $3.token)
-                        l:= ast.New(&ast.GiveArgItem{}, $3.token) // multiple args
-                        ast.Append(yylex.(*Lexer).parent, l)
                        }
                      | gaitem error
                        {
                        }
 
 gaitem:                IDENTIFIER
+                       {
+                        yylex.(*Lexer).yydebug("gaitem:IDENTIFIER", $$.token)
+
+                        ga := ast.New(&ast.GiveArgItem{})
+                        ast.Append(yylex.(*Lexer).parent, ga)
+                        yylex.(*Lexer).parent = ga
+
+                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Identifier{}, $$.token))
+                       }
                      | QSTRING
+                       {
+                        yylex.(*Lexer).yydebug("gaitem:QSTRING", $$.token)
+                        ga := ast.New(&ast.GiveArgItem{})
+                        ast.Append(yylex.(*Lexer).parent, ga)
+                        yylex.(*Lexer).parent = ga
+                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.Qstring{}, $$.token))
+                       }
                      | NAKEDVAR
+                       {
+                        yylex.(*Lexer).yydebug("gaitem:NAKEDVAR", $$.token)
+                        ga := ast.New(&ast.GiveArgItem{})
+                        ast.Append(yylex.(*Lexer).parent, ga)
+                        yylex.(*Lexer).parent = ga
+                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.NakedVar{}, $$.token))
+                       }
                      | usefunction
+                       {
+                       /*
+                        yylex.(*Lexer).yydebug("gaitem:usefunction", $$.token)
+                        f := ast.New(&ast.Function{}, $$.token)
+                        ast.Append(yylex.(*Lexer).parent, f)
+                        yylex.(*Lexer).parent = f
+                        */
+                       }
                      | error
 %%

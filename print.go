@@ -142,7 +142,6 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		fmt.Fprintf(w, "%s(", v.Token().Lit)
 
 	case *ast.GiveArgItem:
-		fmt.Fprintf(w, "%s", v.Token().Lit)
 		if !last {
 			fmt.Fprint(w, ", ")
 		}
@@ -188,7 +187,7 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		multiline := strings.Replace(v.Token().Lit, "\n", "\n"+indent, -1)
 		fmt.Fprintf(w, "%s", multiline)
 
-	case *ast.Identifier:
+	case *ast.Identifier, *ast.NakedVar:
 		fmt.Fprintf(w, "%s", v.Token().Lit)
 
 	default:
