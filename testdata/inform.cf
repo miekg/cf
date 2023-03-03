@@ -1,0 +1,13 @@
+bundle bla bla
+{
+
+  classes:
+
+  All.!HasBlockedUpdates.!HasSilentApt::
+   "/usr/bin/dpkg --configure -a;
+    /usr/bin/aptitude --quiet=2 update;
+    /usr/bin/aptitude --quiet=2 --assume-yes safe-upgrade;
+    /usr/bin/apt-get --assume-yes --quiet --fix-broken upgrade"
+		inform => $(compounds.to_inform),
+		contain => in_shell;
+}

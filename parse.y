@@ -511,10 +511,12 @@ rval:                  IDENTIFIER
                      | NAKEDVAR
                        {
                         yylex.(*Lexer).yydebug("rval:NAKEDVAR", $$.token)
+                        n := ast.New(&ast.NakedVar{}, $$.token)
+                        ast.Append(yylex.(*Lexer).parent, n)
                        }
                      | list
                        {
-                        yylex.(*Lexer).yydebug("rval:LIST", $$.token)
+                        yylex.(*Lexer).yydebug("rval:list", $$.token)
                        }
                      | usefunction
                        {

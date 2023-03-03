@@ -56,7 +56,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parse.y:673
+//line parse.y:675
 
 //line yacctab:1
 var yyExca = [...]int16{
@@ -1161,27 +1161,29 @@ yydefault:
 //line parse.y:512
 		{
 			yylex.(*Lexer).yydebug("rval:NAKEDVAR", yyVAL.token)
+			n := ast.New(&ast.NakedVar{}, yyVAL.token)
+			ast.Append(yylex.(*Lexer).parent, n)
 		}
 	case 107:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:516
+//line parse.y:518
 		{
 			yylex.(*Lexer).yydebug("rval:LIST", yyVAL.token)
 		}
 	case 108:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:520
+//line parse.y:522
 		{
 			yylex.(*Lexer).yydebug("rval:usefunction", yyVAL.token)
 		}
 	case 109:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:524
+//line parse.y:526
 		{
 		}
 	case 110:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:528
+//line parse.y:530
 		{
 			yylex.(*Lexer).yydebug("list:{}", yyVAL.token)
 			// empty list, add, but do not make parent
@@ -1190,7 +1192,7 @@ yydefault:
 		}
 	case 113:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:539
+//line parse.y:541
 		{
 			yylex.(*Lexer).yydebug("Litems:Litem", yyVAL.token)
 			if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
@@ -1203,7 +1205,7 @@ yydefault:
 		}
 	case 114:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:550
+//line parse.y:552
 		{
 			yylex.(*Lexer).yydebug("Litems:Litems,Litem", yyVAL.token)
 			if _, ok := yylex.(*Lexer).parent.(*ast.List); !ok {
@@ -1216,37 +1218,37 @@ yydefault:
 		}
 	case 115:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:561
+//line parse.y:563
 		{
 		}
 	case 116:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:565
+//line parse.y:567
 		{
 		}
 	case 117:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:568
+//line parse.y:570
 		{
 		}
 	case 118:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:571
+//line parse.y:573
 		{
 		}
 	case 119:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:574
+//line parse.y:576
 		{
 		}
 	case 120:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:577
+//line parse.y:579
 		{
 		}
 	case 121:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:581
+//line parse.y:583
 		{
 			debug(yylex, "functionid:IDENTIFIER", yyVAL.token)
 			infunc := ast.UpTo(p(yylex), &ast.Function{}) != nil
@@ -1261,7 +1263,7 @@ yydefault:
 		}
 	case 122:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:594
+//line parse.y:596
 		{
 			yylex.(*Lexer).yydebug("functionid:NAKEDVAR", yyVAL.token)
 
@@ -1277,22 +1279,22 @@ yydefault:
 		}
 	case 123:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:609
+//line parse.y:611
 		{
 		}
 	case 125:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:614
+//line parse.y:616
 		{
 		}
 	case 126:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:618
+//line parse.y:620
 		{
 		}
 	case 127:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line parse.y:622
+//line parse.y:624
 		{
 			debug(yylex, "givearglist:)", yyVAL.token)
 			// close function by reparenting
@@ -1301,24 +1303,24 @@ yydefault:
 		}
 	case 129:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:631
+//line parse.y:633
 		{
 			yylex.(*Lexer).yydebug("gaitems:gaitem", yyVAL.token)
 		}
 	case 130:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:635
+//line parse.y:637
 		{
 			yylex.(*Lexer).yydebug("gaitems:gaitems,gaitem", yyDollar[3].token)
 		}
 	case 131:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:639
+//line parse.y:641
 		{
 		}
 	case 132:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:643
+//line parse.y:645
 		{
 			yylex.(*Lexer).yydebug("gaitem:IDENTIFIER", yyVAL.token)
 
@@ -1328,7 +1330,7 @@ yydefault:
 		}
 	case 133:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:651
+//line parse.y:653
 		{
 			yylex.(*Lexer).yydebug("gaitem:QSTRING", yyVAL.token)
 
@@ -1338,7 +1340,7 @@ yydefault:
 		}
 	case 134:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:659
+//line parse.y:661
 		{
 			yylex.(*Lexer).yydebug("gaitem:NAKEDVAR", yyVAL.token)
 
@@ -1348,7 +1350,7 @@ yydefault:
 		}
 	case 135:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:667
+//line parse.y:669
 		{
 			/*
 			   adding functions here leads to dups, because we already do this.
