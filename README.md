@@ -77,7 +77,7 @@ Notes that cf will _not correctly parse_:
 - Comments that are placed in a bundle/body but at the end. These will be dropped.
 - Multiline comments with an _escaped_ quoting characters.
 - Likely doesn't work with Windows line endings.
-- Macros are not parsed at all.
+- Macros _are not parsed at all_.
 
 ## TODO
 
