@@ -1,0 +1,21 @@
+bundle agent macro_test
+{
+  vars:
+      "path" # path to search up from
+        string => "/tmp/";
+      "glob" # glob pattern matching filename
+        string => ".git/config";
+      "level" # how far to search
+        int => "inf";
+
+@if minimum_version(3.18) # find files up was
+      "configs"
+        data => findfiles_up("$(path)", "$(glob)", "$(level)");
+@endif
+
+  reports:
+      "Submodules '$(glob)' is located in '$(configs[0])'"
+        if => isvariable("configs");
+      "Parents '$(glob)' is located in '$(configs[1])'"
+        if => isvariable("configs");
+}
