@@ -5,7 +5,7 @@
 //
 // - Comments that are placed at the end of a bundle/body are silently dropped.
 // - Multiline comments with escaped quoting characters will lead to a lexer error.
-// - Macros (@if etc) are not parsed (lexer error)
+// - Macros (@if etc) are not parsed (lexer error).
 package cf
 
 //go:generate goyacc -v "" parse.y

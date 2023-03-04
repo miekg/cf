@@ -81,7 +81,6 @@ Notes that cf will _not correctly parse_:
 
 ## TODO
 
-- Thinarrow is not parsed yet. And possibly others syntax elements.
 - Add tests with malformed content.
 - promise guards don't have classguards as children, and they should.
 
