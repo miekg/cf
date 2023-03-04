@@ -56,7 +56,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line parse.y:676
+//line parse.y:677
 
 //line yacctab:1
 var yyExca = [...]int16{
@@ -1241,15 +1241,16 @@ yydefault:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line parse.y:577
 		{
+			debug(yylex, "Litem:usefunction", yyVAL.token)
 		}
 	case 120:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:580
+//line parse.y:581
 		{
 		}
 	case 121:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:584
+//line parse.y:585
 		{
 			debug(yylex, "functionid:IDENTIFIER", yyVAL.token)
 			infunc := ast.UpTo(p(yylex), &ast.Function{}) != nil
@@ -1264,7 +1265,7 @@ yydefault:
 		}
 	case 122:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:597
+//line parse.y:598
 		{
 			yylex.(*Lexer).yydebug("functionid:NAKEDVAR", yyVAL.token)
 
@@ -1280,22 +1281,22 @@ yydefault:
 		}
 	case 123:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:612
+//line parse.y:613
 		{
 		}
 	case 125:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:617
+//line parse.y:618
 		{
 		}
 	case 126:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:621
+//line parse.y:622
 		{
 		}
 	case 127:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line parse.y:625
+//line parse.y:626
 		{
 			debug(yylex, "givearglist:)", yyVAL.token)
 			// close function by reparenting
@@ -1304,24 +1305,24 @@ yydefault:
 		}
 	case 129:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:634
+//line parse.y:635
 		{
 			yylex.(*Lexer).yydebug("gaitems:gaitem", yyVAL.token)
 		}
 	case 130:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parse.y:638
+//line parse.y:639
 		{
 			yylex.(*Lexer).yydebug("gaitems:gaitems,gaitem", yyDollar[3].token)
 		}
 	case 131:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parse.y:642
+//line parse.y:643
 		{
 		}
 	case 132:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:646
+//line parse.y:647
 		{
 			yylex.(*Lexer).yydebug("gaitem:IDENTIFIER", yyVAL.token)
 
@@ -1331,7 +1332,7 @@ yydefault:
 		}
 	case 133:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:654
+//line parse.y:655
 		{
 			yylex.(*Lexer).yydebug("gaitem:QSTRING", yyVAL.token)
 
@@ -1341,7 +1342,7 @@ yydefault:
 		}
 	case 134:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:662
+//line parse.y:663
 		{
 			yylex.(*Lexer).yydebug("gaitem:NAKEDVAR", yyVAL.token)
 
@@ -1351,7 +1352,7 @@ yydefault:
 		}
 	case 135:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parse.y:670
+//line parse.y:671
 		{
 			/*
 			   adding functions here leads to dups, because we already do this.

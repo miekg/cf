@@ -575,6 +575,7 @@ Litem:                 IDENTIFIER
                        }
                      | usefunction
                        {
+                        debug(yylex, "Litem:usefunction", $$.token)
                        }
                      | error
                        {
