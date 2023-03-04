@@ -5,6 +5,7 @@
 //
 // - Comments that are placed at the end of a bundle/body are silently dropped.
 // - Multiline comments with escaped quoting characters will lead to a lexer error.
+// - Macros (@if etc) are not parsed (lexer error)
 package cf
 
 //go:generate goyacc -v "" parse.y
@@ -33,7 +34,7 @@ func debug(y yyLexer, s string, t ...ast.Token) { y.(*Lexer).yydebug(s, t...) }
 func p(y yyLexer) ast.Node                      { return y.(*Lexer).parent }
 func setP(y yyLexer, p ast.Node)                { y.(*Lexer).parent = p }
 
-// Parse parses a CFengine file in r and returns the AST. The parser is not concurrent safe, but can be re-used.
+// Parse parses a CFengine file using the lexer l and returns the AST. The parser is not concurrent safe, but can be re-used.
 func Parse(l *Lexer) (ast.Node, error) {
 	yyParse(l)
 	return l.Spec, l.Err

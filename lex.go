@@ -98,7 +98,7 @@ type Lexer struct {
 	line int
 }
 
-// NewLexer returns a pointer to a usuable Lexer.
+// NewLexer returns a pointer to a usuable Lexer. The optional filename string is used for error reporting.
 func NewLexer(r io.Reader, filename ...string) *Lexer {
 	s := bufio.NewScanner(r)
 	s.Split(scanLines)
@@ -119,6 +119,7 @@ Rescan:
 		// TODO(miek): either we hang comments on the previous token, or the next. Either way
 		// we'll have a problem for comments at the beginning or end - assume end-of-file comments are not
 		// important.
+		// We hang them on the next.
 		rem = append(rem, t.Lit)
 		goto Rescan
 	case SPACE:
