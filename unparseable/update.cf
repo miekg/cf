@@ -1,0 +1,17 @@
+bundle agent cfengine_internal_standalone_self_upgrade_execution
+{
+  commands:
+
+    trigger_upgrade.!at_desired_version::
+
+      "$(exec_prefix)$(sys.cf_agent)"
+      handle => "standalone_self_upgrade",
+      args => '--inform --timestamp --file "$(this.promise_dirname)$(const.dirsep)standalone_self_upgrade.cf" --define trigger_upgrade,update_cf_initiated';
+
+  reports:
+
+    inform_mode|verbose_mode|DEBUG|DEBUG_cfengine_internal_standalone_self_upgrade::
+      "Skipped self upgrade because we are running the desired version $(sys.cf_version)" -> { "ENT-3592" }
+        if => "at_desired_version";
+
+}
