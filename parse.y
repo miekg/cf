@@ -462,6 +462,7 @@ assign_arrow:          FATARROW
 
 promisee_arrow:        THINARROW
                        {
+                        ast.Append(yylex.(*Lexer).parent, ast.New(&ast.ThinArrow{}, $$.token))
                        }
 
 class:                 CLASSGUARD

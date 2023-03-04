@@ -17,11 +17,6 @@ type (
 	ClassGuard    struct{ Container }
 	Promiser      struct{ Container }
 	Selection     struct{ Container }
-	Qstring       struct{ Leaf }
-	FatArrow      struct{ Leaf }
-	ThinArrow     struct{ Leaf }
-	NakedVar      struct{ Leaf }
-	Identifier    struct{ Leaf }
 	Function      struct{ Container }
 	GiveArgItem   struct{ Container }
 	List          struct{ Container }
@@ -32,4 +27,9 @@ type (
 		Container
 		SingleLine bool // True when we want to print this on a single line.
 	}
+	Qstring    struct{ Leaf }
+	FatArrow   struct{ Leaf }
+	ThinArrow  struct{ Leaf }
+	NakedVar   struct{ Leaf }
+	Identifier struct{ Leaf }
 )

@@ -120,6 +120,12 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 				c.SingleLine = true
 			}
 		}
+		// if my direct child is a thinarrow, keep this on a single line
+		if children {
+			if _, ok := v.Children()[0].(*ast.ThinArrow); ok {
+				newline = ""
+			}
+		}
 		// if my parent is directly a promise guard, insert newline.
 		promisenewline := ""
 		if _, ok := v.Parent().(*ast.PromiseGuard); ok {
@@ -132,6 +138,11 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		if v.SingleLine {
 			fmt.Fprintf(w, " %s", v.Token().Lit)
 		} else {
+			// Check for thinarrow, we want to close that line if we saw one
+			if ast.UpTo(v, &ast.ThinArrow{}) != nil {
+				fmt.Fprintln(w)
+			}
+
 			fmt.Fprintf(w, "%s%s", indent, v.Token().Lit)
 		}
 
@@ -230,11 +241,13 @@ func printRecur(w io.Writer, node ast.Node, depth int, first, last bool) {
 		if !last {
 			fmt.Fprint(w, ",\n")
 		}
+
 	case *ast.Selection:
 		fmt.Fprint(w, ";")
 		if last {
 			fmt.Fprint(w, "\n")
 		}
+
 	}
 }
 
