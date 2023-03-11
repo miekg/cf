@@ -1,0 +1,16 @@
+# Comment 1
+bundle common functionals
+{
+# Comment 2
+ classes:
+
+  # buurman wat doet u nu?
+
+  All::
+  # hallo
+   "IsServer"			or => { vmhost1 };
+   # doe maar een comment
+   "IsControlServer"		or => { "mything" }; # nog een
+
+# Trail 3
+}

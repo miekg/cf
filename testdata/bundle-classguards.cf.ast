@@ -1,0 +1,19 @@
+Specification
+└─ Bundle
+   ├─ {Keyword bundle}
+   ├─ {Keyword agent}
+   ├─ {NameFunction bar}
+   └─ BundleBody
+      ├─ PromiseGuard
+      │  └─ {KeywordDeclaration commands}
+      └─ ClassPromises
+         ├─ ClassGuardPromises
+         │  ├─ {NameClass IsCupsServer.cupsd_updated}
+         │  └─ Promise
+         │     ├─ {TokenType(-994) "/usr/sbin/service cups restat"}
+         │     └─ {Punctuation ;}
+         └─ ClassGuardPromises
+            ├─ {NameClass IsCupsServer.cupsd_out_of_range}
+            └─ Promise
+               ├─ {TokenType(-994) "/usr/sbin/service cups restart"}
+               └─ {Punctuation ;}

@@ -1,0 +1,10 @@
+bundle agent foo() {
+
+files:
+
+
+reports:
+
+    "/usr/sbin/service cups restart";
+
+}

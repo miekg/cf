@@ -1,0 +1,47 @@
+bundle agent autofs
+{
+  HasAutoAbsolute::
+   "/etc/default/autofs"
+		classes => if_repaired("automount_updated");
+
+  autowww_updated::
+   #"/usr/sbin/service autofs stop | /bin/grep -v 'autofs stop\/waiting';
+   # /bin/cat /etc/auto.www.d/* > /etc/auto.www;
+   # /usr/sbin/service autofs start | /bin/grep -v 'autofs start\/running'"
+   "/bin/cat /etc/auto.www.d/* > /etc/auto.www;
+    /usr/bin/pkill -HUP automount"
+		contain => in_shell;
+
+  autoabs_updated::
+   #"/usr/sbin/service autofs stop | /bin/grep -v 'autofs stop\/waiting';
+   # /bin/cat /etc/auto.www.d/* > /etc/auto.www;
+   # /usr/sbin/service autofs start | /bin/grep -v 'autofs start\/running'"
+   "/bin/cat /etc/auto.abs.d/* > /etc/auto.abs;
+    /usr/bin/pkill -HUP automount"
+		contain => in_shell;
+
+# script /etc/cncz/bin/UpdateAutoCeph update /etc/auto.ceph
+  autoceph_updated::
+   "/etc/cncz/bin/UpdateAutoCeph ;
+    /usr/bin/pkill -HUP automount"
+		contain => in_shell;
+
+  automount_out_of_range::
+   "/usr/sbin/service gssd restart | /bin/grep -v 'gssd stop\/waiting';
+    /usr/sbin/service autofs start | /bin/grep -v 'autofs start\/running'"
+		contain => in_shell;
+
+  HasAutoFs.!(UsesAutoHome|UsesAutoVol|UsesAutoWWW|UsesAutoCeph)::
+   "/usr/sbin/service autofs stop;
+    /usr/bin/aptitude --assume-yes purge autofs5 autofs;
+    /bin/rm -fr /etc/auto.master /etc/auto.home /etc/auto.home.d /etc/auto.vol /etc/auto.vol.d /etc/auto.www /etc/auto.www.d"
+		contain => in_shell;
+
+
+ reports:
+
+  cfengine_3.Verbose::
+   "--> CFE running on $(sys.fqhost) has done cf/autofs";
+
+
+}

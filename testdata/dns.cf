@@ -1,0 +1,15 @@
+# https://help.ubuntu.com/community/BIND9ServerHowto
+
+bundle agent dns
+{
+ files:
+
+   IsDnsServer::
+    "/var/named/chroot/etc/bind/."
+		create => "true",
+		create => "true",
+		create => true,
+		classes => 205,
+		perms => mog(2550, root, bind),
+		classes => if_repaired("should_remount");
+}

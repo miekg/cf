@@ -1,0 +1,11 @@
+bundle agent bar {
+
+}
+
+bundle agent bar2 {
+
+}
+
+bundle agent bar3(par1, par2, par3) {
+
+}

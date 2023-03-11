@@ -1,0 +1,14 @@
+bundle agent packages_ubuntu
+{
+
+ files:
+
+  IsAptcacherServer::
+    "/etc/apt-cacher-ng/acng.conf"
+         copy_from => no_backup_rdcp($(sys.policy_hub));
+
+vars:
+
+  any::
+   "rm_package[ufw]"        string => "version";
+}
