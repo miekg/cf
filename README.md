@@ -3,16 +3,19 @@
 Cf is a formatter for CFEngine files, think of it as 'gofmt' for .cf files.
 
 Cf can handle most CFEngine files, a few files I found that aren't parseable are stored in the
-'unparseable' directory.
+'unparseable' directory. With the exception of `macro.cf` the rest will be supported in due time.
 
 Current exceptions in parsing:
 
 - comments in a list that is spread across multiple lines isn't handled
 - qstring with quotes and backticks _and_ having # characters in them
 - thin arrows (easily supported)
+- marcos (@if etc)
+
+If a file has a toplevel comment of the form: `# cffmt:no` the file will not be parsed and the
+original input will be outputted instead. (Not implemented yet)
 
 Cf aligns fat-arrows in a constraint:
-
 
 ~~~ cf
 "/etc/apparmor.d"
@@ -40,7 +43,7 @@ If there is only a single constraint it will be printed on the same line:
 becomes:
 
 ~~~ cfengine
-"getcapExists"  expression => fileexists("/sbin/getcap");
+"getcapExists" expression => fileexists("/sbin/getcap");
 ~~~
 
 If there are multiple promises and they all have single constraints, the promises themselves are
@@ -69,26 +72,11 @@ line. This is to show important things on the left hand side. (See align.go for 
 
 Trailing commas of lists are removed.
 
-Package cf uses the lexer and parser from CFEngine's source and converts it into a (Go) AST that we
-can walk and print. The AST is also exported and available to consumers of this package.
-
 Install the `cffmt` binary with: `go install github.com/miekg/cf/cmd/cffmt@main`. Then use it by
 giving it a filename or piping to standard input. The pretty printed document is printed to standard
 output.
 
     ./cffmt ../../testdata/promtest.cf
-
-Notes that cf will _not correctly parse_:
-
-- Comments that are placed in a bundle/body but at the end. These will be dropped.
-- Multiline comments with an _escaped_ quoting characters.
-- Likely doesn't work with Windows line endings.
-- Macros _are not parsed at all_.
-
-## TODO
-
-- Add tests with malformed content.
-- promise guards don't have classguards as children, and they should.
 
 ## Abstract Syntax Tree
 
