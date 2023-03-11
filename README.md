@@ -106,8 +106,15 @@ Specification
             └─ {Punctuation ;}
 ~~~
 
-This shows the following. The left side number is the number of spaces for the indentation (to
-easily identify if nodes are on the same level).
+From this input file:
+~~~ cfengine
+bundle agent bla
+{
+ vars:
+    "installed_canonified"
+        slist => "aaa";
+}
+~~~
 
 ## Autofmt in (neo)vim
 
