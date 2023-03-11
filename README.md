@@ -5,6 +5,12 @@ Cf is a formatter for CFEngine files, think of it as 'gofmt' for .cf files.
 Cf can handle most CFEngine files, a few files I found that aren't parseable are stored in the
 'unparseable' directory.
 
+Current exceptions in parsing:
+
+- comments in a list that is spread across multiple lines isn't handled
+- qstring with quotes and backticks _and_ having # characters in them
+- thin arrows (easily supported)
+
 Cf aligns fat-arrows in a constraint:
 
 
