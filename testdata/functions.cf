@@ -1,0 +1,8 @@
+bundle common compounds
+{
+ vars:
+
+  All::
+   "HasTpmDevice" and	 => { fileexists("/dev/tpm0"), returnszero("/usr/bin/test ! -f /etc/cfengine/RunAll", "useshell") },
+	persistence => "60";
+}

@@ -1,0 +1,10 @@
+bundle agent bar {
+
+  commands:
+
+  IsCupsServer.cupsd_updated::
+   "/usr/sbin/service cups restat";
+
+  IsCupsServer.cupsd_out_of_range::
+   "/usr/sbin/service cups restart";
+}

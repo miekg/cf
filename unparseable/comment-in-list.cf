@@ -1,0 +1,13 @@
+bundle agent icinga
+{
+
+ vars:
+
+  IsIcingaClient.ClusterScience.IsSlurmMaster.ubuntu_22::
+   "mrpe_lines"        slist => { @(mrpe_lines),
+									#'Cluster-default-utilization     /usr/local/bin/check_clusterload default',
+									'Cluster-all-utilization     /usr/local/bin/check_clusterload all',
+								};
+
+
+}

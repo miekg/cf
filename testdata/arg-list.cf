@@ -1,0 +1,6 @@
+bundle agent bla
+{
+ vars:
+    "installed_canonified"
+        slist => "aaa";
+}

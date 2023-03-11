@@ -1,0 +1,7 @@
+bundle agent autofs
+{
+ vars:
+
+   "automaster_lines"  slist => { '#controlled by cfengine',
+								};
+}

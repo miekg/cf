@@ -5,12 +5,3 @@ is broken over
 many and has some ä€áö utf-8, too"
 comment => "Comment";
 }
-
-body agent control
-
-{
-# This comment will be misplaced unless lexer counts line feeds in strings
-
- any::
-  ifelapsed => "1";
-}

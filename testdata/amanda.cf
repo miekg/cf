@@ -1,0 +1,8 @@
+bundle agent amanda
+{
+
+ classes:
+  IsAmandaClient::
+   "amandaclient_is_installed"
+		expression => returnszero("/usr/bin/dpkg -s amanda-client 2>&1 | grep -q Status.*[^\-]installed","useshell");
+}

@@ -27,8 +27,11 @@ Options are:
 `-p`
 :   print the pretty printed document to standard output (defaults to true)
 
-`-d`
-:   show lexer/yacc debug will parsing
+`-l`
+:   show lexer tokens
+
+`-f`
+:   if parsing fails only show the name of the file being parsed.
 
 ## Author
 
