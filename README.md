@@ -95,14 +95,31 @@ Notes that cf will _not correctly parse_:
 If you only want see the AST use -a, and throw away standard output:
 
 ~~~
-cmd/cffmt/cffmt -a testdata/arglist.cf >/dev/null
+cmd/cffmt/cffmt -a -p=false testdata/arg-list.cf >/dev/null
+2023/03/11 22:29:51 Parse Tree:
+Specification
+└─ Bundle
+   ├─ {Keyword bundle}
+   ├─ {Keyword agent}
+   ├─ {NameFunction bla}
+   └─ BundleBody
+      ├─ PromiseGuard
+      │  └─ {KeywordDeclaration vars}
+      └─ ClassPromises
+         └─ Promise
+            ├─ {TokenType(-994) "installed_canonified"}
+            ├─ Constraint
+            │  ├─ {KeywordType slist}
+            │  ├─ FatArrow
+            │  │  └─ {TokenType(-996) =>}
+            │  └─ Rval
+            │     └─ Qstring
+            │        └─ {TokenType(-994) "aaa"}
+            └─ {Punctuation ;}
 ~~~
 
 This shows the following. The left side number is the number of spaces for the indentation (to
 easily identify if nodes are on the same level).
-
-~~~ txt
-~~~
 
 ## Autofmt in (neo)vim
 
