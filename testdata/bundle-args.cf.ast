@@ -1,0 +1,28 @@
+Specification
+├─ Bundle
+│  ├─ {Keyword bundle}
+│  ├─ {Keyword agent}
+│  ├─ {NameFunction bar}
+│  └─ BundleBody
+│     └─ ClassPromises
+├─ Bundle
+│  ├─ {Keyword bundle}
+│  ├─ {Keyword agent}
+│  ├─ {NameFunction bar2}
+│  └─ BundleBody
+│     └─ ClassPromises
+└─ Bundle
+   ├─ {Keyword bundle}
+   ├─ {Keyword agent}
+   ├─ {NameFunction bar3}
+   ├─ ArgList
+   │  ├─ Aitem
+   │  │  └─ {NameVariable par1}
+   │  ├─ {Punctuation ,}
+   │  ├─ Aitem
+   │  │  └─ {NameVariable par2}
+   │  ├─ {Punctuation ,}
+   │  └─ Aitem
+   │     └─ {NameVariable par3}
+   └─ BundleBody
+      └─ ClassPromises

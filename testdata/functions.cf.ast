@@ -1,0 +1,47 @@
+Specification
+└─ Bundle
+   ├─ {Keyword bundle}
+   ├─ {Keyword common}
+   ├─ {NameFunction compounds}
+   └─ BundleBody
+      ├─ PromiseGuard
+      │  └─ {KeywordDeclaration vars}
+      └─ ClassPromises
+         └─ ClassGuardPromises
+            ├─ {NameClass All}
+            └─ Promise
+               ├─ {TokenType(-994) "HasTpmDevice"}
+               ├─ Constraint
+               │  ├─ {KeywordReserved and}
+               │  ├─ FatArrow
+               │  │  └─ {TokenType(-996) =>}
+               │  └─ Rval
+               │     └─ List
+               │        ├─ Litem
+               │        │  └─ Function
+               │        │     ├─ {NameFunction fileexists}
+               │        │     └─ GiveArgList
+               │        │        └─ GaItem
+               │        │           └─ Qstring
+               │        │              └─ {TokenType(-994) "/dev/tpm0"}
+               │        ├─ {Punctuation ,}
+               │        └─ Litem
+               │           └─ Function
+               │              ├─ {NameFunction returnszero}
+               │              └─ GiveArgList
+               │                 ├─ GaItem
+               │                 │  └─ Qstring
+               │                 │     └─ {TokenType(-994) "/usr/bin/test ! -f /etc/cfengine/RunAll"}
+               │                 ├─ {Punctuation ,}
+               │                 └─ GaItem
+               │                    └─ Qstring
+               │                       └─ {TokenType(-994) "useshell"}
+               ├─ {Punctuation ,}
+               ├─ Constraint
+               │  ├─ {KeywordReserved persistence}
+               │  ├─ FatArrow
+               │  │  └─ {TokenType(-996) =>}
+               │  └─ Rval
+               │     └─ Qstring
+               │        └─ {TokenType(-994) "60"}
+               └─ {Punctuation ;}

@@ -1,0 +1,8 @@
+bundle agent gitlab_server
+{
+  IsMattermostServer::
+   "/var/opt/gitlab/mattermost/config.json"
+		comment   => 'mattermost config file see https://cncz.pages.science.ru.nl/procedures/procedures/GitLab/#mattermost-configuratie',
+		copy_from => no_backup_rdcp("$(def.distr_files_dir)/var/opt/gitlab/mattermost/config.json-$(sys.host)", $(sys.policy_hub)),
+		perms     => mog(0660, mattermost, root);
+}

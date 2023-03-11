@@ -1,0 +1,31 @@
+Specification
+└─ Bundle
+   ├─ {Keyword bundle}
+   ├─ {Keyword common}
+   ├─ {NameFunction functionals}
+   └─ BundleBody
+      ├─ PromiseGuard
+      │  └─ {KeywordDeclaration commands}
+      └─ ClassPromises
+         └─ ClassGuardPromises
+            ├─ {NameClass All.!HasBlockedUpdates.!HasSilentApt}
+            └─ Promise
+               ├─ {TokenType(-994) "/usr/bin/dpkg --configure -a;
+    /usr/bin/aptitude --quiet=2 update;
+    /usr/bin/aptitude --quiet=2 --assume-yes safe-upgrade;
+    /usr/bin/apt-get --assume-yes --quiet --fix-broken upgrade"}
+               ├─ Constraint
+               │  ├─ {KeywordReserved inform}
+               │  ├─ FatArrow
+               │  │  └─ {TokenType(-996) =>}
+               │  └─ Rval
+               │     └─ NakedVar
+               │        └─ {TokenType(-993) $(compounds.to_inform)}
+               ├─ {Punctuation ,}
+               ├─ Constraint
+               │  ├─ {KeywordReserved contain}
+               │  ├─ FatArrow
+               │  │  └─ {TokenType(-996) =>}
+               │  └─ Rval
+               │     └─ {NameFunction in_shell}
+               └─ {Punctuation ;}

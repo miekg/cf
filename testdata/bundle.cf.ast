@@ -1,0 +1,16 @@
+Specification
+└─ Bundle
+   ├─ {Keyword bundle}
+   ├─ {Keyword agent}
+   ├─ {NameFunction foo}
+   ├─ ArgList
+   └─ BundleBody
+      ├─ PromiseGuard
+      │  └─ {KeywordDeclaration files}
+      ├─ ClassPromises
+      ├─ PromiseGuard
+      │  └─ {KeywordDeclaration reports}
+      └─ ClassPromises
+         └─ Promise
+            ├─ {TokenType(-994) "/usr/sbin/service cups restart"}
+            └─ {Punctuation ;}

@@ -1,16 +1,11 @@
-bundle agent one
+bundle common compounds
 {
-  reports:
+ vars:
 
-         "is_var" if => isvariable("five");
 
-      "two"
-      depends_on => { "handle_one", "handle_two" };
+   "HasTpmDevice" and	 => { "a list item", "another list item" };
 
-      "one"
-      handle => "handle_one";
+   "HasNoTpmDevice" and	 => { "a listy item", fileexists("/dev/tpm0"), "another listy item", "a third" };
 
-      "three"
-      handle => "10.5";
-
+   "HasOKDevice" and	 => { };
 }

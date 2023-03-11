@@ -102,32 +102,6 @@ This shows the following. The left side number is the number of spaces for the i
 easily identify if nodes are on the same level).
 
 ~~~ txt
- 0 *ast.Specification
- 2   *ast.Bundle 'bundle'
- 4     *ast.Identifier 'bla'
- 4     *ast.Identifier 'bla'
- 4     *ast.PromiseGuard 'vars:'
- 6       *ast.Promiser '"installed_names_canonified"'
- 8         *ast.Constraint 'slist'
-10           *ast.FatArrow '=>'
-10           *ast.Function 'maplist'
-12             *ast.GiveArgItem
-14               *ast.Function 'canonify'
-16                 *ast.GiveArgItem
-18                   *ast.Qstring '"$(this)"'
-14               *ast.GiveArgItem
-16                 *ast.NakedVar '@(installed_names)'
- 4     *ast.PromiseGuard 'classes:'
- 6       *ast.Promiser '"/usr/sbin/tcpdump"'
- 8         *ast.Constraint 'perms'
-10           *ast.FatArrow '=>'
-10           *ast.Function 'mog'
-12             *ast.GiveArgItem
-14               *ast.Identifier '0555'
-12             *ast.GiveArgItem
-14               *ast.Identifier 'root'
-12             *ast.GiveArgItem
-14               *ast.Identifier 'root'
 ~~~
 
 ## Autofmt in (neo)vim
@@ -139,5 +113,6 @@ au BufWritePost *.cf silent call Fmt("cffmt /dev/stdin") " fmt on save
 
 ## Developing
 
-You'll need goyacc, and then 'go generate', go build and then possibly also build cmd/cffmt. Files
-of most interest are `parse.y` and `print.go`. The lexer (`lex.go`) is mostly doing the right thing.
+Lexing is via Chroma (not 100% perfect, but I intent to upstream some changes there). We have a
+recursive decsent parser to create the AST, this us using *rd.Builder. Once we have the AST the
+printing is relatively simple (`internal/parse/print.go`).

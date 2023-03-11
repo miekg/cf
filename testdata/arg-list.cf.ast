@@ -1,0 +1,19 @@
+Specification
+└─ Bundle
+   ├─ {Keyword bundle}
+   ├─ {Keyword agent}
+   ├─ {NameFunction bla}
+   └─ BundleBody
+      ├─ PromiseGuard
+      │  └─ {KeywordDeclaration vars}
+      └─ ClassPromises
+         └─ Promise
+            ├─ {TokenType(-994) "installed_canonified"}
+            ├─ Constraint
+            │  ├─ {KeywordType slist}
+            │  ├─ FatArrow
+            │  │  └─ {TokenType(-996) =>}
+            │  └─ Rval
+            │     └─ Qstring
+            │        └─ {TokenType(-994) "aaa"}
+            └─ {Punctuation ;}

@@ -1,8 +1,8 @@
 package cf
 
 import (
-	"bytes"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"testing"
@@ -18,43 +18,37 @@ func TestParse(t *testing.T) {
 		if f.IsDir() {
 			continue
 		}
-
 		if filepath.Ext(f.Name()) != ".cf" {
 			continue
 		}
-
-		r, err := os.Open("testdata/" + f.Name())
+		buf, err := os.ReadFile("testdata/" + f.Name())
 		if err != nil {
 			t.Fatal(err)
 		}
-		t.Logf("looking at testdata/%s", f.Name())
+		ast, _ := os.ReadFile("testdata/" + f.Name() + ".ast")
 
-		l := NewLexer(r)
-		spec, err := Parse(l)
-		r.Close()
-		if err != nil {
-			t.Errorf("failed to parse document: %s", err)
-			continue
-		}
+		t.Run(f.Name(), func(t *testing.T) {
+			tokens, err := Lex(string(buf))
+			if err != nil {
+				log.Fatal(err)
+			}
 
-		doc := &bytes.Buffer{}
-		Print(doc, spec)
-		dbuf := removeSpace(doc.Bytes())
-
-		fbuf, _ := os.ReadFile("testdata/" + f.Name())
-		fbuf = removeSpace(fbuf)
-
-		if string(dbuf) != string(fbuf) {
-			t.Errorf("file %s, pretty printed output is different from souce", f.Name())
-			t.Logf("test with: wdiff -123 -s <(tr -d '[:space:]' < testdata/%s) <(cmd/cffmt/cffmt testdata/%s | tr -d '[:space:]')", f.Name(), f.Name())
-		}
+			parseTree, debugTree, err := ParseTokens(tokens)
+			if err != nil {
+				for i := range tokens {
+					t.Logf("%v\n", tokens[i])
+				}
+				t.Log("Debug Tree:\n\n", debugTree)
+				t.Fatal(err)
+			}
+			if ast != nil {
+				if err := astCompare(string(ast), parseTree.String()); err != nil {
+					t.Errorf("Test %q, AST doesn't match: %s", f.Name(), err)
+					t.Logf("Test %q, AST\n%s\n", f.Name(), parseTree.String())
+					t.Logf("Expect AST\n%s\n", string(ast))
+					t.Log("Debug tree:\n\n", debugTree)
+				}
+			}
+		})
 	}
-}
-
-func removeSpace(buf []byte) []byte {
-	// klunky, but good enough
-	buf = bytes.ReplaceAll(buf, []byte{' '}, nil)
-	buf = bytes.ReplaceAll(buf, []byte{'\n'}, nil)
-	buf = bytes.ReplaceAll(buf, []byte{'\t'}, nil)
-	return buf
 }

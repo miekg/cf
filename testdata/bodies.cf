@@ -1,20 +1,13 @@
-body common control
+body perms system
 {
-  inputs => "one_string";
+  mode => "644";
+  owners => { "root" };
+  groups => { "root" };
 }
 
-body files control
+body perms mog(mode,user,group)
 {
-  inputs => { "a.cf", "b.cf", "c.cf" };
-}
-
-body my_type my_name
-{
-  inputs => {};
-  more => { "a", "b"};
-}
-
-body some_type some_name
-{
-  inputs => {};
+  owners => { "$(user)" };
+  groups => { "$(group)" };
+  mode   => "$(mode)";
 }

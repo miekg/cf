@@ -1,0 +1,10 @@
+bundle agent bar {
+    classes:
+
+    All::
+      "/etc/prometheus/prometheus.yml"
+        classes => if_repaired("prometheus_updated");
+
+      "/etc/prometheus/prometheus.yml"
+        classes => if_repaired("prometheus_updated");
+}
