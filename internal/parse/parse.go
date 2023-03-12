@@ -307,7 +307,10 @@ More:
 func Litem(b *rd.Builder) (ok bool) {
 	b.Enter("Litem")
 	defer b.Exit(&ok)
-	// Identical to GaItem....
+
+	// comments in lists work, with the current printing because then insert a new line
+	// so it's at the end of the line.
+	Comment(b)
 
 	if Qstring(b) {
 		return true
@@ -322,11 +325,10 @@ func Litem(b *rd.Builder) (ok bool) {
 	if MatchType(b, chroma.LiteralNumberInteger) {
 		return true
 	}
-	// NakedVar
+
 	if NakedVar(b) {
 		return true
 	}
-	// comments here too? (single comment) so Comment()
 
 	return false
 }

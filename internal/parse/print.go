@@ -22,7 +22,7 @@ func Print(w io.Writer, tree *rd.Tree) {
 
 	align(tree)
 
-	tw := &tw{w: w}
+	tw := &tw{w: w, width: 120} // make option?
 	for _, t := range tree.Subtrees {
 		print(tw, t, 0, tree)
 	}
@@ -107,6 +107,7 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "List":
 			fmt.Fprintf(w, "{ ")
+			w.bracecol = w.col
 
 		case "Litem":
 		}
@@ -169,6 +170,11 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				} else {
 					cindent := indent[:len(indent)-2]
 					fmt.Fprintf(w, "%s%s", cindent, v.Value)
+				}
+				// comment in listem
+				if w.bracecol > -1 {
+					lindent := strings.Repeat(" ", w.bracecol)
+					fmt.Fprintf(w, "%s", lindent)
 				}
 			}
 
@@ -260,11 +266,16 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "List":
 			fmt.Fprintf(w, " }")
+			w.bracecol = -1
 
 		case "Litem":
 			last := lastOfType(parent, t, "Litem")
 			if !last {
 				fmt.Fprintf(w, ", ")
+			}
+			if w.col > w.width {
+				lindent := strings.Repeat(" ", w.bracecol)
+				fmt.Fprintf(w, "\n%s", lindent)
 			}
 		}
 

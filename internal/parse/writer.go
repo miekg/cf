@@ -7,10 +7,10 @@ import (
 
 // tw (track writer) tracks how far indented the current write is.
 type tw struct {
-	width int
-	col   int // current column position
-	w     io.Writer
-	// also track first { to align lists better
+	width    int
+	col      int // current column position
+	w        io.Writer
+	bracecol int // track open brace for lists.
 }
 
 func (t *tw) Write(p []byte) (int, error) {

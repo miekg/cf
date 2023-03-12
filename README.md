@@ -2,9 +2,8 @@
 
 Cf is a formatter for CFEngine files, think of it as 'gofmt' for .cf files.
 
-Cf can handle most CFEngine files, with a few exceptions:
+Cf can handle most CFEngine files.
 
-- comments in a list that is spread across multiple lines
 - macros (@if etc, should also not be too hard)
 - new `promise` keyword in CFEngine3 (should also not be too hard)
 
