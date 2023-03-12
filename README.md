@@ -62,9 +62,6 @@ To:
 "setcapExists" expression => fileexists("/sbin/setcap");
 ~~~
 
-If comments are interspersed among these promises, the previous alignment stops. This makes comments
-a natural barrier. (TODO: implement this again).
-
 If a single constraint has a 'contain =>' or 'comment =>' they will _not_ be printed on the same
 line. This is to show important things on the left hand side. (See align.go for details).
 

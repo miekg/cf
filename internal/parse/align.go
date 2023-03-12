@@ -69,6 +69,7 @@ func alignConstraints(tree *rd.Tree) {
 		if len(c.Subtrees) < 1 {
 			continue
 		}
+
 		constraint, ok := c.Data().(string)
 		if !ok {
 			continue
@@ -85,18 +86,7 @@ func alignConstraints(tree *rd.Tree) {
 		}
 		align = append(align, c)
 	}
-	if max == -1 {
-		return
-	}
-
-	for _, t := range align {
-		// do another round of checking?
-		token := t.Subtrees[0].Symbol.(chroma.Token)
-		pad := max - len(token.Value)
-		token.Value += strings.Repeat(" ", pad)
-
-		t.Subtrees[0].Symbol = chroma.Token{Type: token.Type, Value: token.Value}
-	}
+	pad(align, max)
 }
 
 func alignPromisers(tree *rd.Tree) {
@@ -128,17 +118,7 @@ func alignPromisers(tree *rd.Tree) {
 		}
 		align = append(align, c)
 	}
-	if max == -1 {
-		return
-	}
-	for _, t := range align {
-		// do another round of checking?
-		token := t.Subtrees[0].Symbol.(chroma.Token)
-		pad := max - len(token.Value)
-		token.Value += strings.Repeat(" ", pad)
-
-		t.Subtrees[0].Symbol = chroma.Token{Type: token.Type, Value: token.Value}
-	}
+	pad(align, max)
 }
 
 func alignSelections(tree *rd.Tree) {
@@ -172,16 +152,17 @@ func alignSelections(tree *rd.Tree) {
 		}
 		align = append(align, c)
 	}
+	pad(align, max)
+}
+
+func pad(trees []*rd.Tree, max int) {
 	if max == -1 {
 		return
 	}
-
-	for _, t := range align {
-		// do another round of checking?
+	for _, t := range trees {
 		token := t.Subtrees[0].Symbol.(chroma.Token)
 		pad := max - len(token.Value)
 		token.Value += strings.Repeat(" ", pad)
-
 		t.Subtrees[0].Symbol = chroma.Token{Type: token.Type, Value: token.Value}
 	}
 }
