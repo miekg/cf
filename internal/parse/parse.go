@@ -297,7 +297,7 @@ func Litems(b *rd.Builder) (ok bool) {
 	}
 
 More:
-	Comment(b)
+	Comments(b)
 	Litem(b)
 
 	// next token is , we have more Litems, otherwise return
@@ -313,7 +313,7 @@ func Litem(b *rd.Builder) (ok bool) {
 
 	// comments in lists work, with the current printing because then insert a new line
 	// so it's at the end of the line.
-	Comment(b)
+	Comments(b)
 
 	if Qstring(b) {
 		return true
