@@ -2,18 +2,17 @@
 
 Cf is a formatter for CFEngine files, think of it as 'gofmt' for .cf files.
 
-Cf can handle most CFEngine files, a few files I found that aren't parseable are stored in the
-'unparseable' directory. With the exception of `macro.cf` the rest will be supported in due time.
-
-Current exceptions in parsing:
+Cf can handle most CFEngine files, with a few exceptions:
 
 - comments in a list that is spread across multiple lines
-- thin arrows (easily supported)
-- marcos (@if etc, should also not be too hard)
+- macros (@if etc, should also not be too hard)
 - new `promise` keyword in CFEngine3 (should also not be too hard)
 
-If a file has a toplevel comment of the form: `# cffmt:no` the file will not be parsed and the
+If a file has a top-level comment of the form: `# cffmt:no` the file will not be parsed and the
 original input will be outputted instead.
+
+If you have a "normal" looking CFEngine file that isn't parsed correctly, please open an issue with
+the _most_ _minimal_ CFEngine syntax that fails to parse.
 
 Cf aligns fat-arrows in a constraint, this is also true for selections in bodies.
 
@@ -24,7 +23,7 @@ Cf aligns fat-arrows in a constraint, this is also true for selections in bodies
              file_select => by_name("session");
 ~~~
 
-becomes:
+Becomes:
 
 ~~~ cfengine
 "/etc/apparmor.d"
@@ -40,7 +39,7 @@ If there is only a single constraint it will be printed on the same line:
         expression => fileexists("/sbin/getcap");
 ~~~
 
-becomes:
+Becomes:
 
 ~~~ cfengine
 "getcapExists" expression => fileexists("/sbin/getcap");
@@ -56,7 +55,7 @@ aligned:
 "setcapExists"  expression => fileexists("/sbin/setcap");
 ~~~
 
-to:
+To:
 
 ~~~ cfengine
 "getcapExists" expression => fileexists("/sbin/getcap");
@@ -107,6 +106,7 @@ Specification
 ~~~
 
 From this input file:
+
 ~~~ cfengine
 bundle agent bla
 {
@@ -126,7 +126,7 @@ au BufWritePost *.cf silent call Fmt("cffmt /dev/stdin") " fmt on save
 ## Developing
 
 Lexing is via Chroma (not 100% perfect, but I intent to upstream some changes there). We have a
-recursive decsent parser to create the AST, this us using *rd.Builder. Once we have the AST the
+recursive descent parser to create the AST, this us using *rd.Builder. Once we have the AST the
 printing is relatively simple (`internal/parse/print.go`).
 
 https://github.com/cfengine/core/blob/master/libpromises/cf3parse.y contains the grammar we're
