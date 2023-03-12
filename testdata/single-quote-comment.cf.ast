@@ -1,0 +1,21 @@
+Specification
+└─ Bundle
+   ├─ {Keyword bundle}
+   ├─ {Keyword agent}
+   ├─ {NameFunction autofs}
+   └─ BundleBody
+      ├─ PromiseGuard
+      │  └─ {KeywordDeclaration vars}
+      └─ ClassPromises
+         └─ Promise
+            ├─ {TokenType(-994) "automaster_lines"}
+            ├─ Constraint
+            │  ├─ {KeywordType slist}
+            │  ├─ FatArrow
+            │  │  └─ {TokenType(-996) =>}
+            │  └─ Rval
+            │     └─ List
+            │        └─ Litem
+            │           └─ Qstring
+            │              └─ {TokenType(-994) '#controlled by cfengine'}
+            └─ {Punctuation ;}
