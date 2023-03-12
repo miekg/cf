@@ -148,7 +148,7 @@ chroma.Token {TokenType(-993) $(compounds.to_inform)}
 	}
 }
 
-func TestLexSinglekQuotePunctuation(t *testing.T) {
+func TestLexSingleQuotePunctuation(t *testing.T) {
 	const input = `"lines" slist => { '#controlled by cfengine',
 				};`
 	const expect = `chroma.Token {TokenType(-994) "lines"}
@@ -157,6 +157,27 @@ chroma.Token {TokenType(-996) =>}
 chroma.Token {Punctuation {}
 chroma.Token {TokenType(-994) '#controlled by cfengine'}
 chroma.Token {Punctuation }}
+chroma.Token {Punctuation ;}
+`
+
+	tokens, err := Lex(string(input))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := tokenToString(tokens)
+
+	if got != expect {
+		t.Errorf("Expected\n%s\n,Got\n%s\n", expect, got)
+	}
+}
+
+func TestLexSingleQuoteMultipleWords(t *testing.T) {
+	const input = `comment => 'Ensure that the given parameter for file "$(file)" has only
+the contents of the given parameter for content "$(content)"';`
+	const expect = `chroma.Token {KeywordReserved comment}
+chroma.Token {TokenType(-996) =>}
+chroma.Token {TokenType(-994) 'Ensure that the given parameter for file "$(file)" has only
+the contents of the given parameter for content "$(content)"'}
 chroma.Token {Punctuation ;}
 `
 

@@ -1,7 +1,6 @@
 package parse
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/alecthomas/chroma"
@@ -25,11 +24,16 @@ func Lex(specification string) ([]rd.Token, error) {
 	// Compresses LiteralString* into a single Qstring, same for Comments. And fix backtick and quotes.
 	pt := chroma.Token{Type: token.None}
 	q := chroma.Token{Type: token.None} // qstring for single quotes and backtick string
-	defer println("*****")
+	//defer println("*****")
 	for _, t := range iter.Tokens() {
-		fmt.Printf("%T %v\n", t, t)
+		//fmt.Printf("%T %v\n", t, t)
 		switch t.Type {
 		case chroma.LiteralString, chroma.LiteralStringInterpol, chroma.LiteralStringEscape:
+			if q.Type == token.Qstring { // in a qstring gathering phase
+				q.Value += t.Value
+				continue
+			}
+
 			if pt.Type != token.Qstring && pt.Type != token.None {
 				tokens = append(tokens, rd.Token(pt))
 				pt.Value = ""
