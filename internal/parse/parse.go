@@ -25,6 +25,7 @@ More:
 	if _, ok := b.Peek(1); !ok {
 		return ok1 || ok2
 	}
+	Comments(b)
 	goto More
 }
 
@@ -47,12 +48,16 @@ func Bundle(b *rd.Builder) (ok bool) {
 			return false
 		}
 	}
+
+	Comments(b)
+
 	// now we should see {
 	if !MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "{"}) {
 		return false
 	}
 
 	Comments(b)
+	defer Comments(b)
 
 	return BundleBody(b) && MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "}"})
 }

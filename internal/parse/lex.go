@@ -145,6 +145,9 @@ func Lex(specification string) ([]rd.Token, error) {
 			tokens = append(tokens, rd.Token(t))
 		}
 	}
+	if pt.Type != token.None {
+		tokens = append(tokens, pt)
+	}
 
 	var tokens2 []rd.Token
 	{

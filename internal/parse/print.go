@@ -105,9 +105,9 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 					fmt.Fprintln(w)
 				}
 				first = true
-				fmt.Fprintf(w, "%s", v.Value)
+				fmt.Fprintf(w, "%s ", v.Value)
 			default:
-				fmt.Fprintf(w, " %s", v.Value)
+				fmt.Fprintf(w, "%s ", v.Value)
 			}
 		case chroma.KeywordDeclaration:
 			fmt.Fprintf(w, "%s", v.Value)
@@ -131,13 +131,30 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			fmt.Fprintf(w, "%s", v.Value)
 
 		case token.Comment:
-			// Comments are nested as a child of  ClassPromise. This makes them slighty too indented by one
+			// Comments are nested as a child of ClassPromise. This makes them slighty too indented by one
 			// step. Fix that here. FIX(miek).
-			if w.col > 0 { // we've already outputted a line, this comment comes after the text, indent by _Space
-				fmt.Fprintf(w, "%s%s", _Space, v.Value)
-			} else {
-				cindent := indent[:len(indent)-2]
-				fmt.Fprintf(w, "%s%s", cindent, v.Value)
+			switch depth {
+			case 1:
+				if first { // top-level comments
+					fmt.Fprintln(w)
+				}
+				fmt.Fprintf(w, "%s", v.Value) // no indentation
+			case 2: // comments between bundle and opening {
+				if first { // top-level comments
+					fmt.Fprintln(w)
+				}
+				if w.col > 0 {
+					fmt.Fprintln(w)
+				}
+				fmt.Fprintf(w, "%s", v.Value) // no indentation
+				// small bug where this as a new line before the opening brace
+			default:
+				if w.col > 0 { // we've already outputted a line, this comment comes after the text, indent by _Space
+					fmt.Fprintf(w, "%s%s", _Space, v.Value)
+				} else {
+					cindent := indent[:len(indent)-2]
+					fmt.Fprintf(w, "%s%s", cindent, v.Value)
+				}
 			}
 
 		case token.Qstring:

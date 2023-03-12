@@ -1,0 +1,25 @@
+## begin comment
+
+bundle edit_line insert_file(templatefile)
+{
+insert_lines:
+
+   "$(templatefile)"
+            comment => "Insert the template file into the file being edited",
+        insert_type => "file";
+}
+
+### more comments
+
+bundle edit_line comment_lines_matching(regex,comment)
+    # comment between
+{
+replace_patterns:
+
+ "^($(regex))$"
+
+     replace_with => comment("$(comment)"),
+          comment => "Search and replace string";
+}
+
+## end comment
