@@ -1,5 +1,3 @@
-- special comment -> no parse and then we just stop??
-
 TODO:
 
 - comments in lists (probably parsed, can output them as well - as we can detect them)
@@ -7,5 +5,4 @@ TODO:
 - thinarrow
 - long lists break them up
 
-users_autofs same
 incinga.cf comment in list

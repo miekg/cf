@@ -2,12 +2,16 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 
+	"github.com/alecthomas/chroma"
 	"github.com/miekg/cf"
+	"github.com/miekg/cf/token"
 )
 
 var (
@@ -15,6 +19,7 @@ var (
 	flagPrint = flag.Bool("p", true, "pretty print the file")
 	flagFail  = flag.Bool("f", false, "when failing to parse only print the filename")
 	flagLex   = flag.Bool("l", false, "only show the tokens")
+	flagDont  = flag.Bool("d", false, "don't parse if first comment is: cffmt:no")
 )
 
 func main() {
@@ -38,6 +43,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if len(tokens) > 0 && *flagDont {
+		if ct, ok := tokens[0].(chroma.Token); ok {
+			if ct.Type == token.Comment && strings.HasPrefix(ct.Value, "# cffmt:no") {
+				fmt.Printf("%s", buffer)
+				return
+			}
+		}
+	}
+
 	if *flagLex {
 		for _, token := range tokens {
 			log.Printf("%T %v", token, token)
