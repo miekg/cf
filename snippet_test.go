@@ -183,6 +183,28 @@ func TestSnippetConstraints(t *testing.T) {
 	}
 }
 
+func TestSnippetPromisees(t *testing.T) {
+	tests := []tc{
+		{
+			`"Skipped self upgrade desired version $(sys.cf_version)" -> { "ENT-3592" };`, `Promise
+├─ {TokenType(-994) "Skipped self upgrade desired version $(sys.cf_version)"}
+├─ Promisee
+│  ├─ ThinArrow
+│  │  └─ {TokenType(-995) ->}
+│  └─ Rval
+│     └─ List
+│        └─ Litem
+│           └─ Qstring
+│              └─ {TokenType(-994) "ENT-3592"}
+└─ {Punctuation ;}
+`,
+		},
+	}
+	for i, test := range tests {
+		t.Run(fmt.Sprintf("Test %d", i), func(t *testing.T) { doTest(t, i, test, parse.Promises) })
+	}
+}
+
 func TestSnippetPromises(t *testing.T) {
 	tests := []tc{
 		{
@@ -293,7 +315,6 @@ reports:
 	for i, test := range tests {
 		t.Run(fmt.Sprintf("Test %d", i), func(t *testing.T) { doTest(t, i, test, parse.BundleBody) })
 	}
-
 }
 
 func newBuilder(buf string) (*rd.Builder, []rd.Token, error) {

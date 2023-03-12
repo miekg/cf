@@ -132,6 +132,7 @@ func Promise(b *rd.Builder) (ok bool) {
 	if !MatchType(b, token.Qstring) {
 		return false
 	}
+	Promisee(b)
 	Comments(b)
 
 	// zero or more constraints, and then a closing ;
@@ -169,6 +170,16 @@ func Constraint(b *rd.Builder) (ok bool) {
 	}
 
 	if !FatArrow(b) {
+		return false
+	}
+	return Rval(b)
+}
+
+func Promisee(b *rd.Builder) (ok bool) {
+	b.Enter("Promisee")
+	defer b.Exit(&ok)
+
+	if !ThinArrow(b) {
 		return false
 	}
 	return Rval(b)
@@ -396,6 +407,13 @@ func FatArrow(b *rd.Builder) (ok bool) {
 	defer b.Exit(&ok)
 
 	return MatchType(b, token.FatArrow)
+}
+
+func ThinArrow(b *rd.Builder) (ok bool) {
+	b.Enter("ThinArrow")
+	defer b.Exit(&ok)
+
+	return MatchType(b, token.ThinArrow)
 }
 
 func Comments(b *rd.Builder) (ok bool) {

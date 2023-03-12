@@ -128,3 +128,6 @@ au BufWritePost *.cf silent call Fmt("cffmt /dev/stdin") " fmt on save
 Lexing is via Chroma (not 100% perfect, but I intent to upstream some changes there). We have a
 recursive decsent parser to create the AST, this us using *rd.Builder. Once we have the AST the
 printing is relatively simple (`internal/parse/print.go`).
+
+https://github.com/cfengine/core/blob/master/libpromises/cf3parse.y contains the grammar we're
+reimplementing here.

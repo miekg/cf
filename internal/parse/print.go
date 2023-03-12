@@ -183,6 +183,9 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 		case token.FatArrow:
 			fmt.Fprintf(w, " %s ", v.Value)
 
+		case token.ThinArrow:
+			fmt.Fprintf(w, " %s ", v.Value)
+
 		case chroma.Punctuation:
 
 		default:
@@ -209,6 +212,9 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "PromiseGuard":
 			fmt.Fprint(w, ":\n\n")
+
+		case "Promisee":
+			fmt.Fprintf(w, "\n%s", indent)
 
 		case "ClassGuardPromises":
 

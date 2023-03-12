@@ -128,6 +128,10 @@ func Lex(specification string) ([]rd.Token, error) {
 			if t.Value == "=>" {
 				tokens = append(tokens, rd.Token(chroma.Token{Type: token.FatArrow, Value: t.Value}))
 			}
+			if t.Value == "->" {
+				tokens = append(tokens, rd.Token(chroma.Token{Type: token.ThinArrow, Value: t.Value}))
+			}
+			// others??
 
 		case chroma.Text:
 			if q.Type == token.Qstring {

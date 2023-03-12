@@ -1,8 +1,7 @@
 TODO:
 
-1. long lists break them up
-2. thinarrow
-3. multiline comments need some work.
-4. comments in lists (probably parsed, can output them as well - as we can detect them)
+1. long lists break them up, also related to comments in lists
+2. multiline comments need some work.
+3. comments in lists (probably parsed, can output them as well - as we can detect them)
    - need items over multiple lines
    - incinga.cf comment in list is such a file
