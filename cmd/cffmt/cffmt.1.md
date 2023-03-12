@@ -33,9 +33,6 @@ Options are:
 `-f`
 :   if parsing fails only show the name of the file being parsed.
 
-`-d`
-:   if parsing fails only show the name of the file being parsed.
-
 ## Author
 
 Miek Gieben <miek@miek.nl>.
