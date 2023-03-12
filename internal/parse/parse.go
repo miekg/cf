@@ -257,6 +257,8 @@ func GaItem(b *rd.Builder) (ok bool) {
 	b.Enter("GaItem")
 	defer b.Exit(&ok)
 
+	Comments(b)
+
 	if Qstring(b) {
 		return true
 	}
