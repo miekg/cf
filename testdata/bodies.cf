@@ -1,13 +1,17 @@
-body perms system
+body perms system(bla, root, bla)
 {
-  mode => "644";
-  owners => { "root" };
-  groups => { "root" };
+      mode => "644";
+      owners => { "root" };
+      groups => { "root" };
 }
 
-body perms mog(mode,user,group)
+###################################
+
+body perms system(bla, root, bla)
 {
-  owners => { "$(user)" };
-  groups => { "$(group)" };
-  mode   => "$(mode)";
+
+    All::
+      mode => "644";
+      owners => { "root" };
+      groups => { "root" };
 }

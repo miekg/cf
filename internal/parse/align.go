@@ -31,7 +31,7 @@ func align(tree *rd.Tree) {
 		if entering {
 			alignConstraints(tree) // align on '=>' for multiple constraints
 			alignPromisers(tree)   // align promises that have single constraints
-			//		alignSelections(tree) // align on '=>' for multiple selection (body)
+			alignSelections(tree)  // align on '=>' for multiple selection (body)
 		}
 		return GoToNext
 	})
@@ -131,6 +131,51 @@ func alignPromisers(tree *rd.Tree) {
 	if max == -1 {
 		return
 	}
+	for _, t := range align {
+		// do another round of checking?
+		token := t.Subtrees[0].Symbol.(chroma.Token)
+		pad := max - len(token.Value)
+		token.Value += strings.Repeat(" ", pad)
+
+		t.Subtrees[0].Symbol = chroma.Token{Type: token.Type, Value: token.Value}
+	}
+}
+
+func alignSelections(tree *rd.Tree) {
+	bodyselections, ok := tree.Data().(string)
+	if !ok {
+		return
+	}
+	if bodyselections != "BodySelections" {
+		return
+	}
+
+	max := -1
+	align := []*rd.Tree{}
+	for _, c := range tree.Subtrees {
+		if len(c.Subtrees) < 1 {
+			continue
+		}
+		selection, ok := c.Data().(string)
+		if !ok {
+			continue
+		}
+		if selection != "Selection" {
+			continue
+		}
+		token, ok := c.Subtrees[0].Data().(chroma.Token)
+		if !ok {
+			continue
+		}
+		if l := len(token.Value); l > max {
+			max = l
+		}
+		align = append(align, c)
+	}
+	if max == -1 {
+		return
+	}
+
 	for _, t := range align {
 		// do another round of checking?
 		token := t.Subtrees[0].Symbol.(chroma.Token)
