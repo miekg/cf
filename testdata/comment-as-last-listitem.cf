@@ -1,0 +1,7 @@
+body common control
+{
+      bundlesequence => {
+                          @(update_def.bundlesequence_end),
+                          # Define control_common_update_bundlesequnce_end via augments
+      };
+}

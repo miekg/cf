@@ -272,7 +272,7 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			if len(t.Subtrees) == 0 {
 				fmt.Fprintf(w, "}")
 			} else {
-				fmt.Fprintf(w, " }")
+				fmt.Fprint(w, " }")
 			}
 			w.bracecol = -1
 
