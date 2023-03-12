@@ -47,12 +47,23 @@ func Lex(specification string) ([]rd.Token, error) {
 				// We match too match, so strip back to the closing quote.
 				// Check first char for quote, indexLast with that value.
 				begin := string(q.Value[0])
+				comma := chroma.Token{Type: token.None}
 				if end := strings.LastIndex(q.Value, begin); end > 0 {
+					// this strips newline and other fluff. BUT also a comma (as I've seen). Check
+					// specifically for this char and inject after this one is added.
+					// TODO(miek): hack!
+					for _, c := range q.Value[end+1:] {
+						if string(c) == "," {
+							comma = chroma.Token{Type: chroma.Punctuation, Value: ","}
+						}
+					}
 					q.Value = q.Value[:end+1]
 				}
 
-				q.Value = strings.TrimSuffix(q.Value, "\n") // TODO(miek): unix only now
 				tokens = append(tokens, q)
+				if comma.Type != token.None {
+					tokens = append(tokens, comma)
+				}
 				q.Type = token.None
 				q.Value = ""
 				continue

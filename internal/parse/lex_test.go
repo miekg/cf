@@ -156,6 +156,7 @@ chroma.Token {KeywordType slist}
 chroma.Token {TokenType(-996) =>}
 chroma.Token {Punctuation {}
 chroma.Token {TokenType(-994) '#controlled by cfengine'}
+chroma.Token {Punctuation ,}
 chroma.Token {Punctuation }}
 chroma.Token {Punctuation ;}
 `

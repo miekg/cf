@@ -7,7 +7,5 @@ TODO:
 - thinarrow
 - long lists break them up
 
-gitlab_server.cf failes because single quote with comment in them #more
-autofs.cf same
 users_autofs same
 incinga.cf comment in list

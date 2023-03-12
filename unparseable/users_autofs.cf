@@ -1,0 +1,12 @@
+bundle agent users_autofs
+{
+ vars:
+  # edit adm/alerts.cf accordingly (to list of Has...Users[Krb]) !
+
+   "automaster_lines"  slist => { '#controlled by cfengine' };
+  ubuntu::
+   "autofspkg"      string => ifelse( "ubuntu_16|ubuntu_18", "autofs5", "autofs" );
+
+
+
+}
