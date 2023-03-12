@@ -297,6 +297,7 @@ func Litems(b *rd.Builder) (ok bool) {
 	}
 
 More:
+	Comment(b)
 	Litem(b)
 
 	// next token is , we have more Litems, otherwise return

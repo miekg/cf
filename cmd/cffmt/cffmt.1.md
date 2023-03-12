@@ -33,11 +33,6 @@ Options are:
 `-f`
 :   if parsing fails only show the name of the file being parsed.
 
-## Bugs
-
-A comment as the last list item will cause [infinite
-recursion](https://github.com/miekg/cf/issues/11).
-
 ## Author
 
 Miek Gieben <miek@miek.nl>.
