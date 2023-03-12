@@ -52,6 +52,84 @@ chroma.Token {Punctuation }}
 	}
 }
 
+func TestLexSingleQuote(t *testing.T) {
+	// needs the newline
+	const input = `comment   => 'mattermost see https://cncz.ru.nl/more/procedures/GitLab/mattermost-configuratie'
+`
+	const expect = `chroma.Token {KeywordReserved comment}
+chroma.Token {TokenType(-996) =>}
+chroma.Token {TokenType(-994) 'mattermost see https://cncz.ru.nl/more/procedures/GitLab/mattermost-configuratie'}
+`
+
+	tokens, err := Lex(string(input))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := tokenToString(tokens)
+
+	if got != expect {
+		t.Errorf("Expected\n%s\n,Got\n%s\n", expect, got)
+	}
+}
+
+func TestLexSingleQuoteComment(t *testing.T) {
+	// needs the newline
+	const input = `comment   => 'mattermost see https://cncz.ru.nl/more/procedures/#GitLab/mattermost-configuratie'
+`
+	const expect = `chroma.Token {KeywordReserved comment}
+chroma.Token {TokenType(-996) =>}
+chroma.Token {TokenType(-994) 'mattermost see https://cncz.ru.nl/more/procedures/#GitLab/mattermost-configuratie'}
+`
+
+	tokens, err := Lex(string(input))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := tokenToString(tokens)
+
+	if got != expect {
+		t.Errorf("Expected\n%s\n,Got\n%s\n", expect, got)
+	}
+}
+
+const backtick = "`"
+
+func TestLexBacktickQuote(t *testing.T) {
+	// needs the newline
+	const input = "comment   => " + backtick + "mattermost see https://cncz.ru.nl/more/procedures/GitLab/mattermost-configuratie" + backtick + "\n"
+	const expect = `chroma.Token {KeywordReserved comment}
+chroma.Token {TokenType(-996) =>}
+chroma.Token {TokenType(-994) ` + backtick + `mattermost see https://cncz.ru.nl/more/procedures/GitLab/mattermost-configuratie` + backtick + "}\n"
+
+	tokens, err := Lex(string(input))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := tokenToString(tokens)
+
+	if got != expect {
+		t.Errorf("Expected\n%s\n,Got\n%s\n", expect, got)
+	}
+}
+
+func TestLexBacktickQuoteComment(t *testing.T) {
+	// needs the newline
+	const input = "comment   => " + backtick + "mattermost see https://cncz.ru.nl/more/procedures/GitLab/#mattermost-configuratie" + backtick + "\n"
+	const expect = `chroma.Token {KeywordReserved comment}
+chroma.Token {TokenType(-996) =>}
+chroma.Token {TokenType(-994) ` + backtick + `mattermost see https://cncz.ru.nl/more/procedures/GitLab/#mattermost-configuratie` + backtick + "}\n"
+
+	tokens, err := Lex(string(input))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := tokenToString(tokens)
+
+	if got != expect {
+		t.Errorf("Expected\n%s\n,Got\n%s\n", expect, got)
+	}
+}
+
 func tokenToString(tokens []rd.Token) string {
 	b := &bytes.Buffer{}
 	for _, t := range tokens {

@@ -21,10 +21,11 @@ func Lex(specification string) ([]rd.Token, error) {
 
 	// Chroma has a bug where it sees a comment in a string and makes it an actual Comment, instead of properly
 	// saying it is part of the string. This happens for single quote, and probably also backtick.
-
-	// Compresses LiteralString* into a single Qstring, same for Comments.
+	// Compresses LiteralString* into a single Qstring, same for Comments. And fix backtick and quotes.
 	pt := chroma.Token{Type: token.None}
+	q := chroma.Token{Type: token.None} // qstring for single quotes and backtick string
 	for _, t := range iter.Tokens() {
+		// fmt.Printf("%T %v\n", t, t)
 		switch t.Type {
 		case chroma.LiteralString, chroma.LiteralStringInterpol, chroma.LiteralStringEscape:
 			if pt.Type != token.Qstring && pt.Type != token.None {
@@ -35,6 +36,16 @@ func Lex(specification string) ([]rd.Token, error) {
 			pt.Value += t.Value
 
 		case chroma.Comment:
+			if q.Type == token.Qstring { // we're in a single or backtick string, this comment closes both
+				q.Value += t.Value
+				// lost token is a newline, this shouldn't be part of the qstring, remove it.
+				q.Value = strings.TrimSuffix(q.Value, "\n") // TODO(miek): unix only now
+				tokens = append(tokens, q)
+				q.Type = token.None
+				q.Value = ""
+				continue
+			}
+
 			if pt.Type != token.Comment && pt.Type != token.None {
 				tokens = append(tokens, rd.Token(pt))
 				pt.Value = ""
@@ -43,13 +54,47 @@ func Lex(specification string) ([]rd.Token, error) {
 			pt.Type = token.Comment
 			pt.Value += t.Value
 
+		case chroma.Error:
+			// quote
+			if t.Value == "'" && q.Type == token.None { // open
+				q.Type = token.Qstring
+				q.Value = "'"
+				continue
+			}
+			if t.Value == "'" && q.Type == token.Qstring { // close
+				q.Value += "'"
+				tokens = append(tokens, q)
+				q.Type = token.None
+				q.Value = ""
+			}
+			// backtick
+			if t.Value == "`" && q.Type == token.None { // open
+				q.Type = token.Qstring
+				q.Value = "`"
+				continue
+			}
+			if t.Value == "`" && q.Type == token.Qstring { // close
+				q.Value += "`"
+				tokens = append(tokens, q)
+				q.Type = token.None
+				q.Value = ""
+			}
+
+			if q.Type == token.Qstring { // append
+				q.Value += t.Value
+			}
+
 		case chroma.Operator:
 			if t.Value == "=>" {
 				tokens = append(tokens, rd.Token(chroma.Token{Type: token.FatArrow, Value: t.Value}))
 			}
 
 		case chroma.Text:
-			// whitespace and other fluff, save to ignore?
+			if q.Type == token.Qstring {
+				q.Value += t.Value
+				continue
+			}
+
 			if pt.Type != token.None {
 				tokens = append(tokens, pt)
 			}
@@ -57,6 +102,11 @@ func Lex(specification string) ([]rd.Token, error) {
 			pt.Value = ""
 
 		default:
+			if q.Type == token.Qstring {
+				q.Value += t.Value
+				continue
+			}
+
 			if pt.Type != token.None {
 				tokens = append(tokens, pt)
 			}
@@ -134,71 +184,5 @@ func Lex(specification string) ([]rd.Token, error) {
 		}
 	}
 
-	var tokens4 []rd.Token
-	{
-		// Chroma also don't handle backticks well.
-		// chroma.Token {Error `}
-		// chroma.Token {NameFunction Ensure}
-		// chroma.Token {NameFunction that}
-		// chroma.Token {NameFunction the}
-		// chroma.Token {Error `}
-		// grab this here in another loop and as a qstring
-		qstring := chroma.Token{Type: token.None}
-		for _, t := range tokens3 {
-			if t.(chroma.Token).Type == chroma.Error && t.(chroma.Token).Value == "`" {
-				if qstring.Type == token.None { // open
-					qstring.Value = "`"
-					qstring.Type = token.Qstring
-				} else { // close
-					// release the last space we added with `
-					strings.TrimSuffix(qstring.Value, " ")
-					qstring.Value += "`"
-					tokens4 = append(tokens4, qstring)
-					qstring = chroma.Token{Type: token.None}
-				}
-				continue // dont' add the ` to the token list
-			}
-
-			if qstring.Type == token.None {
-				tokens4 = append(tokens4, t)
-				continue
-			}
-
-			qstring.Value += t.(chroma.Token).Value + " "
-		}
-	}
-
-	var tokens5 []rd.Token
-	{
-		// Chroma also don't handle singles quotes.
-		// chroma.Token {Error '}
-		// chroma.Token {NameFunction Ensure}
-		// chroma.Token {NameFunction that}
-		// chroma.Token {NameFunction the}
-		// chroma.Token {Error '}
-		// grab this here in another loop and as a qstring
-		qstring := chroma.Token{Type: token.None}
-		for _, t := range tokens4 {
-			if t.(chroma.Token).Type == chroma.Error && t.(chroma.Token).Value == "'" {
-				if qstring.Type == token.None {
-					qstring.Value = "'"
-					qstring.Type = token.Qstring
-				} else {
-					strings.TrimSuffix(qstring.Value, " ") // we're blatantly addding this with a spaice, might be wrong!
-					qstring.Value += "'"
-					tokens5 = append(tokens5, qstring)
-					qstring = chroma.Token{Type: token.None}
-				}
-				continue // dont' add the ` to the token list
-			}
-
-			if qstring.Type == token.None {
-				tokens5 = append(tokens5, t)
-				continue
-			}
-
-			qstring.Value += t.(chroma.Token).Value + " "
-		}
-	}
-	return tokens5, nil
+	return tokens3, nil
 }
