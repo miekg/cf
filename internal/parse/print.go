@@ -62,8 +62,9 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			})
 
 		case "ClassGuardSelections":
-			first := firstOfType(parent, t, "ClassGuardSelections")
-			if !first {
+			seq := sequenceOfChild(parent, t)
+			if seq != 0 {
+				fmt.Fprintln(w)
 				fmt.Fprintln(w)
 			}
 			printChildrenOfType(w, t, chroma.NameClass, func(v string) {
@@ -78,7 +79,9 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			})
 
 		case "Selection":
-			fmt.Fprintf(w, "%s", indent)
+			// We indent too much because BodySelection is in the AST
+			// remove 2 spaces from indent.
+			fmt.Fprintf(w, "%s", indent[:len(indent)-2])
 
 		case "Constraint":
 			single := countOfType(parent, "Constraint") == 1

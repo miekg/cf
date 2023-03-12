@@ -25,12 +25,16 @@ func Body(b *rd.Builder) (ok bool) {
 			return false
 		}
 	}
+
+	Comments(b)
+
 	// now we should see {
 	if !MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "{"}) {
 		return false
 	}
 
 	Comments(b)
+	defer Comments(b)
 
 	return BodyBody(b) && Match(b, chroma.Token{Type: chroma.Punctuation, Value: "}"})
 }
@@ -43,7 +47,7 @@ More:
 	// classguardselection and selections or just selections
 	ClassGuardSelections(b)
 	BodySelections(b)
-	Comments(b)
+
 	if !Peek(b, chroma.Token{Type: chroma.Punctuation, Value: "}"}) {
 		goto More
 	}
