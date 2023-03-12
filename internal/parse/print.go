@@ -106,7 +106,11 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 		case "GaItem":
 
 		case "List":
-			fmt.Fprintf(w, "{ ")
+			if len(t.Subtrees) == 0 {
+				fmt.Fprintf(w, "{")
+			} else {
+				fmt.Fprintf(w, "{ ")
+			}
 			w.bracecol = w.col
 
 		case "Litem":
@@ -265,7 +269,11 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			}
 
 		case "List":
-			fmt.Fprintf(w, " }")
+			if len(t.Subtrees) == 0 {
+				fmt.Fprintf(w, "}")
+			} else {
+				fmt.Fprintf(w, " }")
+			}
 			w.bracecol = -1
 
 		case "Litem":
