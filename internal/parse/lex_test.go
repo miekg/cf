@@ -130,6 +130,24 @@ chroma.Token {TokenType(-994) ` + backtick + `mattermost see https://cncz.ru.nl/
 	}
 }
 
+func TestLexNakedVar(t *testing.T) {
+	const input = "inform => $(compounds.to_inform)\n"
+	const expect = `chroma.Token {KeywordReserved inform}
+chroma.Token {TokenType(-996) =>}
+chroma.Token {TokenType(-993) $(compounds.to_inform)}
+`
+
+	tokens, err := Lex(string(input))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := tokenToString(tokens)
+
+	if got != expect {
+		t.Errorf("Expected\n%s\n,Got\n%s\n", expect, got)
+	}
+}
+
 func tokenToString(tokens []rd.Token) string {
 	b := &bytes.Buffer{}
 	for _, t := range tokens {

@@ -24,8 +24,9 @@ func Lex(specification string) ([]rd.Token, error) {
 	// Compresses LiteralString* into a single Qstring, same for Comments. And fix backtick and quotes.
 	pt := chroma.Token{Type: token.None}
 	q := chroma.Token{Type: token.None} // qstring for single quotes and backtick string
+	//defer println("*****")
 	for _, t := range iter.Tokens() {
-		// fmt.Printf("%T %v\n", t, t)
+		//fmt.Printf("%T %v\n", t, t)
 		switch t.Type {
 		case chroma.LiteralString, chroma.LiteralStringInterpol, chroma.LiteralStringEscape:
 			if pt.Type != token.Qstring && pt.Type != token.None {
@@ -66,6 +67,7 @@ func Lex(specification string) ([]rd.Token, error) {
 				tokens = append(tokens, q)
 				q.Type = token.None
 				q.Value = ""
+				continue
 			}
 			// backtick
 			if t.Value == "`" && q.Type == token.None { // open
@@ -78,10 +80,15 @@ func Lex(specification string) ([]rd.Token, error) {
 				tokens = append(tokens, q)
 				q.Type = token.None
 				q.Value = ""
+				continue
 			}
 
 			if q.Type == token.Qstring { // append
 				q.Value += t.Value
+			}
+
+			if q.Type == token.None {
+				tokens = append(tokens, rd.Token(t))
 			}
 
 		case chroma.Operator:
