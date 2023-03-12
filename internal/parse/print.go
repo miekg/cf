@@ -61,12 +61,24 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				fmt.Fprintf(w, "%s%s::\n", indent, v)
 			})
 
+		case "ClassGuardSelections":
+			first := firstOfType(parent, t, "ClassGuardSelections")
+			if !first {
+				fmt.Fprintln(w)
+			}
+			printChildrenOfType(w, t, chroma.NameClass, func(v string) {
+				fmt.Fprintf(w, "%s%s::\n", indent, v)
+			})
+
 		case "Promise":
 			fmt.Fprintf(w, "%s", indent)
 			printFirstChildOfType(w, t, token.Qstring, func(v string) {
 				v1 := indentMultilineQstring(v, indent)
 				fmt.Fprintf(w, "%s", v1)
 			})
+
+		case "Selection":
+			fmt.Fprintf(w, "%s", indent)
 
 		case "Constraint":
 			single := countOfType(parent, "Constraint") == 1
@@ -186,17 +198,29 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	switch v := t.Data().(type) {
 	case string:
 		switch v {
-		case "BundleBody", "BodyBody":
+		case "BundleBody":
 			fmt.Fprintf(w, "}\n")
+
+		case "BodyBody":
+			fmt.Fprintf(w, "\n}\n") // needs extra new line
 
 		case "PromiseGuard":
 			fmt.Fprint(w, ":\n\n")
 
 		case "ClassGuardPromises":
 
+		case "ClassGuardSelections":
+
 		case "Promise":
 			last := lastOfType(parent, t, "Promise")
 			fmt.Fprint(w, ";\n")
+			if !last {
+				fmt.Fprintln(w)
+			}
+
+		case "Selection":
+			last := lastOfType(parent, t, "Selection")
+			fmt.Fprint(w, ";")
 			if !last {
 				fmt.Fprintln(w)
 			}

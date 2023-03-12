@@ -9,6 +9,8 @@ body perms system(bla, root, bla)
 
 body perms system(bla, root, bla)
 {
+
+    All::
       mode => "644";
       owners => { "root" };
       groups => { "root" };
