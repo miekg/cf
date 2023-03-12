@@ -198,6 +198,7 @@ func Rval(b *rd.Builder) (ok bool) {
 		return true
 	}
 	// Identifier
+	// NameVariable here too?
 	if MatchType(b, chroma.NameFunction) {
 		return true
 	}
@@ -263,6 +264,7 @@ func GaItem(b *rd.Builder) (ok bool) {
 		return true
 	}
 	// Identifier
+	// NameVariable here too?
 	if MatchType(b, chroma.NameFunction) {
 		return true
 	}
@@ -368,6 +370,9 @@ func Aitem(b *rd.Builder) (ok bool) {
 
 	// Only Identifiers allowed.
 	if ok = MatchType(b, chroma.NameVariable); ok {
+		return true
+	}
+	if ok = MatchType(b, chroma.NameFunction); ok {
 		return true
 	}
 	return false
