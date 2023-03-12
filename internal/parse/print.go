@@ -170,7 +170,7 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	case string:
 		switch v {
 		case "BundleBody", "BodyBody":
-			fmt.Fprintf(w, " }\n")
+			fmt.Fprintf(w, "}\n")
 
 		case "PromiseGuard":
 			fmt.Fprint(w, ":\n\n")
