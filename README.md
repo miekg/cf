@@ -1,6 +1,7 @@
 # CFEngine pretty printer
 
-Cf is a formatter for CFEngine files, think of it as 'gofmt' for .cf files.
+Cf is a formatter for CFEngine files, think of it as 'gofmt' for .cf files. See cmd/cffmt for the
+CLI.
 
 Cf can handle most CFEngine files.
 
@@ -20,7 +21,7 @@ Cf uses an indent of 2 spaces to indent deeper elements of the tree.
 - the promise guard (i.e. `files:` has 2 newlines above it, if its not the first in the file
 - the glass guard (i.e. `any::`), if given has a empty line above it, but is attached to the
   promiser.
-- the promiser is always attached to the constaint expressions
+- the promiser is always attached to the constraint expressions
 - the constraint expressions are indented by 2 spaces.
 
 
@@ -123,6 +124,11 @@ bundle agent bla
 }
 ~~~
 
+The plain strings, i.e. `Bundle` are non-terminals, while the `{TokenType(-994) ...}` and
+`{KeywordTYpe ...}` are terminals. That first terminal has a "local" type that we define, in this
+case it is a `token.Qstring`, otherwise it's a original `chroma.Token`. In both cases the type is a
+`chroma.Token`. See `internal/parse/print.go` on how that tree is walked.
+
 ## Autofmt in (neo)vim
 
 ~~~
@@ -132,8 +138,8 @@ au BufWritePost *.cf silent call Fmt("cffmt /dev/stdin") " fmt on save
 
 ## Developing
 
-Lexing is via Chroma (not 100% perfect, but I intent to upstream some changes there). We have a
-recursive descent parser to create the AST, this us using *rd.Builder. Once we have the AST the
+Lexing is via Chroma (not 100% perfect, but we work around this in `lex.go`). We have a
+recursive descent parser to create the AST, this is using *rd.Builder. Once we have the AST the
 printing is relatively simple (`internal/parse/print.go`).
 
 https://github.com/cfengine/core/blob/master/libpromises/cf3parse.y contains the grammar we're
