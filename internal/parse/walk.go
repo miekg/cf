@@ -13,11 +13,14 @@ const (
 	Terminate
 )
 
+// TreeVisitor is a callback to be called when traversing the syntax tree.
+// Called twice for every node: once with entering=true when the branch is
+// first visited, then with entering=false after all the children are done.
 type TreeVisitor interface {
 	Visit(tree *rd.Tree, entering bool) WalkStatus
 }
 
-// TreeVisitorFunc casts a function to match NodeVisitor interface.
+// TreeVisitorFunc casts a function to match TreeVisitor interface.
 type TreeVisitorFunc func(tree *rd.Tree, entering bool) WalkStatus
 
 // Walk traverses tree recursively.
