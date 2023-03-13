@@ -13,7 +13,18 @@ original input will be outputted instead.
 If you have a "normal" looking CFEngine file that isn't parsed correctly, please open an issue with
 the _most_ _minimal_ CFEngine syntax that fails to parse.
 
-Cf aligns fat-arrows in a constraint, this is also true for selections in bodies.
+## Layout
+
+Cf uses an indent of 2 spaces to indent deeper elements of the tree.
+
+- the promise guard (i.e. `files:` has 2 newlines above it, if its not the first in the file
+- the glass guard (i.e. `any::`), if given has a empty line above it, but is attached to the
+  promiser.
+- the promiser is always attached to the constaint expressions
+- the constraint expressions are indented by 2 spaces.
+
+
+Cf aligns fat-arrows in constraint expressions, this is also true for selections in bodies.
 
 ~~~ cf
 "/etc/apparmor.d"
