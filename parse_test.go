@@ -1,7 +1,6 @@
 package cf
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -10,7 +9,7 @@ import (
 
 func TestParse(t *testing.T) {
 	dir := "testdata"
-	testFiles, err := ioutil.ReadDir(dir)
+	testFiles, err := os.ReadDir(dir)
 	if err != nil {
 		t.Fatalf("could not read %s: %q", dir, err)
 	}

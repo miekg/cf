@@ -2,7 +2,6 @@ package cf
 
 import (
 	"bytes"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -13,7 +12,7 @@ import (
 // Don't add to many pretty files, annoying to test
 func TestPrettyPrint(t *testing.T) {
 	dir := "testdata"
-	testFiles, err := ioutil.ReadDir(dir)
+	testFiles, err := os.ReadDir(dir)
 	if err != nil {
 		t.Fatalf("could not read %s: %q", dir, err)
 	}

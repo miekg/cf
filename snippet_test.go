@@ -324,9 +324,3 @@ func newBuilder(buf string) (*rd.Builder, []rd.Token, error) {
 	}
 	return rd.NewBuilder(tokens), tokens, nil
 }
-
-func logTokens(t *testing.T, tokens []rd.Token) {
-	for _, token := range tokens {
-		t.Logf("%T %v\n", token, token)
-	}
-}
