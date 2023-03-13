@@ -12,7 +12,11 @@ cffmt` \fI[OPTION]\fP... \fI[FILE]\fP
 
 .SH "DESCRIPTION"
 .PP
-Cffmt will take a CFengine file out of \fBFILE\fP or from standard input and will reformat it.
+Cffmt will parse a CFengine file in \fBFILE\fP or from standard input and will pretty print it to
+standard output.
+
+.PP
+If the first line of the file contains the comment: \fB\fC# cffmt:no\fR  it will not be pretty printed.
 
 .PP
 Options are:
@@ -30,6 +34,12 @@ show lexer tokens
 \fB\fC-f\fR
 if parsing fails only show the name of the file being parsed.
 
+
+.SH "SEE ALSO"
+.PP
+See the project's README for more details. Source code and development takes place on
+GitHub
+\[la]https://github.com/miekg/cf\[ra].
 
 .SH "AUTHOR"
 .PP

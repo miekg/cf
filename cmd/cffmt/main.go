@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -23,19 +22,21 @@ var (
 
 func main() {
 	flag.Parse()
-	var err error
-	buffer := []byte{}
+	var (
+		err    error
+		buffer []byte
+	)
 
 	switch flag.NArg() {
 	case 0:
 		buffer, err = io.ReadAll(os.Stdin)
 	case 1:
-		buffer, err = ioutil.ReadFile(flag.Arg(0))
-		if err != nil {
-			log.Fatal(err)
-		}
+		buffer, err = os.ReadFile(flag.Arg(0))
 	default:
 		log.Fatal("Too many arguments")
+	}
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	tokens, err := cf.Lex(string(buffer))

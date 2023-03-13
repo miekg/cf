@@ -17,8 +17,10 @@ cffmt` *[OPTION]*... *[FILE]*
 
 ## Description
 
-Cffmt will take a CFengine file out of **FILE** or from standard input and will reformat it.
-If the first line of the file contains the comment: `# cffmt:no`  it will not be formatted.
+Cffmt will parse a CFengine file in **FILE** or from standard input and will pretty print it to
+standard output.
+
+If the first line of the file contains the comment: `# cffmt:no`  it will not be pretty printed.
 
 Options are:
 
@@ -36,7 +38,8 @@ Options are:
 
 ## See Also
 
-See the project's README for more details.
+See the project's README for more details. Source code and development takes place on
+[GitHub](https://github.com/miekg/cf).
 
 ## Author
 
