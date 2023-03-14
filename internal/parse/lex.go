@@ -54,7 +54,7 @@ func Lex(specification string) ([]rd.Token, error) {
 					// We seen:
 					// ,
 					// };
-					// prolly more ending chars...
+					// prolly more ending chars... that got eaten by the comment...
 
 					// TODO(miek): hack!
 					for _, c := range q.Value[end+1:] {
