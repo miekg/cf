@@ -1,5 +1,7 @@
 TODO:
 
-1. multiline comments need some work.
+1. multiline comments need some work. We need to know if
+    a) multiline
+    b) at EOL or first non-space on the line.
 2. some files (forgot which ones) are ugly pretty printed
    mostly to do with comments in list or functions
