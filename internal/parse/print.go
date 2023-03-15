@@ -172,7 +172,7 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				if w.col > 0 { // we've already outputted a line, this comment comes after the text, indent by _Space
 					fmt.Fprintf(w, "%s%s", _Space, eolComment(v.Value))
 				} else {
-					cindent := indent[:len(indent)-4]
+					cindent := indent[:len(indent)-2]
 					fmt.Fprintf(w, "%s", indentMultilineComment(v.Value, cindent))
 				}
 				// comment in listem
