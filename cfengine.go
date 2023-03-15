@@ -8,7 +8,7 @@ import (
 )
 
 // Parse parses the CFEngine file in buffer into an CFEngine AST. See ParseTokens().
-func Parse(buffer string) (parseTree *rd.Tree, debugTree *rd.DebugTree, err error) {
+func Parse(buffer string) (tree *rd.Tree, debugTree *rd.DebugTree, err error) {
 	tokens, err := Lex(buffer)
 	if err != nil {
 		return nil, nil, err
