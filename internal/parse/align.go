@@ -45,13 +45,37 @@ func indentMultilineQstring(s, indent string) string {
 		return s
 	}
 	// Add newlines except for the last line, trim space, but put single one
-	// back in, so it align under the opening quote.
+	// back in, so it aligns under the opening quote.
 	s = lines[0] + "\n"
 	for i := 1; i < len(lines)-1; i++ {
 		s += indent + " " + strings.TrimLeft(lines[i], "\t ") + "\n"
 	}
 	s += indent + " " + strings.TrimLeft(lines[len(lines)-1], "\t ")
 	return s
+}
+
+// indentMultilineComment indents a comments, because of the way we print it we can indent all the lines and leave the
+// newlines
+func indentMultilineComment(s string, depth int) string {
+	lines := strings.Split(s, "\n") // Unix only now. TODO(miek)
+	if len(lines) == 1 {
+		return s
+	}
+	indent := strings.Repeat(_Space, depth)
+	s = indent + lines[0] + "\n"
+	for i := 1; i < len(lines)-1; i++ {
+		s += indent + lines[i] + "\n"
+	}
+	return s
+}
+
+// eolComment removes the newline if there was only one in the string.
+func eolComment(s string) string {
+	x := strings.Count(s, "\n")
+	if x > 1 {
+		return s
+	}
+	return s[:len(s)-1]
 }
 
 func alignConstraints(tree *rd.Tree) {

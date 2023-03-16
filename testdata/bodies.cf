@@ -9,9 +9,11 @@ body perms system(bla, root, bla)
 
 body perms system(bla, root, bla)
 {
-
+    # dag
     All::
       mode => "644";
       owners => { "root" };
+      # more comments
+      # another one
       groups => { "root" };
 }
