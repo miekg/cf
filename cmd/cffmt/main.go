@@ -18,6 +18,7 @@ var (
 	flagPrint = flag.Bool("p", true, "pretty print the file")
 	flagFail  = flag.Bool("f", false, "when failing to parse only print the filename")
 	flagLex   = flag.Bool("l", false, "only show the tokens")
+	flagDebug = flag.Bool("d", false, "when failing to parse print debug output")
 )
 
 func main() {
@@ -66,11 +67,13 @@ func main() {
 		if *flagFail {
 			log.Fatal(flag.Arg(0))
 		}
-		for _, token := range tokens {
-			log.Printf("%T %v", token, token)
+		if *flagDebug {
+			for _, token := range tokens {
+				log.Printf("%T %v", token, token)
+			}
+			log.Print("Debug Tree:\n", debugTree)
+			log.Print("Parse Tree:\n", parseTree)
 		}
-		log.Print("Debug Tree:\n", debugTree)
-		log.Print("Parse Tree:\n", parseTree)
 		log.Fatalf("Failed to parse: %s", err)
 	}
 	if *flagAst {
