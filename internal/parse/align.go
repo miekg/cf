@@ -56,11 +56,12 @@ func indentMultilineQstring(s, indent string) string {
 
 // indentMultilineComment indents a comments, because of the way we print it we can indent all the lines and leave the
 // newlines
-func indentMultilineComment(s, indent string) string {
+func indentMultilineComment(s string, depth int) string {
 	lines := strings.Split(s, "\n") // Unix only now. TODO(miek)
 	if len(lines) == 1 {
 		return s
 	}
+	indent := strings.Repeat(_Space, depth)
 	s = indent + lines[0] + "\n"
 	for i := 1; i < len(lines)-1; i++ {
 		s += indent + lines[i] + "\n"

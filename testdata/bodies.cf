@@ -1,17 +1,20 @@
 body perms system(bla, root, bla)
 {
       mode => "644";
-      owners => { "root" };
+      owners => { "root" }; # hallo
+      # hallo
       groups => { "root" };
 }
 
 ###################################
 
 body perms system(bla, root, bla)
+# hallo
 {
-
+    # dag
     All::
       mode => "644";
-      owners => { "root" };
+      owners => { "root" }; # halllo
+      # hallo
       groups => { "root" };
 }

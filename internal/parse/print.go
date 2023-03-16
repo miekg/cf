@@ -12,7 +12,10 @@ import (
 
 const _Space = "  "
 
-var first bool
+type Printer struct {
+	nostart bool // we we not outputting the first body/bundle of the file
+	body    bool // are we in a body or bundle (indendation hack for comments)
+}
 
 // Print pretty prints the CFengine AST in tree.
 func Print(w io.Writer, tree *rd.Tree) {
@@ -22,13 +25,15 @@ func Print(w io.Writer, tree *rd.Tree) {
 
 	align(tree)
 
+	p := &Printer{}
+
 	tw := &tw{w: w, width: 120} // make option?
 	for _, t := range tree.Subtrees {
-		print(tw, t, 0, tree)
+		p.print(tw, t, 0, tree)
 	}
 }
 
-func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
+func (p Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	indent := ""
 	if depth >= 0 {
 		indent = strings.Repeat(_Space, depth)
@@ -38,6 +43,12 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	switch v := t.Data().(type) {
 	case string:
 		switch v {
+		case "Bundle":
+			p.body = false
+
+		case "Body":
+			p.body = true
+
 		case "BundleBody", "BodyBody":
 			fmt.Fprintf(w, "\n{\n") // open the bundle
 
@@ -121,10 +132,10 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 		case chroma.Keyword:
 			switch v.Value {
 			case "bundle", "body":
-				if first {
+				if p.nostart {
 					fmt.Fprintln(w)
 				}
-				first = true
+				p.nostart = true
 				fmt.Fprintf(w, "%s ", v.Value)
 			default:
 				fmt.Fprintf(w, "%s ", v.Value)
@@ -155,24 +166,27 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			// step. Fix that here. FIX(miek).
 			switch depth {
 			case 1:
-				if first { // top-level comments
+				if p.nostart { // top-level comments
 					fmt.Fprintln(w)
 				}
 				fmt.Fprintf(w, "%s", v.Value) // no indentation
 			case 2: // comments between bundle and opening {
-				if first { // top-level comments
+				if p.nostart { // top-level comments
 					fmt.Fprintln(w)
 				}
 				if w.col > 0 {
 					fmt.Fprintln(w)
 				}
 				fmt.Fprintf(w, "%s", v.Value) // no indentation
-				// small bug where this as a new line before the opening brace
 			default:
 				if w.col > 0 { // we've already outputted a line, this comment comes after the text, indent by _Space
 					fmt.Fprintf(w, "%s%s", _Space, eolComment(v.Value))
 				} else {
-					cindent := indent[:len(indent)-2]
+					// todo hack, in a body, we indent too much here, need -4 instead of -2
+					cindent := depth - 1
+					if p.body {
+						cindent = depth - 2
+					}
 					fmt.Fprintf(w, "%s", indentMultilineComment(v.Value, cindent))
 				}
 				// comment in listem
@@ -207,7 +221,7 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	}
 
 	for _, c := range t.Subtrees {
-		print(w, c, depth+1, t)
+		p.print(w, c, depth+1, t)
 	}
 
 	// On Leave
