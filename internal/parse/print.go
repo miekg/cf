@@ -12,7 +12,11 @@ import (
 
 const _Space = "  "
 
-var first bool
+// Printer used for some housekeeping during printing.
+type Printer struct {
+	first bool
+	body  bool
+}
 
 // Print pretty prints the CFengine AST in tree.
 func Print(w io.Writer, tree *rd.Tree) {
@@ -20,26 +24,32 @@ func Print(w io.Writer, tree *rd.Tree) {
 		return // empty spec
 	}
 
+	p := &Printer{}
 	align(tree)
 
 	tw := &tw{w: w, width: 120} // make option?
 	for _, t := range tree.Subtrees {
-		print(tw, t, 0, tree)
+		p.print(tw, t, 0, tree)
 	}
 }
 
-func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
+func (p Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	indent := ""
-	if depth >= 0 {
-		indent = strings.Repeat(_Space, depth)
+	if depth >= 1 {
+		indent = strings.Repeat(_Space, depth-1)
 	}
 
 	// On Enter
 	switch v := t.Data().(type) {
 	case string:
 		switch v {
-		case "BundleBody", "BodyBody":
+		case "BundleBody":
 			fmt.Fprintf(w, "\n{\n") // open the bundle
+			p.body = false
+
+		case "BodyBody":
+			fmt.Fprintf(w, "\n{\n") // open the body
+			p.body = true
 
 		case "PromiseGuard":
 			first := firstOfType(parent, t, "PromiseGuard")
@@ -125,10 +135,10 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 		case chroma.Keyword:
 			switch v.Value {
 			case "bundle", "body":
-				if first {
+				if p.first {
 					fmt.Fprintln(w)
 				}
-				first = true
+				p.first = true
 				fmt.Fprintf(w, "%s ", v.Value)
 			default:
 				fmt.Fprintf(w, "%s ", v.Value)
@@ -163,12 +173,12 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			// step. Fix that here. FIX(miek).
 			switch depth {
 			case 1:
-				if first { // top-level comments
+				if p.first { // top-level comments
 					fmt.Fprintln(w)
 				}
 				fmt.Fprintf(w, "%s", v.Value) // no indentation
 			case 2: // comments between bundle and opening {
-				if first { // top-level comments
+				if p.first { // top-level comments
 					fmt.Fprintln(w)
 				}
 				if w.col > 0 {
@@ -181,6 +191,9 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 					fmt.Fprintf(w, "%s%s", _Space, v.Value)
 				} else {
 					cindent := indent[:len(indent)-2]
+					if p.body && len(cindent) >= 2 {
+						cindent = cindent[:len(cindent)-2]
+					}
 					fmt.Fprintf(w, "%s%s", cindent, v.Value)
 				}
 				// comment in listem
@@ -216,7 +229,7 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	}
 
 	for _, c := range t.Subtrees {
-		print(w, c, depth+1, t)
+		p.print(w, c, depth+1, t)
 	}
 
 	// On Leave
