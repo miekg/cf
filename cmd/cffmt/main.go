@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/alecthomas/chroma"
+	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf"
 	"github.com/miekg/cf/token"
 )

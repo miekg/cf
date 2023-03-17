@@ -3,7 +3,7 @@ package parse
 import (
 	"fmt"
 
-	"github.com/alecthomas/chroma"
+	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf/token"
 	"github.com/shivamMg/rd"
 )

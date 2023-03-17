@@ -3,8 +3,8 @@ package parse
 import (
 	"strings"
 
-	"github.com/alecthomas/chroma"
-	"github.com/alecthomas/chroma/lexers"
+	"github.com/alecthomas/chroma/v2"
+	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/miekg/cf/token"
 	"github.com/shivamMg/rd"
 )

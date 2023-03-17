@@ -3,7 +3,7 @@ package parse
 import (
 	"io"
 
-	"github.com/alecthomas/chroma"
+	"github.com/alecthomas/chroma/v2"
 	"github.com/shivamMg/rd"
 )
 
