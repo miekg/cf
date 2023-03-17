@@ -8,3 +8,7 @@ TODO:
 
 It might be a good idea to _not_ have any comments print their newlines and just add them
 as we see fit...
+
+# Write detection stuff
+
+promise guards with zero children
