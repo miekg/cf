@@ -33,7 +33,7 @@ func Print(w io.Writer, tree *rd.Tree) {
 	}
 }
 
-func (p Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
+func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	indent := ""
 	if depth >= 1 {
 		indent = strings.Repeat(_Space, depth-1)
