@@ -62,7 +62,7 @@ func TestSnippetConstraints(t *testing.T) {
 │  └─ {TokenType(-996) =>}
 └─ Rval
    └─ NakedVar
-      └─ {TokenType(-993) $(compounds.to_inform)}
+      └─ {NameVariable $(compounds.to_inform)}
 `,
 		},
 		{`slist => "hallo"`, `Constraint
@@ -170,7 +170,7 @@ func TestSnippetConstraints(t *testing.T) {
          ├─ {Punctuation ,}
          └─ GaItem
             └─ NakedVar
-               └─ {TokenType(-993) $(sys.policy_hub)}
+               └─ {NameVariable $(sys.policy_hub)}
 `,
 		},
 	}

@@ -404,9 +404,6 @@ func Qstring(b *rd.Builder) (ok bool) {
 func NakedVar(b *rd.Builder) (ok bool) {
 	b.Enter("NakedVar")
 	defer b.Exit(&ok)
-	if MatchType(b, token.NakedVar) {
-		return true
-	}
 	if MatchType(b, chroma.NameVariable) {
 		return true
 	}

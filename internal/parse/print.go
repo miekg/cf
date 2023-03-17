@@ -209,9 +209,6 @@ func (p Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			// Not added for now
 			fmt.Fprintf(w, "%s", v.Value)
 
-		case token.NakedVar:
-			fmt.Fprintf(w, "%s", v.Value)
-
 		case token.FatArrow:
 			fmt.Fprintf(w, " %s ", v.Value)
 
