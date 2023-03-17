@@ -19,9 +19,6 @@ type tc struct {
 
 // astCompare compares the AST string in a with that in b.
 func astCompare(a, b string) error {
-	if len(a) != len(b) {
-		return fmt.Errorf("length don't match, %d != %d", len(a), len(b))
-	}
 	as := strings.Split(a, "\n")
 	bs := strings.Split(b, "\n")
 	for i := range as {

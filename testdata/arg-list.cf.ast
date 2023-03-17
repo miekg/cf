@@ -10,7 +10,7 @@ Specification
          └─ Promise
             ├─ {TokenType(-994) "installed_canonified"}
             ├─ Constraint
-            │  ├─ {KeywordType slist}
+            │  ├─ {KeywordReserved slist}
             │  ├─ FatArrow
             │  │  └─ {TokenType(-996) =>}
             │  └─ Rval

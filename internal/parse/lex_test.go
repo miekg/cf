@@ -152,7 +152,7 @@ func TestLexSingleQuotePunctuation(t *testing.T) {
 	const input = `"lines" slist => { '#controlled by cfengine',
 				};`
 	const expect = `chroma.Token {TokenType(-994) "lines"}
-chroma.Token {KeywordType slist}
+chroma.Token {KeywordReserved slist}
 chroma.Token {TokenType(-996) =>}
 chroma.Token {Punctuation {}
 chroma.Token {TokenType(-994) '#controlled by cfengine'}
