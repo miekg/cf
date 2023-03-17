@@ -23,7 +23,8 @@ func Print(w io.Writer, tree *rd.Tree) { parse.Print(w, tree) }
 // Lex returns the tokens from the CFEngine file in the buffer.
 func Lex(buffer string) ([]rd.Token, error) { return parse.Lex(buffer) }
 
-// ParseTokens parses the tokens in an CFEngine AST. An empty files returns no trees, but also no error.
+// ParseTokens parses the tokens in an CFEngine AST. An empty file returns no trees, but also no error. When parsing
+// fails an error is returned and the debugTree show what was successfully parsed and what wasn't.
 func ParseTokens(tokens []rd.Token) (tree *rd.Tree, debugTree *rd.DebugTree, err error) {
 	if len(tokens) == 0 {
 		return nil, nil, nil
