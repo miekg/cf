@@ -11,4 +11,7 @@ as we see fit...
 
 # Write detection stuff
 
-promise guards with zero children
+promise guards with zero children should be removed - except we don't store them with children
+so hard to - cf-promise -pjson can help maybe
+
+If you have only single line constraint it would be nice to suppress the newline between them

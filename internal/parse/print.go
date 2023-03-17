@@ -52,6 +52,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			p.body = true
 
 		case "PromiseGuard":
+			println(len(t.Subtrees))
 			first := firstOfType(parent, t, "PromiseGuard")
 			if !first {
 				fmt.Fprintf(w, "\n\n")
@@ -60,7 +61,6 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			if sequenceOfChild(parent, t) > 0 && first {
 				fmt.Fprintf(w, "\n\n")
 			}
-			fmt.Fprintf(w, "%s", indent)
 
 		case "ClassGuardPromises":
 			first := firstOfType(parent, t, "ClassGuardPromises")
