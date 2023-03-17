@@ -20,7 +20,7 @@ Specification
                │  │  └─ {TokenType(-996) =>}
                │  └─ Rval
                │     └─ NakedVar
-               │        └─ {TokenType(-993) $(compounds.to_inform)}
+               │        └─ {NameVariable $(compounds.to_inform)}
                ├─ {Punctuation ,}
                ├─ Constraint
                │  ├─ {KeywordReserved contain}

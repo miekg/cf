@@ -134,7 +134,7 @@ func TestLexNakedVar(t *testing.T) {
 	const input = "inform => $(compounds.to_inform)\n"
 	const expect = `chroma.Token {KeywordReserved inform}
 chroma.Token {TokenType(-996) =>}
-chroma.Token {TokenType(-993) $(compounds.to_inform)}
+chroma.Token {NameVariable $(compounds.to_inform)}
 `
 
 	tokens, err := Lex(string(input))

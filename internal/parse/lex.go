@@ -69,41 +69,5 @@ func Lex(specification string) ([]rd.Token, error) {
 		tokens = append(tokens, pt)
 	}
 
-	var tokens2 []rd.Token
-	{
-		// To not complicate the above loop more we do another loop over the tokens to extract naked vars
-		// $(..), shows up as Error($)Punctuation((). Grab those into a NakedVar
-		//
-		// chroma.Token {Error $}
-		// chroma.Token {Punctuation (}
-		// chroma.Token {NameFunction sys}
-		// chroma.Token {Error .}
-		// chroma.Token {NameFunction policy_hub}
-		// chroma.Token {Punctuation )}
-		nakedvar := chroma.Token{Type: token.None}
-		for i, t := range tokens {
-			// open
-			if t.(chroma.Token).Type == chroma.Error && t.(chroma.Token).Value == "$" {
-				if i < len(tokens)-1 && tokens[i+1].(chroma.Token).Type == chroma.Punctuation && tokens[i+1].(chroma.Token).Value == "(" {
-					nakedvar.Type = token.NakedVar
-				}
-			}
-			if nakedvar.Type == token.None {
-				tokens2 = append(tokens2, t)
-				continue
-			}
-
-			// close
-			if t.(chroma.Token).Type == chroma.Punctuation && t.(chroma.Token).Value == ")" {
-				nakedvar.Value += ")"
-				tokens2 = append(tokens2, nakedvar)
-				nakedvar = chroma.Token{Type: token.None}
-				continue
-			}
-
-			nakedvar.Value += t.(chroma.Token).Value
-		}
-	}
-
-	return tokens2, nil
+	return tokens, nil
 }
