@@ -188,13 +188,13 @@ func (p Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				// small bug where this as a new line before the opening brace
 			default:
 				if w.col > 0 { // we've already outputted a line, this comment comes after the text, indent by _Space
-					fmt.Fprintf(w, "%s%s", _Space, v.Value)
+					fmt.Fprintf(w, "%s%s", _Space, indentMultilineComment(v.Value, _Space))
 				} else {
 					cindent := indent[:len(indent)-2]
 					if p.body && len(cindent) >= 2 {
 						cindent = cindent[:len(cindent)-2]
 					}
-					fmt.Fprintf(w, "%s%s", cindent, v.Value)
+					fmt.Fprintf(w, "%s%s", cindent, indentMultilineComment(v.Value, cindent))
 				}
 				// comment in listem
 				if w.bracecol > -1 {
