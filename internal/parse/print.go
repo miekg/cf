@@ -12,7 +12,11 @@ import (
 
 const _Space = "  "
 
-var first bool
+// Printer used for some housekeeping during printing.
+type Printer struct {
+	first bool
+	body  bool
+}
 
 // Print pretty prints the CFengine AST in tree.
 func Print(w io.Writer, tree *rd.Tree) {
@@ -20,26 +24,32 @@ func Print(w io.Writer, tree *rd.Tree) {
 		return // empty spec
 	}
 
+	p := &Printer{}
 	align(tree)
 
 	tw := &tw{w: w, width: 120} // make option?
 	for _, t := range tree.Subtrees {
-		print(tw, t, 0, tree)
+		p.print(tw, t, 0, tree)
 	}
 }
 
-func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
+func (p Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	indent := ""
-	if depth >= 0 {
-		indent = strings.Repeat(_Space, depth)
+	if depth >= 1 {
+		indent = strings.Repeat(_Space, depth-1)
 	}
 
 	// On Enter
 	switch v := t.Data().(type) {
 	case string:
 		switch v {
-		case "BundleBody", "BodyBody":
+		case "BundleBody":
 			fmt.Fprintf(w, "\n{\n") // open the bundle
+			p.body = false
+
+		case "BodyBody":
+			fmt.Fprintf(w, "\n{\n") // open the body
+			p.body = true
 
 		case "PromiseGuard":
 			first := firstOfType(parent, t, "PromiseGuard")
@@ -89,7 +99,11 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				if constraintPreventSingleLine(t) {
 					fmt.Fprintf(w, "\n%s", indent)
 				} else {
-					fmt.Fprint(w, " ")
+					if prevOfType(parent, t, "Comment") { // we have insert a new line then
+						fmt.Fprintf(w, "%s", indent)
+					} else {
+						fmt.Fprint(w, " ")
+					}
 				}
 			} else {
 				fmt.Fprintf(w, "\n%s", indent)
@@ -121,14 +135,18 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 		case chroma.Keyword:
 			switch v.Value {
 			case "bundle", "body":
-				if first {
+				if p.first {
 					fmt.Fprintln(w)
 				}
-				first = true
+				p.first = true
 				fmt.Fprintf(w, "%s ", v.Value)
 			default:
 				fmt.Fprintf(w, "%s ", v.Value)
 			}
+
+		case chroma.CommentPreproc:
+			fmt.Fprintf(w, "%s", v.Value)
+
 		case chroma.KeywordDeclaration:
 			fmt.Fprintf(w, "%s", v.Value)
 
@@ -155,12 +173,12 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			// step. Fix that here. FIX(miek).
 			switch depth {
 			case 1:
-				if first { // top-level comments
+				if p.first { // top-level comments
 					fmt.Fprintln(w)
 				}
 				fmt.Fprintf(w, "%s", v.Value) // no indentation
 			case 2: // comments between bundle and opening {
-				if first { // top-level comments
+				if p.first { // top-level comments
 					fmt.Fprintln(w)
 				}
 				if w.col > 0 {
@@ -170,10 +188,13 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				// small bug where this as a new line before the opening brace
 			default:
 				if w.col > 0 { // we've already outputted a line, this comment comes after the text, indent by _Space
-					fmt.Fprintf(w, "%s%s", _Space, v.Value)
+					fmt.Fprintf(w, "%s%s", _Space, indentMultilineComment(v.Value, _Space))
 				} else {
 					cindent := indent[:len(indent)-2]
-					fmt.Fprintf(w, "%s%s", cindent, v.Value)
+					if p.body && len(cindent) >= 2 {
+						cindent = cindent[:len(cindent)-2]
+					}
+					fmt.Fprintf(w, "%s%s", cindent, indentMultilineComment(v.Value, cindent))
 				}
 				// comment in listem
 				if w.bracecol > -1 {
@@ -183,7 +204,8 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			}
 
 		case token.Qstring:
-			// TODO(miek): Needs indenting ever??
+			// TODO(miek): Needs indenting if spread over multiple lines. Possibly we need to strip prefix
+			// whitespace.
 			// Not added for now
 			fmt.Fprintf(w, "%s", v.Value)
 
@@ -207,7 +229,7 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	}
 
 	for _, c := range t.Subtrees {
-		print(w, c, depth+1, t)
+		p.print(w, c, depth+1, t)
 	}
 
 	// On Leave

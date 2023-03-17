@@ -119,6 +119,7 @@ func Promises(b *rd.Builder) (ok bool) {
 
 	for {
 		Comments(b) // comments in between promises and trailing ones
+		Macro(b)
 		if !Promise(b) {
 			return true
 		}
@@ -435,6 +436,13 @@ func Comments(b *rd.Builder) (ok bool) {
 			return true
 		}
 	}
+}
+
+func Macro(b *rd.Builder) (ok bool) {
+	b.Enter("Macro")
+	defer b.Exit(&ok)
+
+	return MatchType(b, chroma.CommentPreproc)
 }
 
 func Comment(b *rd.Builder) (ok bool) {

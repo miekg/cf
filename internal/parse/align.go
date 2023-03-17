@@ -54,6 +54,20 @@ func indentMultilineQstring(s, indent string) string {
 	return s
 }
 
+// indentMultilineComments indent comments that have multiple lines, single line strings are left alone.
+// when indentation is added, it is done for all lines except the first one.
+func indentMultilineComment(s, indent string) string {
+	if strings.Count(s, "\n") == 1 {
+		return s
+	}
+	lines := strings.Split(s, "\n") // Unix only now. TODO(miek)
+	s = lines[0] + "\n"
+	for i := 1; i < len(lines); i++ {
+		s += indent + strings.TrimLeft(lines[i], "\t ") + "\n"
+	}
+	return s
+}
+
 func alignConstraints(tree *rd.Tree) {
 	promise, ok := tree.Data().(string)
 	if !ok {

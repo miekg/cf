@@ -1,12 +1,11 @@
 # CFEngine pretty printer
 
-Cf is a formatter for CFEngine files, think of it as 'gofmt' for .cf files. See cmd/cffmt for the
-CLI.
+Cf is a formatter for CFEngine files, think of it as 'gofmt' (from golang) for .cf files. See
+cmd/cffmt for the CLI.
 
-Cf can handle most CFEngine files.
-
-- macros (@if etc, should also not be too hard)
-- new `promise` keyword in CFEngine3 (should also not be too hard)
+Cf should handle all CFEngine files, allthough the syntax is _so_ liberal, especially where you can
+place comments (the official yacc parser/lexer throws away comments) that there is always a chance a
+file isn't parseable. The new data type which can parse inline json can also cause trouble.
 
 If a file has a top-level comment of the form: `# cffmt:no` the file will not be parsed and the
 original input will be outputted instead.
@@ -143,4 +142,4 @@ recursive descent parser to create the AST, this is using *rd.Builder. Once we h
 printing is relatively simple (`internal/parse/print.go`).
 
 https://github.com/cfengine/core/blob/master/libpromises/cf3parse.y contains the grammar we're
-reimplementing here.
+reimplementing here. Note that one doesn't deal with comments, and is not used to build an AST.
