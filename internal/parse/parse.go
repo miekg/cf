@@ -339,7 +339,6 @@ func Litem(b *rd.Builder) (ok bool) {
 	return false
 }
 
-// ArgList is the list of params after bundle or body.
 func ArgList(b *rd.Builder) (ok bool) {
 	b.Enter("ArgList")
 	defer b.Exit(&ok)

@@ -52,6 +52,7 @@ func MatchDiscard(b *rd.Builder, t chroma.Token) bool {
 	return false
 }
 
+// Peek will peek the next token.
 func Peek(b *rd.Builder, t chroma.Token) bool {
 	next, ok := b.Peek(1)
 	if !ok {
