@@ -10,7 +10,7 @@ Specification
          └─ Promise
             ├─ {TokenType(-994) "automaster_lines"}
             ├─ Constraint
-            │  ├─ {KeywordType slist}
+            │  ├─ {KeywordReserved slist}
             │  ├─ FatArrow
             │  │  └─ {TokenType(-996) =>}
             │  └─ Rval

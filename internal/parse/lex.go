@@ -1,10 +1,8 @@
 package parse
 
 import (
-	"strings"
-
-	"github.com/alecthomas/chroma"
-	"github.com/alecthomas/chroma/lexers"
+	"github.com/alecthomas/chroma/v2"
+	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/miekg/cf/token"
 	"github.com/shivamMg/rd"
 )
@@ -19,21 +17,13 @@ func Lex(specification string) ([]rd.Token, error) {
 	// There are several passes here. Mostly to not have a very complex single loop. Surely this can be optimized,
 	// OTOH it's only iterating over a few thousand tokens and creating a bunch of garbage memory.
 
-	// Chroma has a bug where it sees a comment in a string and makes it an actual Comment, instead of properly
-	// saying it is part of the string. This happens for single quote, and probably also backtick.
-	// Compresses LiteralString* into a single Qstring, same for Comments. And fix backtick and quotes.
+	// Compresses LiteralString* into a single Qstring, same for Comments.
 	pt := chroma.Token{Type: token.None}
-	q := chroma.Token{Type: token.None} // qstring for single quotes and backtick string
 	//defer println("*****")
 	for _, t := range iter.Tokens() {
 		//fmt.Printf("%T %v\n", t, t)
 		switch t.Type {
 		case chroma.LiteralString, chroma.LiteralStringInterpol, chroma.LiteralStringEscape:
-			if q.Type == token.Qstring { // in a qstring gathering phase
-				q.Value += t.Value
-				continue
-			}
-
 			if pt.Type != token.Qstring && pt.Type != token.None {
 				tokens = append(tokens, rd.Token(pt))
 				pt.Value = ""
@@ -42,44 +32,6 @@ func Lex(specification string) ([]rd.Token, error) {
 			pt.Value += t.Value
 
 		case chroma.Comment:
-			if q.Type == token.Qstring { // we're in a single or backtick string, this comment closes both
-				q.Value += t.Value
-				// We match too match, so strip back to the closing quote.
-				// Check first char for quote, indexLast with that value.
-				begin := string(q.Value[0])
-				readd := []chroma.Token{}
-				if end := strings.LastIndex(q.Value, begin); end > 0 {
-					// this strips newline and other fluff. BUT also a comma (as I've seen). Check
-					// specifically for these char and inject after this one is added.
-					// We seen:
-					// ,
-					// };
-					// prolly more ending chars... that got eaten by the comment...
-
-					// TODO(miek): hack!
-					for _, c := range q.Value[end+1:] {
-						if string(c) == "," {
-							readd = append(readd, chroma.Token{Type: chroma.Punctuation, Value: ","})
-						}
-						if string(c) == "}" {
-							readd = append(readd, chroma.Token{Type: chroma.Punctuation, Value: "}"})
-						}
-						if string(c) == ";" {
-							readd = append(readd, chroma.Token{Type: chroma.Punctuation, Value: ";"})
-						}
-					}
-					q.Value = q.Value[:end+1]
-				}
-
-				tokens = append(tokens, q)
-				for i := range readd {
-					tokens = append(tokens, readd[i])
-				}
-				q.Type = token.None
-				q.Value = ""
-				continue
-			}
-
 			if pt.Type != token.Comment && pt.Type != token.None {
 				tokens = append(tokens, rd.Token(pt))
 				pt.Value = ""
@@ -88,42 +40,6 @@ func Lex(specification string) ([]rd.Token, error) {
 			pt.Type = token.Comment
 			pt.Value += t.Value
 
-		case chroma.Error:
-			// quote
-			if t.Value == "'" && q.Type == token.None { // open
-				q.Type = token.Qstring
-				q.Value = "'"
-				continue
-			}
-			if t.Value == "'" && q.Type == token.Qstring { // close
-				q.Value += "'"
-				tokens = append(tokens, q)
-				q.Type = token.None
-				q.Value = ""
-				continue
-			}
-			// backtick
-			if t.Value == "`" && q.Type == token.None { // open
-				q.Type = token.Qstring
-				q.Value = "`"
-				continue
-			}
-			if t.Value == "`" && q.Type == token.Qstring { // close
-				q.Value += "`"
-				tokens = append(tokens, q)
-				q.Type = token.None
-				q.Value = ""
-				continue
-			}
-
-			if q.Type == token.Qstring { // append
-				q.Value += t.Value
-			}
-
-			if q.Type == token.None {
-				tokens = append(tokens, rd.Token(t))
-			}
-
 		case chroma.Operator:
 			if t.Value == "=>" {
 				tokens = append(tokens, rd.Token(chroma.Token{Type: token.FatArrow, Value: t.Value}))
@@ -131,14 +47,8 @@ func Lex(specification string) ([]rd.Token, error) {
 			if t.Value == "->" {
 				tokens = append(tokens, rd.Token(chroma.Token{Type: token.ThinArrow, Value: t.Value}))
 			}
-			// others??
 
 		case chroma.Text:
-			if q.Type == token.Qstring {
-				q.Value += t.Value
-				continue
-			}
-
 			if pt.Type != token.None {
 				tokens = append(tokens, pt)
 			}
@@ -146,11 +56,6 @@ func Lex(specification string) ([]rd.Token, error) {
 			pt.Value = ""
 
 		default:
-			if q.Type == token.Qstring {
-				q.Value += t.Value
-				continue
-			}
-
 			if pt.Type != token.None {
 				tokens = append(tokens, pt)
 			}
@@ -200,36 +105,5 @@ func Lex(specification string) ([]rd.Token, error) {
 		}
 	}
 
-	var tokens3 []rd.Token
-	{
-		// And another, which should also be a Qstring
-		// chroma.Token {Punctuation "}
-		// chroma.Token {NameVariable installed_names_canonified}
-		// chroma.Token {Punctuation "}
-		suppress := 0
-		for i, t := range tokens2 {
-			if t.(chroma.Token).Type == chroma.Punctuation && t.(chroma.Token).Value == `"` {
-				if i < len(tokens2)-2 {
-					if tokens2[i+1].(chroma.Token).Type == chroma.NameVariable {
-						if tokens2[i+2].(chroma.Token).Type == chroma.Punctuation && tokens2[i+2].(chroma.Token).Value == `"` {
-							// make this a indentifier, because arglist.cf uses it in that place.
-							// there might be other places as well.
-							suppress = 2
-							tokens3 = append(tokens3, chroma.Token{Type: token.Qstring, Value: `"` + tokens2[i+1].(chroma.Token).Value + `"`})
-							continue
-						}
-					}
-				}
-			}
-			if suppress == 0 {
-				tokens3 = append(tokens3, t)
-			}
-			if suppress > 0 {
-				suppress--
-			}
-
-		}
-	}
-
-	return tokens3, nil
+	return tokens2, nil
 }
