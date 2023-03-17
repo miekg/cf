@@ -85,11 +85,12 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "Constraint":
 			single := countOfType(parent, "Constraint") == 1
+			println(countOfType(parent, "Constratin"))
 			if single {
 				if constraintPreventSingleLine(t) {
 					fmt.Fprintf(w, "\n%s", indent)
 				} else {
-					fmt.Fprint(w, " ")
+					fmt.Fprintf(w, "%s", indent)
 				}
 			} else {
 				fmt.Fprintf(w, "\n%s", indent)
@@ -183,7 +184,8 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			}
 
 		case token.Qstring:
-			// TODO(miek): Needs indenting ever??
+			// TODO(miek): Needs indenting if spread over multiple lines. Possibly we need to strip prefix
+			// whitespace.
 			// Not added for now
 			fmt.Fprintf(w, "%s", v.Value)
 
