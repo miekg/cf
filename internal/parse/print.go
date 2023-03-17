@@ -85,7 +85,6 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "Constraint":
 			single := countOfType(parent, "Constraint") == 1
-			println(countOfType(parent, "Constratin"))
 			if single {
 				if constraintPreventSingleLine(t) {
 					fmt.Fprintf(w, "\n%s", indent)
