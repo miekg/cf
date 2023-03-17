@@ -5,3 +5,6 @@ TODO:
     b) at EOL or first non-space on the line.
 2. some files (forgot which ones) are ugly pretty printed
    mostly to do with comments in list or functions
+
+It might be a good idea to _not_ have any comments print their newlines and just add them
+as we see fit...

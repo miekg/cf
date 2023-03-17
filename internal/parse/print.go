@@ -89,7 +89,11 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				if constraintPreventSingleLine(t) {
 					fmt.Fprintf(w, "\n%s", indent)
 				} else {
-					fmt.Fprintf(w, "%s", indent)
+					if prevOfType(parent, t, "Comment") { // we have insert a new line then
+						fmt.Fprintf(w, "%s", indent)
+					} else {
+						fmt.Fprint(w, " ")
+					}
 				}
 			} else {
 				fmt.Fprintf(w, "\n%s", indent)
@@ -129,6 +133,10 @@ func print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			default:
 				fmt.Fprintf(w, "%s ", v.Value)
 			}
+
+		case chroma.CommentPreproc:
+			fmt.Fprintf(w, "%s", v.Value)
+
 		case chroma.KeywordDeclaration:
 			fmt.Fprintf(w, "%s", v.Value)
 
