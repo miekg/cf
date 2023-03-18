@@ -56,7 +56,7 @@ Becomes:
 ~~~
 
 If there are multiple promises and they all have single constraints, the promises themselves are
-aligned:
+aligned and the newline between them is scapped:
 
 ~~~ cfengine
 "getcapExists"
@@ -69,14 +69,49 @@ To:
 
 ~~~ cfengine
 "getcapExists" expression => fileexists("/sbin/getcap");
-
 "setcapExists" expression => fileexists("/sbin/setcap");
 ~~~
 
 If a single constraint has a 'contain =>' or 'comment =>' they will _not_ be printed on the same
-line. This is to show important things on the left hand side. (See align.go for details).
+line. This is to show important things on the left hand side. (See align.go for details), i.e:
 
-Trailing commas of lists are removed.
+~~~ cfengine
+printvm::
+ "printer[xxx]"	string => "ps.ppd";
+  "printer[xxx]"		string => "ps.ppd";
+  "printer[xxx]" string => "ps.ppd";
+~~~
+
+To:
+
+~~~ cfengine
+printvm::
+  "printer[xxx]" string => "ps.ppd";
+  "printer[xxx]" string => "ps.ppd";
+  "printer[xxx]" string => "ps.ppd";
+~~~
+
+But if one of the constraints was `contain` or `comment`:
+
+~~~ cfengine
+printvm::
+  "printer[xxx]" string => "ps.ppd";
+  "printer[xxx]" comment => "ps.ppd";
+  "printer[xxx]" string => "ps.ppd";
+~~~
+
+Will instead become:
+~~~ cfengine
+printvm::
+  "printer[xxx]" string => "ps.ppd";
+
+  "printer[xxx]"
+    comment => "ps.ppd";
+
+  "printer[xxx]" string => "ps.ppd";
+~~~
+
+Trailing commas of lists are removed. List are wrapped at the 120th column.
 
 Install the `cffmt` binary with: `go install github.com/miekg/cf/cmd/cffmt@main`. Then use it by
 giving it a filename or piping to standard input. The pretty printed document is printed to standard
