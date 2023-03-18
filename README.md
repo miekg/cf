@@ -111,7 +111,22 @@ printvm::
   "printer[xxx]" string => "ps.ppd";
 ~~~
 
-Trailing commas of lists are removed. List are wrapped at the 120th column.
+Trailing commas of lists are removed. List are wrapped at the 120th column: (assuming fff, is on the
+120th column):
+
+~~~ cfengine
+"Clients"         or => { aaa, bbb, ccc, dddd, eee, fff,
+  ggg, hhhh };
+~~~
+
+To:
+
+~~~ cfengine
+"Clients"         or => { aaa, bbb, ccc, dddd, eee, fff, ggg,
+                          hhhh };
+~~~
+
+It also makes sure there isn't a dangling `};` on a line.
 
 Install the `cffmt` binary with: `go install github.com/miekg/cf/cmd/cffmt@main`. Then use it by
 giving it a filename or piping to standard input. The pretty printed document is printed to standard

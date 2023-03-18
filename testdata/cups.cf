@@ -1,27 +1,24 @@
 bundle agent cups
 {
+vars:
 
- vars:
+    printvm::
+      "printer[xxx]" string => "ps.ppd";
+      "printer[xxx]" string => "ps.ppd";
+      "printer[xxx]" string => "ps.ppd";
+      "printer[xxx]" string => "ps.ppd";
+      "printer[xxx]" string => "ps.ppd";
+      "printer[xxx]" string => "ps.ppd";
+      "printer[xxx]" string => "ps.ppd";
+      "printer[xxx]" string => "ps.ppd";
+      "printer[xxx]" string => "ps.ppd";
+      "printer[xxx]" string => "ps.ppd";
 
-  printvm::
-   "printer[xxx]"			string => "ps.ppd";
-   "printer[xxx]"		string => "ps.ppd";
-   "printer[xxx]"		string => "ps.ppd";
+    labservantvm|labservanttestvm::
+      "printer[xxx]" string => "zebra.ppd";
 
-   "printer[xxx]"			string => "ps.ppd";
-   "printer[xxx]"		string => "ps.ppd";
-   "printer[xxx]"			string => "ps.ppd";
-   "printer[xxx]"		string => "ps.ppd";
-   "printer[xxx]"		string => "ps.ppd";
-   "printer[xxx]"			string => "ps.ppd";
-   "printer[xxx]"		string => "ps.ppd";
-
-  labservantvm|labservanttestvm::
-   "printer[xxx]"		string => "zebra.ppd";
-
-  any::
-   "ppds"					slist => getvalues("printer");
-   "printers"				slist => getindices("printer");
-
-
+    any::
+      "Clients" or => { machine3, machine5, machine8, machine11, machine15, machine29, machine27, machine30, machine31, machine32,
+                        machine33, machine36, machine38, machine39, machine40, machine41, machine44, machine45, machine46,
+                        machine47, machine48, machine49, machine50, machine52, machine53, machine54, machine55, machine56 };
 }

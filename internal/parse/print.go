@@ -300,7 +300,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			if !last {
 				fmt.Fprintf(w, ", ")
 			}
-			if w.col > w.width {
+			if w.col > w.width && !last { // !last to prevent lonely '}' on the line
 				lindent := strings.Repeat(" ", w.bracecol)
 				fmt.Fprintf(w, "\n%s", lindent)
 			}
