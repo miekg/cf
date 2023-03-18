@@ -111,7 +111,7 @@ printvm::
   "printer[xxx]" string => "ps.ppd";
 ~~~
 
-Trailing commas of lists are removed. List are wrapped at the 120th column: (assuming fff, is on the
+Trailing commas of lists are removed. List are wrapped at the 120th column: (assuming ggg, is on the
 120th column):
 
 ~~~ cfengine
