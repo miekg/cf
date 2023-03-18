@@ -180,3 +180,37 @@ func pad(trees []*rd.Tree, max int) {
 		t.Subtrees[0].Symbol = chroma.Token{Type: token.Type, Value: token.Value}
 	}
 }
+
+// promisersAllHaveSingleConstraint checks if all Promise types have only a single constraint, this allows us to print them
+// without newlines in between. This takes into account the contain and comment exception.
+func promisersAllHaveSingleConstraint(tree *rd.Tree) bool {
+	for _, c := range tree.Subtrees {
+		promise, ok := c.Data().(string)
+		if !ok {
+			continue
+		}
+		if promise != "Promise" {
+			continue
+		}
+
+		// now check the constraints
+		constraints := 0
+		for _, c1 := range c.Subtrees {
+			constraint, ok := c1.Data().(string)
+			if !ok {
+				continue
+			}
+			if constraint != "Constraint" {
+				continue
+			}
+			if constraintPreventSingleLine(c1) {
+				constraints++ // fake +1 to signal 'do not compress'
+			}
+			constraints++
+		}
+		if constraints > 1 {
+			return false
+		}
+	}
+	return true
+}

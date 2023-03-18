@@ -250,9 +250,10 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "Promise":
 			last := lastOfType(parent, t, "Promise")
+			single := promisersAllHaveSingleConstraint(parent)
 			fmt.Fprint(w, ";\n")
-			if !last {
-				fmt.Fprintln(w)
+			if !last && !single {
+				fmt.Fprintf(w, "\n")
 			}
 
 		case "Selection":
