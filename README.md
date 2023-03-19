@@ -21,8 +21,8 @@ Cf uses an indent of 2 spaces to indent deeper elements of the tree.
 - the glass guard (i.e. `any::`), if given has a empty line above it, but is attached to the
   promiser.
 - the promiser is always attached to the constraint expressions
-- the constraint expressions are indented by 2 spaces.
-
+- empty promise guards are removed, i.e. `commands:` without any commands defined will be removed
+  from the output
 
 Cf aligns fat-arrows in constraint expressions, this is also true for selections in bodies.
 
