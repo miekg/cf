@@ -144,7 +144,7 @@ To:
                           hhhh };
 ~~~
 
-It also makes sure there isn't a dangling `};` on a line.
+It also makes sure there isn't a dangling `};` on a line. Empty lists are compressed to `{}`.
 
 Install the `cffmt` binary with: `go install github.com/miekg/cf/cmd/cffmt@main`. Then use it by
 giving it a filename or piping to standard input. The pretty printed document is printed to standard
