@@ -22,6 +22,7 @@ func removeEmptyPromiseGuards(tree *rd.Tree) {
 	//      ├─ PromiseGuard
 	//      │  └─ {KeywordDeclaration files}
 	//      └─ ClassPromises
+	// Save those up in `detach` and detach those tree in reverse order.
 	bb, ok := tree.Data().(string)
 	if !ok {
 		return
@@ -30,6 +31,7 @@ func removeEmptyPromiseGuards(tree *rd.Tree) {
 		return
 	}
 	var pg *rd.Tree
+	detach := []*rd.Tree{} // save trees to detach, so we're not detaching while in the range-loop
 	for _, c := range tree.Subtrees {
 		c1, ok := c.Data().(string)
 		if !ok {
@@ -44,10 +46,13 @@ func removeEmptyPromiseGuards(tree *rd.Tree) {
 		case "PromiseGuard":
 			pg = c
 		case "ClassPromises":
-			println(len(c.Subtrees))
 			if len(c.Subtrees) == 0 {
-				tree.Detach(pg)
+				detach = append([]*rd.Tree{c}, detach...)
+				detach = append([]*rd.Tree{pg}, detach...)
 			}
 		}
+	}
+	for _, d := range detach {
+		tree.Detach(d)
 	}
 }
