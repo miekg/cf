@@ -41,10 +41,6 @@ Options are:
 See the project's README for more details. Source code and development takes place on
 [GitHub](https://github.com/miekg/cf).
 
-## Bugs
-
-Sometimes extraneous whitespace will be added.
-
 ## Author
 
 Miek Gieben <miek@miek.nl>.
