@@ -27,6 +27,7 @@ func Print(w io.Writer, tree *rd.Tree) {
 	}
 
 	p := &Printer{}
+	remove(tree)
 	align(tree)
 
 	tw := &tw{w: &bytes.Buffer{}, width: 120} // make option?
