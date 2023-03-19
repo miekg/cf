@@ -44,13 +44,15 @@ func TestPrettyPrint(t *testing.T) {
 
 			if string(tr) != string(tp) {
 				t.Errorf("pretty and input, don't match")
+				t.Logf("Got\n%s\n", tr)
+				t.Logf("Want\n%s\n", tp)
 			}
 		})
 	}
 }
 func trimSpace(buf []byte) []byte {
-	buf = bytes.ReplaceAll(buf, []byte{' '}, nil)
-	buf = bytes.ReplaceAll(buf, []byte{'\n'}, nil)
-	buf = bytes.ReplaceAll(buf, []byte{'\t'}, nil)
+	buf = bytes.ReplaceAll(buf, []byte{' '}, []byte{'_'})
+	////	buf = bytes.ReplaceAll(buf, []byte{'\n'}, nil)
+	//	buf = bytes.ReplaceAll(buf, []byte{'\t'}, nil)
 	return buf
 }

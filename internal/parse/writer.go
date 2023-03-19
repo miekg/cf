@@ -2,14 +2,13 @@ package parse
 
 import (
 	"bytes"
-	"io"
 )
 
 // tw (track writer) tracks how far indented the current write is.
 type tw struct {
 	width    int
 	col      int // current column position
-	w        io.Writer
+	w        *bytes.Buffer
 	bracecol int // track open brace for lists.
 }
 

@@ -1,26 +1,26 @@
 bundle agent prometheus_server
 {
-    files:
+  files:
 
-      IsPrometheusServer::
-        "/etc/prometheus/sd_configs/node_servers.json"
-          copy_from => no_backup_rdcp("$(def.distr_files_dir)/etc/prometheus/sd_configs/node_servers.json", $(sys.policy_hub)),
-          perms     => mog(0666, bin, bin);
+    IsPrometheusServer::
+      "/etc/prometheus/sd_configs/node_servers.json"
+        copy_from => no_backup_rdcp("$(def.distr_files_dir)/etc/prometheus/sd_configs/node_servers.json", $(sys.policy_hub)),
+        perms     => mog(0666, bin, bin);
 
-        "/etc/prometheus/prometheus.yml"
-          copy_from => no_backup_rdcp("$(def.distr_files_dir)/etc/prometheus/prometheus.yml", $(sys.policy_hub)),
-          perms     => mog(0444, root, root),
-          classes   => if_repaired("prometheus_updated");
-
-
-    commands:
-
-      prometheus_updated::
-        "/usr/sbin/systemctl reload prometheus";
+      "/etc/prometheus/prometheus.yml"
+        copy_from => no_backup_rdcp("$(def.distr_files_dir)/etc/prometheus/prometheus.yml", $(sys.policy_hub)),
+        perms     => mog(0444, root, root),
+        classes   => if_repaired("prometheus_updated");
 
 
-    reports:
+  commands:
 
-      cfengine_3.Verbose::
-        "--> CFE running on $(sys.fqhost) has done cf/prometheus_server";
+    prometheus_updated::
+      "/usr/sbin/systemctl reload prometheus";
+
+
+  reports:
+
+    cfengine_3.Verbose::
+      "--> CFE running on $(sys.fqhost) has done cf/prometheus_server";
 }

@@ -1,6 +1,8 @@
 package parse
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
 	"io"
 	"strings"
@@ -27,9 +29,17 @@ func Print(w io.Writer, tree *rd.Tree) {
 	p := &Printer{}
 	align(tree)
 
-	tw := &tw{w: w, width: 120} // make option?
+	tw := &tw{w: &bytes.Buffer{}, width: 120} // make option?
 	for _, t := range tree.Subtrees {
 		p.print(tw, t, 0, tree)
+	}
+	// cleanup trailing whitespace while copying to writer
+	scanner := bufio.NewScanner(tw.w)
+	for scanner.Scan() {
+		// Get Bytes and display the byte.
+		b := scanner.Bytes()
+		w.Write(bytes.TrimRight(b, " "))
+		io.WriteString(w, "\n")
 	}
 }
 
@@ -60,6 +70,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			if sequenceOfChild(parent, t) > 0 && first {
 				fmt.Fprintf(w, "\n\n")
 			}
+			fmt.Fprintf(w, "%s", indent)
 
 		case "ClassGuardPromises":
 			first := firstOfType(parent, t, "ClassGuardPromises")
