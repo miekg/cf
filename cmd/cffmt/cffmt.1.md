@@ -13,7 +13,7 @@ cffmt - CFEngine pretty printer/formatter
 
 ## Synopsis
 
-cffmt` *[OPTION]*... *[FILE]*
+cffmt  *[OPTION]*... *[FILE]*
 
 ## Description
 
