@@ -6,11 +6,8 @@ import (
 	"io"
 	"log"
 	"os"
-	"strings"
 
-	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf"
-	"github.com/miekg/cf/internal/token"
 )
 
 var (
@@ -44,13 +41,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if len(tokens) > 0 {
-		if ct, ok := tokens[0].(chroma.Token); ok {
-			if ct.Type == token.Comment && strings.HasPrefix(ct.Value, "# cffmt:no") {
-				fmt.Printf("%s", buffer)
-				return
-			}
-		}
+	if cf.IsNoParse(tokens) {
+		fmt.Printf("%s", buffer)
+		return
 	}
 
 	if *flagLex {
