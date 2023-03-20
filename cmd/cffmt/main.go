@@ -10,7 +10,7 @@ import (
 
 	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf"
-	"github.com/miekg/cf/token"
+	"github.com/miekg/cf/internal/token"
 )
 
 var (

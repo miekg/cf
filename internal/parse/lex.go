@@ -3,7 +3,7 @@ package parse
 import (
 	"github.com/alecthomas/chroma/v2"
 	"github.com/alecthomas/chroma/v2/lexers"
-	"github.com/miekg/cf/token"
+	"github.com/miekg/cf/internal/token"
 	"github.com/shivamMg/rd"
 )
 
