@@ -119,9 +119,10 @@ func alignPromisers(tree *rd.Tree) {
 		}
 		// this selects only single constraint promimises
 		// still checks too many nodes
-		if len(c.Subtrees) > 3 {
+		if len(c.Subtrees) < 3 {
 			continue
 		}
+		println(len(c.Subtrees))
 		// check for comments in between. TODO(miek)
 		token, ok := c.Subtrees[0].Data().(chroma.Token)
 		if !ok {
@@ -130,6 +131,7 @@ func alignPromisers(tree *rd.Tree) {
 		if l := len(token.Value); l > max {
 			max = l
 		}
+		println("ALGIN")
 		align = append(align, c)
 	}
 	pad(align, max)

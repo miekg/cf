@@ -1,0 +1,9 @@
+bundle agent example
+{
+  reports:
+
+    "Kept clases= '$(matching_kept)'";
+    "Repaired clases= '$(matching_repaired)'";
+    "Not kept clases= '$(matching_not_kept)'";
+    "Filesizes $(sizes)";
+}
