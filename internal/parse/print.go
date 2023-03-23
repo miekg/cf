@@ -217,7 +217,8 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				}
 			}
 			// always indent the next line after the comments, regardless?
-			fmt.Fprintf(w, "%s", indent)
+			// fmt.Fprintf(w, "%s", indent), this can only work when in a function, for instance.
+			// needs case switch
 
 		case token.Qstring:
 			// TODO(miek): Needs indenting if spread over multiple lines. Possibly we need to strip prefix
