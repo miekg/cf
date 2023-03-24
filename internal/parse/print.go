@@ -16,11 +16,8 @@ const _Space = "  "
 
 // Printer used for some housekeeping during printing.
 type Printer struct {
-	// These fields are used to work-around deficiencies in our tree. Most notably that we don't have parent
-	// pointers.
-	first    bool
-	body     bool
-	function int // > 0 if we are in a function
+	first bool
+	body  bool
 }
 
 // Print pretty prints the CFengine AST in tree.
@@ -130,7 +127,6 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "GiveArgList":
 			fmt.Fprintf(w, "(")
-			p.function++
 
 		case "GaItem":
 
@@ -220,10 +216,9 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 					fmt.Fprintf(w, "%s", lindent)
 				}
 			}
-			// We might need more of these hacks.
-			if p.function > 0 {
-				fmt.Fprintf(w, "%s", indent)
-			}
+			// always indent the next line after the comments, regardless?
+			// fmt.Fprintf(w, "%s", indent), this can only work when in a function, for instance.
+			// needs case switch
 
 		case token.Qstring:
 			// TODO(miek): Needs indenting if spread over multiple lines. Possibly we need to strip prefix
@@ -294,7 +289,6 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "ArgList":
 			fmt.Fprintf(w, ")")
-			p.function--
 
 		case "Aitem":
 			last := lastOfType(parent, t, "Aitem")
