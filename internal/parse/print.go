@@ -18,6 +18,8 @@ const _Space = "  "
 type Printer struct {
 	first bool
 	body  bool
+
+	multilineList bool
 }
 
 // Print pretty prints the CFengine AST in tree.
@@ -216,9 +218,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 					fmt.Fprintf(w, "%s", lindent)
 				}
 			}
-			// always indent the next line after the comments, regardless?
-			// fmt.Fprintf(w, "%s", indent), this can only work when in a function, for instance.
-			// needs case switch
+			p.multilineList = strings.HasPrefix(v.Value, "# cffmt:list-multiline")
 
 		case token.Qstring:
 			// TODO(miek): Needs indenting if spread over multiple lines. Possibly we need to strip prefix
@@ -286,6 +286,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			if !last {
 				fmt.Fprint(w, ",")
 			}
+			p.multilineList = false
 
 		case "ArgList":
 			fmt.Fprintf(w, ")")
@@ -317,7 +318,12 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			last := lastOfType(parent, t, "Litem")
 			if !last {
 				fmt.Fprintf(w, ", ")
+				if p.multilineList {
+					lindent := strings.Repeat(" ", w.bracecol)
+					fmt.Fprintf(w, "\n%s", lindent)
+				}
 			}
+
 			if w.col > w.width && !last { // !last to prevent lonely '}' on the line
 				lindent := strings.Repeat(" ", w.bracecol)
 				fmt.Fprintf(w, "\n%s", lindent)
