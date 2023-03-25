@@ -21,8 +21,8 @@ Cffmt will parse a CFengine file in **FILE** or from standard input and will pre
 standard output.
 
 If the first line of the file contains the comment: `# cffmt:no`  it will not be pretty printed.
-Another directive is `# cffmt:list-multiline` which says the _next_ list will have each item printed
-on a new line.
+Another directive is `# cffmt:list-nl` which says the _next_ list will have each item printed on a
+new line.
 
 Options are:
 

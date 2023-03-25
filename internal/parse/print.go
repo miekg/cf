@@ -218,7 +218,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 					fmt.Fprintf(w, "%s", lindent)
 				}
 			}
-			p.multilineList = strings.HasPrefix(v.Value, "# cffmt:list-multiline")
+			p.multilineList = strings.HasPrefix(v.Value, "# cffmt:list-nl")
 
 		case token.Qstring:
 			// TODO(miek): Needs indenting if spread over multiple lines. Possibly we need to strip prefix
