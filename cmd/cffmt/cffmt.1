@@ -12,13 +12,81 @@ cffmt  \fI[OPTION]\fP... \fI[FILE]\fP
 
 .SH "DESCRIPTION"
 .PP
-Cffmt will parse a CFengine file in \fBFILE\fP or from standard input and will pretty print it to
-standard output.
+Cffmt will parse a CFengine file in \fBFILE\fP or from standard input and will pretty print it to standard output. Cf uses an indent of 2 spaces to indent elements
+of the tree. Look for example at the following snippet and the pretty printed on after it.
 
 .PP
-If the first line of the file contains the comment: \fB\fC# cffmt:no\fR  it will not be pretty printed.
-Another directive is \fB\fC# cffmt:list-multiline\fR which says the \fInext\fP list will have each item printed
-on a new line.
+.RS
+
+.nf
+"/etc/apparmor.d"
+             delete => tidy,
+     depth\_search => recurse("0"),
+             file\_select => by\_name("session");
+
+.fi
+.RE
+
+.PP
+Becomes:
+
+.PP
+.RS
+
+.nf
+"/etc/apparmor.d"
+  delete       => tidy,
+  depth\_search => recurse("0"),
+  file\_select  => by\_name("lightdm\-guest\-session");
+
+.fi
+.RE
+
+.PP
+If the first line of the file contains the comment: \fB\fC# cffmt:no\fR  it will not be pretty printed. Another directive is \fB\fC# cffmt:list-nl\fR which says the \fInext\fP
+list will have each item printed on a new line. For example:
+
+.PP
+.RS
+
+.nf
+"Clients"         or => { aaa, bbb, ccc, dddd, eee, fff,
+  ggg, hhhh };
+
+.fi
+.RE
+
+.PP
+Normally to:
+
+.PP
+.RS
+
+.nf
+"Clients"         or => { aaa, bbb, ccc, dddd, eee, fff, ggg, hhhh };
+
+.fi
+.RE
+
+.PP
+But with \fB\fC# cffmt:list-nl\fR:
+
+.PP
+.RS
+
+.nf
+# cffmt:list\-nl
+"Clients"         or => { aaa,
+                          bbb,
+                          ccc,
+                          dddd,
+                          eee,
+                          fff,
+                          ggg,
+                          hhhh };
+
+.fi
+.RE
 
 .PP
 Options are:
@@ -33,14 +101,13 @@ print the pretty printed document to standard output (defaults to true)
 \fB\fC-l\fR
 show lexer tokens
 .TP
-\fB\fC-f\fR
-if parsing fails only show the name of the file being parsed.
+\fB\fC-d\fR
+when parsing fails print the debug tree
 
 
 .SH "SEE ALSO"
 .PP
-See the project's README for more details. Source code and development takes place on
-GitHub
+See the project's README for more details. Source code and development takes place on GitHub
 \[la]https://github.com/miekg/cf\[ra].
 
 .SH "AUTHOR"

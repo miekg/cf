@@ -13,7 +13,6 @@ import (
 var (
 	flagAst   = flag.Bool("a", false, "print AST to standard output when successfully parsed")
 	flagPrint = flag.Bool("p", true, "pretty print the file")
-	flagFail  = flag.Bool("f", false, "when failing to parse only print the filename")
 	flagLex   = flag.Bool("l", false, "only show the tokens")
 	flagDebug = flag.Bool("d", false, "when failing to parse print debug output")
 )
@@ -57,9 +56,6 @@ func main() {
 		return
 	}
 	if err != nil {
-		if *flagFail {
-			log.Fatal(flag.Arg(0))
-		}
 		if *flagDebug {
 			for _, token := range tokens {
 				log.Printf("%T %v", token, token)
