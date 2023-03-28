@@ -260,7 +260,11 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			fmt.Fprint(w, ":\n\n")
 
 		case "Promisee":
-			fmt.Fprintf(w, "\n%s", indent)
+			// there are constraints following this promisee, add a newline
+			// if not don't, so the closing ; will be put on the same line.
+			if len(parent.Subtrees) > 2 {
+				fmt.Fprintf(w, "\n%s", indent)
+			}
 
 		case "ClassGuardPromises":
 
