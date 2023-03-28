@@ -1,0 +1,6 @@
+bundle agent bogus
+{
+  reports:
+
+    "Hello CFEngine" -> { "foo", "bar", "baz" };
+}
