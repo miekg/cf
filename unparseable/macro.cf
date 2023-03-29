@@ -1,0 +1,14 @@
+bundle agent extractor
+{
+@if minimum_version(3.16)
+  # Implementation for 3.16+
+  vars:
+    "container"
+      data => classfiltercsv(something);
+@else
+  # Implementation for versions before 3.16
+  vars:
+    "container"
+      data => readcsv(something);
+@endif
+}
