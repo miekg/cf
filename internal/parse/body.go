@@ -33,9 +33,7 @@ func Body(b *rd.Builder) (ok bool) {
 		return false
 	}
 
-	Comments(b)
 	defer Comments(b)
-
 	return BodyBody(b) && Match(b, chroma.Token{Type: chroma.Punctuation, Value: "}"})
 }
 
@@ -43,6 +41,7 @@ func BodyBody(b *rd.Builder) (ok bool) {
 	b.Enter("BodyBody")
 	defer b.Exit(&ok)
 
+	Comments(b)
 More:
 	// classguardselection and selections or just selections
 	ClassGuardSelections(b)
