@@ -16,7 +16,6 @@ func Body(b *rd.Builder) (ok bool) {
 		return false
 	}
 	if !MatchType(b, chroma.NameFunction) && !MatchType(b, chroma.Keyword) {
-		Fmt(b, "AA", 0)
 		return false
 	}
 	// if next is ( -> params, if { open the body
