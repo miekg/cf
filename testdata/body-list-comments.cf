@@ -1,0 +1,8 @@
+body common control {
+    bundlesequence => {
+        # "foo",
+        "bogus",
+        # "bar",
+        "doofus",
+    };
+}
