@@ -56,9 +56,7 @@ func Bundle(b *rd.Builder) (ok bool) {
 		return false
 	}
 
-	Comments(b)
 	defer Comments(b)
-
 	return BundleBody(b) && MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "}"})
 }
 
@@ -66,6 +64,7 @@ func BundleBody(b *rd.Builder) (ok bool) {
 	b.Enter("BundleBody")
 	defer b.Exit(&ok)
 
+	Comments(b)
 More:
 	// Zero or more promiseguards (single : ) and then zero more classpromises.
 	PromiseGuard(b)
