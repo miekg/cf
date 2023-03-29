@@ -1,0 +1,13 @@
+bundle agent icinga
+{
+
+ vars:
+
+  IsIcingaClient::
+    # cffmt:list-nl
+   "mrpe_lines"        slist => { '#controlled by cfengine',
+								  'Users         /usr/local/bin/check_users',
+								  'Iptables      /usr/local/bin/check_iptables',
+								  'Ip6tables      /usr/local/bin/check_ip6tables'
+								};
+}
