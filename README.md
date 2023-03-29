@@ -159,7 +159,7 @@ Install the `cffmt` binary with: `go install github.com/miekg/cf/cmd/cffmt@main`
 giving it a filename or piping to standard input. The pretty printed document is printed to standard
 output.
 
-    ./cffmt ../../testdata/promtest.cf
+    ~/go/bin/cffmt ../../testdata/promtest.cf
 
 ## Abstract Syntax Tree
 
