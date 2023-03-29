@@ -19,7 +19,8 @@ type Printer struct {
 	first bool
 	body  bool
 
-	multilineList bool
+	multilineList  bool
+	prevWasComment bool
 }
 
 // Print pretty prints the CFengine AST in tree.
@@ -185,6 +186,11 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			fmt.Fprintf(w, "%s", v.Value)
 
 		case token.Comment:
+			if p.prevWasComment {
+				// multiple comments, re-insert new, there could have been multiple, but just do one.
+				fmt.Fprintln(w)
+			}
+			p.prevWasComment = false
 			// Comments are nested as a child of ClassPromise. This makes them slighty too indented by one
 			// step. Fix that here. FIX(miek).
 			switch depth {
@@ -247,6 +253,11 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 	}
 
 	// On Leave
+
+	if v, ok := t.Data().(string); ok {
+		p.prevWasComment = v == "Comment"
+	}
+
 	switch v := t.Data().(type) {
 	case string:
 		switch v {
