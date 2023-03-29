@@ -12,6 +12,8 @@ original input will be outputted instead.
 
 If you have an `slist` in a contraint you can put `# cffmt:list-nl` above it if you want each item
 to be printed on a new line.
+If a list has less then 10 items *and* at least one of these items is a comment, it will be printed
+as if `cffmt:list-nl` has been given.
 
 If you have a "normal" looking CFEngine file that isn't parsed correctly, please open an issue with
 the _most_ _minimal_ CFEngine syntax that fails to parse.

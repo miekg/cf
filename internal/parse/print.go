@@ -140,6 +140,11 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				fmt.Fprintf(w, "{ ")
 			}
 			w.bracecol = w.col
+			litems := countOfType(t, "Litem")
+			comments := countOfType(t, "Comment")
+			if litems+comments <= 10 && comments > 0 {
+				p.multilineList = true
+			}
 
 		case "Litem":
 		}
@@ -224,7 +229,9 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 					fmt.Fprintf(w, "%s", lindent)
 				}
 			}
-			p.multilineList = strings.HasPrefix(v.Value, "# cffmt:list-nl")
+			if strings.HasPrefix(v.Value, "# cffmt:list-nl") {
+				p.multilineList = true
+			}
 
 		case token.Qstring:
 			// TODO(miek): Needs indenting if spread over multiple lines. Possibly we need to strip prefix
@@ -328,6 +335,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				fmt.Fprint(w, " }")
 			}
 			w.bracecol = -1
+			p.multilineList = false
 
 		case "Litem":
 			last := lastOfType(parent, t, "Litem")
