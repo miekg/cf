@@ -16,6 +16,10 @@ to be printed on a new line.
 If you have a "normal" looking CFEngine file that isn't parsed correctly, please open an issue with
 the _most_ _minimal_ CFEngine syntax that fails to parse.
 
+Comments that are placed in obvious places are handled well, but there are corner cases where they
+lead to a parse error. Directly after a `bundle` or `body` for instance. Some of these are fixable
+(and you should file a bug), others are in the hard-to-fix area and will not be supported.
+
 ## Layout
 
 Cf uses an indent of 2 spaces to indent deeper elements of the tree.
