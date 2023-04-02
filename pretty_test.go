@@ -2,7 +2,6 @@ package cf
 
 import (
 	"bytes"
-	"log"
 	"os"
 	"path/filepath"
 	"testing"
@@ -35,7 +34,7 @@ func TestPrettyPrint(t *testing.T) {
 		t.Run(f.Name(), func(t *testing.T) {
 			tree, _, err := Parse(string(buf))
 			if err != nil {
-				log.Fatal(err)
+				t.Fatal(err)
 			}
 			r := &bytes.Buffer{}
 			Print(r, tree)

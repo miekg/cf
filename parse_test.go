@@ -1,7 +1,6 @@
 package cf
 
 import (
-	"log"
 	"os"
 	"path/filepath"
 	"testing"
@@ -29,7 +28,7 @@ func TestParse(t *testing.T) {
 		t.Run(f.Name(), func(t *testing.T) {
 			tokens, err := Lex(string(buf))
 			if err != nil {
-				log.Fatal(err)
+				t.Fatal(err)
 			}
 
 			parseTree, debugTree, err := ParseTokens(tokens)
