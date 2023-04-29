@@ -17,8 +17,9 @@ cffmt  *[OPTION]*... *[FILE]*
 
 ## Description
 
-Cffmt will parse a CFengine file in **FILE** or from standard input and will pretty print it to standard output. Cf uses an indent of 2 spaces to indent elements
-of the tree. Look for example at the following snippet and the pretty printed on after it.
+Cffmt will parse a CFengine file in **FILE** or from standard input and will pretty print it to
+standard output. Cf uses an indent of 2 spaces to indent elements of the tree. Look for example at
+the following snippet and the pretty printed on after it.
 
 ~~~ cfengine
 "/etc/apparmor.d"
@@ -36,8 +37,9 @@ Becomes:
   file_select  => by_name("lightdm-guest-session");
 ~~~
 
-If the first line of the file contains the comment: `# cffmt:no`  it will not be pretty printed. Another directive is `# cffmt:list-nl` which says the _next_
-list will have each item printed on a new line. For example:
+If the first line of the file contains the comment: `# cffmt:no`  it will not be pretty printed.
+Another directive is `# cffmt:list-nl` which says the _next_ list will have each item printed on a
+new line. For example:
 
 ~~~ cfengine
 "Clients"         or => { aaa, bbb, ccc, dddd, eee, fff,
@@ -80,7 +82,8 @@ Options are:
 
 ## See Also
 
-See the project's README for more details. Source code and development takes place on [GitHub](https://github.com/miekg/cf).
+See the project's README for more details. Source code and development takes place on
+[GitHub](https://github.com/miekg/cf).
 
 ## Author
 
