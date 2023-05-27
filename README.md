@@ -18,19 +18,20 @@ as if `cffmt:list-nl` has been given.
 If you have a "normal" looking CFEngine file that isn't parsed correctly, please open an issue with
 the _most_ _minimal_ CFEngine syntax that fails to parse.
 
-Comments that are placed in obvious places are handled well, but there are corner cases where they
+Comments that are placed in "obvious"(*) places are handled well, but there are corner cases where they
 lead to a parse error. Directly after a `bundle` or `body` for instance. Some of these are fixable
 (and you should file a bug), others are in the hard-to-fix area and will not be supported.
 
+- (*) "obvious": not in a list, not in a function argument.
+
 ## Layout
 
-Cf uses an indent of 2 spaces to indent deeper elements of the tree.
+Cf uses an indent of 2 spaces to indent elements of the tree when pretty printing. Further more:
 
-- the promise guard (i.e. `files:` has 2 newlines above it, if its not the first in the file
-- the glass guard (i.e. `any::`), if given has a empty line above it, but is attached to the
+- the promise guard (i.e. `files:` has 2 newlines above it, if it's not the first in the file
+- the class guard (i.e. `any::`) (if given) has a empty line above it, but is attached to the
   promiser.
 - the promiser is always attached to the constraint expressions
-
 
 Empty promise guards are removed, i.e. `commands:` without any commands defined will be removed
 from the output:
@@ -83,7 +84,7 @@ Becomes:
 ~~~
 
 If there are multiple promises and they all have single constraints, the promises themselves are
-aligned and the newline between them is scapped:
+aligned and the newline between them is deleted:
 
 ~~~ cfengine
 "getcapExists"
@@ -100,13 +101,13 @@ To:
 ~~~
 
 If a single constraint has a 'contain =>' or 'comment =>' they will _not_ be printed on the same
-line. This is to show important things on the left hand side. (See align.go for details), i.e:
+line. This is to show important things on the left hand side, (see align.go for details), i.e:
 
 ~~~ cfengine
 printvm::
  "printer[xxx]"	string => "ps.ppd";
   "printer[xxx]"		string => "ps.ppd";
-  "printer[xxx]" string => "ps.ppd";
+  "printer[xxx]" slist => {"ps.ppd"};
 ~~~
 
 To:
@@ -115,7 +116,7 @@ To:
 printvm::
   "printer[xxx]" string => "ps.ppd";
   "printer[xxx]" string => "ps.ppd";
-  "printer[xxx]" string => "ps.ppd";
+  "printer[xxx]" slist  => {"ps.ppd"};
 ~~~
 
 But if one of the constraints was `contain` or `comment`:
@@ -155,11 +156,13 @@ To:
 
 It also makes sure there isn't a dangling `};` on a line. Empty lists are compressed to `{}`.
 
+## Installation
+
 Install the `cffmt` binary with: `go install github.com/miekg/cf/cmd/cffmt@main`. Then use it by
 giving it a filename or piping to standard input. The pretty printed document is printed to standard
 output.
 
-    ~/go/bin/cffmt ../../testdata/promtest.cf
+    cffmt ../../testdata/promtest.cf
 
 ## Abstract Syntax Tree
 
