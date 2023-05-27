@@ -20,7 +20,23 @@ the _most_ _minimal_ CFEngine syntax that fails to parse.
 
 Comments that are placed in "obvious"(*) places are handled well, but there are corner cases where they
 lead to a parse error. Directly after a `bundle` or `body` for instance. Some of these are fixable
-(and you should file a bug), others are in the hard-to-fix area and will not be supported.
+(and you should file a bug), others are in the hard-to-fix area and will not be supported. Comments
+are coalesced into a single block, even if they were separated by a newline. I.e.
+
+~~~
+# a comment
+
+# another comment
+~~~
+
+Becomes:
+
+~~~
+# a comment
+# another comment
+~~~
+
+If you want to keep the separation you need to add '#' on the empty lines.
 
 - (*) "obvious": not in a list, not in a function argument.
 
