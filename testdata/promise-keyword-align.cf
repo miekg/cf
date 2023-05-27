@@ -1,0 +1,8 @@
+bundle agent nftables
+{
+  vars:
+
+    any.HasNfTables::
+      "path" string         => "etc/nftables.conf.d";
+      "acls"    slist  => getindices("acl");
+}

@@ -29,9 +29,10 @@ func constraintPreventSingleLine(constraint *rd.Tree) bool {
 func align(tree *rd.Tree) {
 	tvf := TreeVisitorFunc(func(tree *rd.Tree, entering bool) WalkStatus {
 		if entering {
-			alignConstraints(tree) // align on '=>' for multiple constraints
-			alignPromisers(tree)   // align promises that have single constraints
-			alignSelections(tree)  // align on '=>' for multiple selection (body)
+			alignConstraints(tree)       // align on '=>' for multiple constraints
+			alignPromisers(tree)         // align promises that have single constraints
+			alignPromisersKeywords(tree) // align multiple constraints keywords, slist, string etc.
+			alignSelections(tree)        // align on '=>' for multiple selection (body)
 		}
 		return GoToNext
 	})
@@ -131,6 +132,50 @@ func alignPromisers(tree *rd.Tree) {
 			max = l
 		}
 		align = append(align, c)
+	}
+	pad(align, max)
+}
+
+// alignPromisersKeywords aligns the string, slists in snippets like below, so that fat arrow is correctly
+// aligned:
+//
+//	"path"     string => "etc/nftables.conf.d";
+//	"acls"     slist  => getindices("acl");
+//	"allacls"  slist  => lsdir("/etc/nftables.conf.d", ".*", "false");
+func alignPromisersKeywords(tree *rd.Tree) {
+	max := -1
+	align := []*rd.Tree{}
+	if len(tree.Subtrees) < 3 {
+		return
+	}
+	for _, c := range tree.Subtrees {
+		if len(c.Subtrees) < 1 {
+			continue
+		}
+		promise, ok := c.Data().(string)
+		if !ok {
+			continue
+		}
+		if promise != "Promise" {
+			continue
+		}
+		if len(c.Subtrees) < 3 {
+			continue
+		}
+		if len(c.Subtrees[1].Subtrees) < 1 {
+			continue
+		}
+		token, ok := c.Subtrees[1].Subtrees[0].Data().(chroma.Token)
+		if !ok {
+			continue
+		}
+		if token.Type != chroma.KeywordReserved {
+			continue
+		}
+		if l := len(token.Value); l > max {
+			max = l
+		}
+		align = append(align, c.Subtrees[1])
 	}
 	pad(align, max)
 }
