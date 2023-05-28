@@ -14,10 +14,7 @@ func Lex(specification string) ([]rd.Token, error) {
 	if err != nil {
 		return nil, err
 	}
-	// There are several passes here. Mostly to not have a very complex single loop. Surely this can be optimized,
-	// OTOH it's only iterating over a few thousand tokens and creating a bunch of garbage memory.
-
-	// Compresses LiteralString* into a single Qstring, same for Comments.
+	// Compresses LiteralString* into a single Qstring
 	pt := chroma.Token{Type: token.None}
 	//defer println("*****")
 	for _, t := range iter.Tokens() {
@@ -29,15 +26,6 @@ func Lex(specification string) ([]rd.Token, error) {
 				pt.Value = ""
 			}
 			pt.Type = token.Qstring
-			pt.Value += t.Value
-
-		case chroma.Comment:
-			if pt.Type != token.Comment && pt.Type != token.None {
-				tokens = append(tokens, rd.Token(pt))
-				pt.Value = ""
-			}
-
-			pt.Type = token.Comment
 			pt.Value += t.Value
 
 		case chroma.Operator:
