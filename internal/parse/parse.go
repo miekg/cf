@@ -442,7 +442,7 @@ func Comment(b *rd.Builder) (ok bool) {
 	b.Enter("Comment")
 	defer b.Exit(&ok)
 
-	return MatchType(b, token.Comment)
+	return MatchType(b, chroma.Comment)
 }
 
 func Fmt(b *rd.Builder, a string, i int) {

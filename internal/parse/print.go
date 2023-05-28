@@ -112,11 +112,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				if constraintPreventSingleLine(t) {
 					fmt.Fprintf(w, "\n%s", indent)
 				} else {
-					if prevOfType(parent, t, "Comment") { // we have insert a new line then
-						fmt.Fprintf(w, "%s", indent)
-					} else {
-						fmt.Fprint(w, " ")
-					}
+					fmt.Fprint(w, " ")
 				}
 			} else {
 				fmt.Fprintf(w, "\n%s", indent)
@@ -189,7 +185,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 		case chroma.LiteralNumberInteger:
 			fmt.Fprintf(w, "%s", v.Value)
 
-		case token.Comment:
+		case chroma.Comment:
 			// Comments are nested as a child of ClassPromise. This makes them slighty too indented by one
 			// step. Fix that here. FIX(miek).
 			switch depth {

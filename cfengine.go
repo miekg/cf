@@ -6,7 +6,6 @@ import (
 
 	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf/internal/parse"
-	"github.com/miekg/cf/internal/token"
 	"github.com/shivamMg/rd"
 )
 
@@ -46,7 +45,7 @@ func IsNoParse(tokens []rd.Token) bool {
 	}
 
 	if ct, ok := tokens[0].(chroma.Token); ok {
-		if ct.Type == token.Comment && strings.HasPrefix(ct.Value, "# cffmt:no") {
+		if ct.Type == chroma.Comment && strings.HasPrefix(ct.Value, "# cffmt:no") {
 			return true
 		}
 	}
