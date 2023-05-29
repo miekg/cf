@@ -112,7 +112,11 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				if constraintPreventSingleLine(t) {
 					fmt.Fprintf(w, "\n%s", indent)
 				} else {
-					fmt.Fprint(w, " ")
+					if prevOfType(parent, t, "Comment") { // we have insert a new line then
+						fmt.Fprintf(w, "%s", indent)
+					} else {
+						fmt.Fprint(w, " ")
+					}
 				}
 			} else {
 				fmt.Fprintf(w, "\n%s", indent)
