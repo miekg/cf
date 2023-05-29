@@ -59,6 +59,25 @@ func sequenceOfChild(parent, child *rd.Tree) int {
 	return -1
 }
 
+// is the previous sibling of parent of type t.
+func prevOfType(parent, child *rd.Tree, t string) bool {
+	var p *rd.Tree
+	for _, c := range parent.Subtrees {
+		if c == child {
+			if p == nil {
+				return false
+			}
+			if s, ok := p.Data().(string); ok {
+				if s == t {
+					return true
+				}
+			}
+		}
+		p = c
+	}
+	return false
+}
+
 func firstOfType(parent, child *rd.Tree, t string) bool {
 	return ofType(parent.Subtrees, child, t)
 }
