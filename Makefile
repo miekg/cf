@@ -1,5 +1,5 @@
 all:
-	( cd cmd/cffmt; go build )
+	( cd cmd/cffmt; go build -ldflags "-X main.version=`git tag --sort=-version:refname | head -n 1`" )
 
 install:
 	( cd cmd/cffmt; go install )

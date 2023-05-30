@@ -11,14 +11,21 @@ import (
 )
 
 var (
-	flagAst   = flag.Bool("a", false, "print AST to standard output when successfully parsed")
-	flagPrint = flag.Bool("p", true, "pretty print the file")
-	flagLex   = flag.Bool("l", false, "only show the tokens")
-	flagDebug = flag.Bool("d", false, "when failing to parse print debug output")
+	flagAst     = flag.Bool("a", false, "print AST to standard output when successfully parsed")
+	flagPrint   = flag.Bool("p", true, "pretty print the file")
+	flagLex     = flag.Bool("l", false, "only show the tokens")
+	flagDebug   = flag.Bool("d", false, "when failing to parse print debug output")
+	flagVersion = flag.Bool("v", false, "show version")
 )
+
+var version = "n/a"
 
 func main() {
 	flag.Parse()
+	if *flagVersion {
+		fmt.Println(version)
+		os.Exit(0)
+	}
 	var (
 		err    error
 		buffer []byte

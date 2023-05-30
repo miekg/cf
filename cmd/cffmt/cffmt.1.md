@@ -80,6 +80,9 @@ Options are:
 `-d`
 :   when parsing fails print the debug tree
 
+`-v`
+:   show version and then exit
+
 ## See Also
 
 See the project's README for more details. Source code and development takes place on
