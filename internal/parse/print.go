@@ -223,7 +223,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 					fmt.Fprintf(w, "%s", lindent)
 				}
 			}
-			if strings.HasPrefix(v.Value, "# cffmt:list-nl") {
+			if strings.HasPrefix(v.Value, "# cffmt:list") {
 				p.multilineList = true
 			}
 

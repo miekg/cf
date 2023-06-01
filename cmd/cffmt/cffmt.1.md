@@ -38,7 +38,7 @@ Becomes:
 ~~~
 
 If the first line of the file contains the comment: `# cffmt:no`  it will not be pretty printed.
-Another directive is `# cffmt:list-nl` which says the _next_ list will have each item printed on a
+Another directive is `# cffmt:list` which says the _next_ list will have each item printed on a
 new line. For example:
 
 ~~~ cfengine
@@ -52,10 +52,10 @@ Normally to:
 "Clients"         or => { aaa, bbb, ccc, dddd, eee, fff, ggg, hhhh };
 ~~~
 
-But with `# cffmt:list-nl`:
+But with `# cffmt:list`:
 
 ~~~ cfengine
-# cffmt:list-nl
+# cffmt:list
 "Clients"         or => { aaa,
                           bbb,
                           ccc,
