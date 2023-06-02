@@ -65,7 +65,9 @@ func BundleBody(b *rd.Builder) (ok bool) {
 	defer b.Exit(&ok)
 
 	Comments(b)
+	Macro(b)
 More:
+
 	// Zero or more promiseguards (single : ) and then zero more classpromises.
 	PromiseGuard(b)
 	ClassPromises(b)
@@ -118,10 +120,10 @@ func Promises(b *rd.Builder) (ok bool) {
 
 	for {
 		Comments(b) // comments in between promises and trailing ones
-		Macro(b)
 		if !Promise(b) {
 			return true
 		}
+		Macro(b)
 	}
 }
 

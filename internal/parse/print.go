@@ -163,10 +163,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			}
 
 		case chroma.CommentPreproc:
-			if strings.HasPrefix(v.Value, "@if") {
-				fmt.Fprintln(w)
-			}
-			fmt.Fprintf(w, "%s", v.Value)
+			fmt.Fprintf(w, "\n%s", v.Value)
 
 		case chroma.KeywordDeclaration:
 			fmt.Fprintf(w, "%s", v.Value)
