@@ -41,6 +41,7 @@ func BodyBody(b *rd.Builder) (ok bool) {
 	defer b.Exit(&ok)
 
 	Comments(b)
+	Macro(b)
 More:
 	// classguardselection and selections or just selections
 	ClassGuardSelections(b)
@@ -74,6 +75,7 @@ func BodySelections(b *rd.Builder) (ok bool) {
 		if !Selection(b) {
 			return true
 		}
+		Macro(b)
 	}
 }
 
