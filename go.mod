@@ -12,3 +12,5 @@ require (
 	github.com/shivamMg/ppds v0.0.1 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 )
+
+replace github.com/shivamMg/rd => /home/miek/gohack/github.com/shivamMg/rd

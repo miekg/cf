@@ -21,6 +21,7 @@ func MatchType(b *rd.Builder, tt chroma.TokenType) bool {
 		b.Add(next)
 		return true
 	}
+	b.ErrorToken = next
 	return false
 }
 

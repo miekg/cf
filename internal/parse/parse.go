@@ -11,6 +11,7 @@ import (
 func Specification(b *rd.Builder) (ok bool) {
 	b.Enter("Specification")
 	defer b.Exit(&ok)
+	defer func() { fmt.Printf("ERRORING TOKEN: %v\n", b.ErrorToken) }()
 
 	Comments(b)
 
