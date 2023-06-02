@@ -1,6 +1,6 @@
 package parse
 
-import "github.com/shivamMg/rd"
+import "github.com/miekg/cf/internal/rd"
 
 func remove(tree *rd.Tree) {
 	tvf := TreeVisitorFunc(func(tree *rd.Tree, entering bool) WalkStatus {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/shivamMg/rd"
+	"github.com/miekg/cf/internal/rd"
 )
 
 func TestLexDoubleQuote(t *testing.T) {

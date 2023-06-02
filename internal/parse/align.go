@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/alecthomas/chroma/v2"
-	"github.com/shivamMg/rd"
+	"github.com/miekg/cf/internal/rd"
 )
 
 func constraintPreventSingleLine(constraint *rd.Tree) bool {

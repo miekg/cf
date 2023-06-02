@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/miekg/cf/internal/parse"
-	"github.com/shivamMg/rd"
+	"github.com/miekg/cf/internal/rd"
 )
 
 // Test short snipppets of cf syntax, without pulling in the whole tree

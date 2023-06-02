@@ -2,7 +2,7 @@ package parse
 
 import (
 	"github.com/alecthomas/chroma/v2"
-	"github.com/shivamMg/rd"
+	"github.com/miekg/cf/internal/rd"
 )
 
 func Equal(a rd.Token, t chroma.Token) bool {
@@ -21,6 +21,7 @@ func MatchType(b *rd.Builder, tt chroma.TokenType) bool {
 		b.Add(next)
 		return true
 	}
+	b.ErrorToken = next
 	return false
 }
 
@@ -35,6 +36,7 @@ func Match(b *rd.Builder, t chroma.Token) bool {
 		b.Add(next)
 		return true
 	}
+	b.ErrorToken = next
 	return false
 }
 
@@ -49,6 +51,7 @@ func MatchDiscard(b *rd.Builder, t chroma.Token) bool {
 		return true
 	}
 
+	b.ErrorToken = next
 	return false
 }
 

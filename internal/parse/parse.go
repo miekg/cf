@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/alecthomas/chroma/v2"
+	"github.com/miekg/cf/internal/rd"
 	"github.com/miekg/cf/internal/token"
-	"github.com/shivamMg/rd"
 )
 
 func Specification(b *rd.Builder) (ok bool) {
