@@ -2,7 +2,7 @@ package parse
 
 import (
 	"github.com/alecthomas/chroma/v2"
-	"github.com/shivamMg/rd"
+	"github.com/miekg/cf/internal/rd"
 )
 
 func Body(b *rd.Builder) (ok bool) {

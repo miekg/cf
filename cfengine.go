@@ -1,12 +1,13 @@
 package cf
 
 import (
+	"fmt"
 	"io"
 	"strings"
 
 	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf/internal/parse"
-	"github.com/shivamMg/rd"
+	"github.com/miekg/cf/internal/rd"
 )
 
 // Parse parses the CFEngine file in buffer into an CFEngine AST. See ParseTokens().
@@ -33,7 +34,8 @@ func ParseTokens(tokens []rd.Token) (tree *rd.Tree, debugTree *rd.DebugTree, err
 	}
 	b := rd.NewBuilder(tokens)
 	if ok := parse.Specification(b); !ok {
-		return nil, b.DebugTree(), b.Err()
+		err = fmt.Errorf("parsing error around token %q", b.ErrorToken.(chroma.Token).Value)
+		return nil, b.DebugTree(), err
 	}
 	return b.ParseTree(), b.DebugTree(), nil
 }

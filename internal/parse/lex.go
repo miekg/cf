@@ -3,8 +3,8 @@ package parse
 import (
 	"github.com/alecthomas/chroma/v2"
 	"github.com/alecthomas/chroma/v2/lexers"
+	"github.com/miekg/cf/internal/rd"
 	"github.com/miekg/cf/internal/token"
-	"github.com/shivamMg/rd"
 )
 
 func Lex(specification string) ([]rd.Token, error) {

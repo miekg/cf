@@ -3,7 +3,7 @@ bundle common compounds
  vars:
 
 
-   "HasTpmDevice" and	 => { "a list item", "another list item" },
+   "HasTpmDevice" and	 => { "a list item", "another list item" };
 
    "HasNoTpmDevice" and	 => { "a listy item", fileexists("/dev/tpm0"), "another listy item", "a third" };
 

@@ -4,7 +4,7 @@ import (
 	"io"
 
 	"github.com/alecthomas/chroma/v2"
-	"github.com/shivamMg/rd"
+	"github.com/miekg/cf/internal/rd"
 )
 
 type printFunc func(string)
