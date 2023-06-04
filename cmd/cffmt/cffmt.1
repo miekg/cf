@@ -17,6 +17,29 @@ standard output. Cf uses an indent of 2 spaces to indent elements of the tree. L
 the following snippet and the pretty printed on after it.
 
 .PP
+Options are:
+
+.TP
+\fB\fC-a\fR
+print the AST to standard error
+.TP
+\fB\fC-p\fR
+print the pretty printed document to standard output (defaults to true)
+.TP
+\fB\fC-l\fR
+show lexer tokens
+.TP
+\fB\fC-d\fR
+when parsing fails print the debug tree
+.TP
+\fB\fC-v\fR
+show version and then exit
+
+
+.PP
+A few examples on how things are formatted:
+
+.PP
 .RS
 
 .nf
@@ -45,7 +68,7 @@ Becomes:
 
 .PP
 If the first line of the file contains the comment: \fB\fC# cffmt:no\fR  it will not be pretty printed.
-Another directive is \fB\fC# cffmt:list-nl\fR which says the \fInext\fP list will have each item printed on a
+Another directive is \fB\fC# cffmt:list\fR which says the \fInext\fP list will have each item printed on a
 new line. For example:
 
 .PP
@@ -71,13 +94,13 @@ Normally to:
 .RE
 
 .PP
-But with \fB\fC# cffmt:list-nl\fR:
+But with \fB\fC# cffmt:list\fR:
 
 .PP
 .RS
 
 .nf
-# cffmt:list\-nl
+# cffmt:list
 "Clients"         or => { aaa,
                           bbb,
                           ccc,
@@ -90,30 +113,9 @@ But with \fB\fC# cffmt:list-nl\fR:
 .fi
 .RE
 
-.PP
-Options are:
-
-.TP
-\fB\fC-a\fR
-print the AST to standard error
-.TP
-\fB\fC-p\fR
-print the pretty printed document to standard output (defaults to true)
-.TP
-\fB\fC-l\fR
-show lexer tokens
-.TP
-\fB\fC-d\fR
-when parsing fails print the debug tree
-.TP
-\fB\fC-v\fR
-show version and then exit
-
-
 .SH "SEE ALSO"
 .PP
-See the project's README for more details. Source code and development takes place on
-GitHub
+See the project's README for more details. Development takes place on GitHub
 \[la]https://github.com/miekg/cf\[ra].
 
 .SH "AUTHOR"
