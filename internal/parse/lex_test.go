@@ -17,29 +17,29 @@ func TestLexDoubleQuote(t *testing.T) {
 		perms     => mog(0660, mattermost, root);
 }
 `
-	const expect = `chroma.Token {Keyword bundle}
-chroma.Token {Keyword agent}
-chroma.Token {NameFunction gitlab_server}
-chroma.Token {Punctuation {}
-chroma.Token {NameClass IsMattermostServer}
-chroma.Token {Punctuation ::}
-chroma.Token {TokenType(-994) "/var/opt/gitlab/mattermost/config.json"}
-chroma.Token {KeywordReserved comment}
-chroma.Token {TokenType(-996) =>}
-chroma.Token {TokenType(-994) "mattermost see https://cncz.ru.nl/#more/procedures/GitLab/#mattermost-configuratie"}
-chroma.Token {Punctuation ,}
-chroma.Token {KeywordReserved perms}
-chroma.Token {TokenType(-996) =>}
-chroma.Token {NameFunction mog}
-chroma.Token {Punctuation (}
-chroma.Token {LiteralNumberInteger 0660}
-chroma.Token {Punctuation ,}
-chroma.Token {NameFunction mattermost}
-chroma.Token {Punctuation ,}
-chroma.Token {NameFunction root}
-chroma.Token {Punctuation )}
-chroma.Token {Punctuation ;}
-chroma.Token {Punctuation }}
+	const expect = `token.T {Keyword bundle}
+token.T {Keyword agent}
+token.T {NameFunction gitlab_server}
+token.T {Punctuation {}
+token.T {NameClass IsMattermostServer}
+token.T {Punctuation ::}
+token.T {TokenType(-994) "/var/opt/gitlab/mattermost/config.json"}
+token.T {KeywordReserved comment}
+token.T {TokenType(-996) =>}
+token.T {TokenType(-994) "mattermost see https://cncz.ru.nl/#more/procedures/GitLab/#mattermost-configuratie"}
+token.T {Punctuation ,}
+token.T {KeywordReserved perms}
+token.T {TokenType(-996) =>}
+token.T {NameFunction mog}
+token.T {Punctuation (}
+token.T {LiteralNumberInteger 0660}
+token.T {Punctuation ,}
+token.T {NameFunction mattermost}
+token.T {Punctuation ,}
+token.T {NameFunction root}
+token.T {Punctuation )}
+token.T {Punctuation ;}
+token.T {Punctuation }}
 `
 	tokens, err := Lex(string(input))
 	if err != nil {
@@ -56,9 +56,9 @@ func TestLexSingleQuote(t *testing.T) {
 	// needs the newline
 	const input = `comment   => 'mattermost see https://cncz.ru.nl/more/procedures/GitLab/mattermost-configuratie'
 `
-	const expect = `chroma.Token {KeywordReserved comment}
-chroma.Token {TokenType(-996) =>}
-chroma.Token {TokenType(-994) 'mattermost see https://cncz.ru.nl/more/procedures/GitLab/mattermost-configuratie'}
+	const expect = `token.T {KeywordReserved comment}
+token.T {TokenType(-996) =>}
+token.T {TokenType(-994) 'mattermost see https://cncz.ru.nl/more/procedures/GitLab/mattermost-configuratie'}
 `
 
 	tokens, err := Lex(string(input))
@@ -76,9 +76,9 @@ func TestLexSingleQuoteComment(t *testing.T) {
 	// needs the newline
 	const input = `comment   => 'mattermost see https://cncz.ru.nl/more/procedures/#GitLab/mattermost-configuratie'
 `
-	const expect = `chroma.Token {KeywordReserved comment}
-chroma.Token {TokenType(-996) =>}
-chroma.Token {TokenType(-994) 'mattermost see https://cncz.ru.nl/more/procedures/#GitLab/mattermost-configuratie'}
+	const expect = `token.T {KeywordReserved comment}
+token.T {TokenType(-996) =>}
+token.T {TokenType(-994) 'mattermost see https://cncz.ru.nl/more/procedures/#GitLab/mattermost-configuratie'}
 `
 
 	tokens, err := Lex(string(input))
@@ -97,9 +97,9 @@ const backtick = "`"
 func TestLexBacktickQuote(t *testing.T) {
 	// needs the newline
 	const input = "comment   => " + backtick + "mattermost see https://cncz.ru.nl/more/procedures/GitLab/mattermost-configuratie" + backtick + "\n"
-	const expect = `chroma.Token {KeywordReserved comment}
-chroma.Token {TokenType(-996) =>}
-chroma.Token {TokenType(-994) ` + backtick + `mattermost see https://cncz.ru.nl/more/procedures/GitLab/mattermost-configuratie` + backtick + "}\n"
+	const expect = `token.T {KeywordReserved comment}
+token.T {TokenType(-996) =>}
+token.T {TokenType(-994) ` + backtick + `mattermost see https://cncz.ru.nl/more/procedures/GitLab/mattermost-configuratie` + backtick + "}\n"
 
 	tokens, err := Lex(string(input))
 	if err != nil {
@@ -115,9 +115,9 @@ chroma.Token {TokenType(-994) ` + backtick + `mattermost see https://cncz.ru.nl/
 func TestLexBacktickQuoteComment(t *testing.T) {
 	// needs the newline
 	const input = "comment   => " + backtick + "mattermost see https://cncz.ru.nl/more/procedures/GitLab/#mattermost-configuratie" + backtick + "\n"
-	const expect = `chroma.Token {KeywordReserved comment}
-chroma.Token {TokenType(-996) =>}
-chroma.Token {TokenType(-994) ` + backtick + `mattermost see https://cncz.ru.nl/more/procedures/GitLab/#mattermost-configuratie` + backtick + "}\n"
+	const expect = `token.T {KeywordReserved comment}
+token.T {TokenType(-996) =>}
+token.T {TokenType(-994) ` + backtick + `mattermost see https://cncz.ru.nl/more/procedures/GitLab/#mattermost-configuratie` + backtick + "}\n"
 
 	tokens, err := Lex(string(input))
 	if err != nil {
@@ -132,9 +132,9 @@ chroma.Token {TokenType(-994) ` + backtick + `mattermost see https://cncz.ru.nl/
 
 func TestLexNakedVar(t *testing.T) {
 	const input = "inform => $(compounds.to_inform)\n"
-	const expect = `chroma.Token {KeywordReserved inform}
-chroma.Token {TokenType(-996) =>}
-chroma.Token {NameVariable $(compounds.to_inform)}
+	const expect = `token.T {KeywordReserved inform}
+token.T {TokenType(-996) =>}
+token.T {NameVariable $(compounds.to_inform)}
 `
 
 	tokens, err := Lex(string(input))
@@ -151,14 +151,14 @@ chroma.Token {NameVariable $(compounds.to_inform)}
 func TestLexSingleQuotePunctuation(t *testing.T) {
 	const input = `"lines" slist => { '#controlled by cfengine',
 				};`
-	const expect = `chroma.Token {TokenType(-994) "lines"}
-chroma.Token {KeywordReserved slist}
-chroma.Token {TokenType(-996) =>}
-chroma.Token {Punctuation {}
-chroma.Token {TokenType(-994) '#controlled by cfengine'}
-chroma.Token {Punctuation ,}
-chroma.Token {Punctuation }}
-chroma.Token {Punctuation ;}
+	const expect = `token.T {TokenType(-994) "lines"}
+token.T {KeywordReserved slist}
+token.T {TokenType(-996) =>}
+token.T {Punctuation {}
+token.T {TokenType(-994) '#controlled by cfengine'}
+token.T {Punctuation ,}
+token.T {Punctuation }}
+token.T {Punctuation ;}
 `
 
 	tokens, err := Lex(string(input))
@@ -175,11 +175,11 @@ chroma.Token {Punctuation ;}
 func TestLexSingleQuoteMultipleWords(t *testing.T) {
 	const input = `comment => 'Ensure that the given parameter for file "$(file)" has only
 the contents of the given parameter for content "$(content)"';`
-	const expect = `chroma.Token {KeywordReserved comment}
-chroma.Token {TokenType(-996) =>}
-chroma.Token {TokenType(-994) 'Ensure that the given parameter for file "$(file)" has only
+	const expect = `token.T {KeywordReserved comment}
+token.T {TokenType(-996) =>}
+token.T {TokenType(-994) 'Ensure that the given parameter for file "$(file)" has only
 the contents of the given parameter for content "$(content)"'}
-chroma.Token {Punctuation ;}
+token.T {Punctuation ;}
 `
 
 	tokens, err := Lex(string(input))
