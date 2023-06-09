@@ -20,9 +20,10 @@ func MatchType(b *rd.Builder, tt chroma.TokenType) bool {
 	if EqualType(next, tt) {
 		b.Next()
 		b.Add(next)
+		b.ErrorToken = nil
 		return true
 	}
-	b.ErrorToken = next
+	setErrorToken(b, next)
 	return false
 }
 
@@ -35,9 +36,10 @@ func Match(b *rd.Builder, t token.T) bool {
 	if Equal(next, t) {
 		b.Next()
 		b.Add(next)
+		b.ErrorToken = nil
 		return true
 	}
-	b.ErrorToken = next
+	setErrorToken(b, next)
 	return false
 }
 
@@ -49,10 +51,11 @@ func MatchDiscard(b *rd.Builder, t token.T) bool {
 	}
 	if Equal(next, t) {
 		b.Next()
+		b.ErrorToken = nil
 		return true
 	}
 
-	b.ErrorToken = next
+	setErrorToken(b, next)
 	return false
 }
 
@@ -72,6 +75,7 @@ func PeekClassGuard(b *rd.Builder) (ok bool) {
 		return false
 	}
 	if !EqualType(peek1, chroma.NameClass) {
+		setErrorToken(b, peek1)
 		return false
 	}
 	peek2, ok := b.Peek(2)
@@ -79,6 +83,7 @@ func PeekClassGuard(b *rd.Builder) (ok bool) {
 		return false
 	}
 	if !Equal(peek2, token.T{Type: chroma.Punctuation, Value: "::"}) {
+		setErrorToken(b, peek2)
 		return false
 	}
 	return true
@@ -91,6 +96,7 @@ func PeekPromiseGuard(b *rd.Builder) (ok bool) {
 		return false
 	}
 	if !EqualType(peek1, chroma.KeywordDeclaration) {
+		setErrorToken(b, peek1)
 		return false
 	}
 	peek2, ok := b.Peek(2)
@@ -98,7 +104,14 @@ func PeekPromiseGuard(b *rd.Builder) (ok bool) {
 		return false
 	}
 	if !Equal(peek2, token.T{Type: chroma.Punctuation, Value: ":"}) {
+		setErrorToken(b, peek2)
 		return false
 	}
 	return true
+}
+
+func setErrorToken(b *rd.Builder, t rd.Token) {
+	if b.ErrorToken == nil {
+		b.ErrorToken = &t
+	}
 }

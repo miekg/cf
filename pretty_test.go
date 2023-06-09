@@ -23,11 +23,11 @@ func TestPrettyPrint(t *testing.T) {
 		if filepath.Ext(f.Name()) != ".cf" {
 			continue
 		}
-		buf, err := os.ReadFile("testdata/" + f.Name())
+		buf, err := os.ReadFile(dir + "/" + f.Name())
 		if err != nil {
 			t.Fatal(err)
 		}
-		pretty, err := os.ReadFile("testdata/" + f.Name() + ".pretty")
+		pretty, err := os.ReadFile(dir + "/" + f.Name() + ".pretty")
 		if err != nil {
 			continue
 		}

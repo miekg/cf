@@ -19,11 +19,11 @@ func TestParse(t *testing.T) {
 		if filepath.Ext(f.Name()) != ".cf" {
 			continue
 		}
-		buf, err := os.ReadFile("testdata/" + f.Name())
+		buf, err := os.ReadFile(dir + "/" + f.Name())
 		if err != nil {
 			t.Fatal(err)
 		}
-		ast, _ := os.ReadFile("testdata/" + f.Name() + ".ast")
+		ast, _ := os.ReadFile(dir + "/" + f.Name() + ".ast")
 
 		t.Run(f.Name(), func(t *testing.T) {
 			tokens, err := Lex(string(buf))

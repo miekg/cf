@@ -35,7 +35,7 @@ func ParseTokens(tokens []rd.Token) (tree *rd.Tree, debugTree *rd.DebugTree, err
 	}
 	b := rd.NewBuilder(tokens)
 	if ok := parse.Specification(b); !ok {
-		err = fmt.Errorf("parsing error around token %q on line %d", b.ErrorToken.(token.T).Value, b.ErrorToken.(token.T).Line)
+		err = fmt.Errorf("parsing error around token %q on line %d", (*b.ErrorToken).(token.T).Value, (*b.ErrorToken).(token.T).Line)
 		return nil, b.DebugTree(), err
 	}
 	return b.ParseTree(), b.DebugTree(), nil
