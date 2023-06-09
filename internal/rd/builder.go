@@ -34,7 +34,7 @@ type Builder struct {
 	finalErr       *ParsingError
 	skip           bool
 
-	ErrorToken Token // Added by miekg@ unclear how to use the debug tree to retrieve the offending token
+	ErrorToken *Token // Added by miekg@ unclear how to use the debug tree to retrieve the offending token
 }
 
 // NewBuilder returns a new Builder for the tokens.
@@ -144,7 +144,6 @@ func (b *Builder) Match(token Token) (ok bool) {
 	if next != token {
 		b.current--
 		debugMsg = fmt.Sprint(next, " ≠ ", token)
-		b.ErrorToken = next
 		return false
 	}
 	b.Add(token)
