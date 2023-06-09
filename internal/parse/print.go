@@ -148,7 +148,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 		case "Litem":
 		}
 
-	case chroma.Token:
+	case token.T:
 		switch v.Type {
 		case chroma.Keyword:
 			switch v.Value {
@@ -339,7 +339,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			}
 		}
 
-	case chroma.Token:
+	case token.T:
 		switch v.Type {
 		case chroma.Keyword:
 

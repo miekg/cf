@@ -8,6 +8,7 @@ import (
 	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf/internal/parse"
 	"github.com/miekg/cf/internal/rd"
+	"github.com/miekg/cf/internal/token"
 )
 
 // Parse parses the CFEngine file in buffer into an CFEngine AST. See ParseTokens().
@@ -34,7 +35,7 @@ func ParseTokens(tokens []rd.Token) (tree *rd.Tree, debugTree *rd.DebugTree, err
 	}
 	b := rd.NewBuilder(tokens)
 	if ok := parse.Specification(b); !ok {
-		err = fmt.Errorf("parsing error around token %q", b.ErrorToken.(chroma.Token).Value)
+		err = fmt.Errorf("parsing error around token %q on line %d", b.ErrorToken.(token.T).Value, b.ErrorToken.(token.T).Line)
 		return nil, b.DebugTree(), err
 	}
 	return b.ParseTree(), b.DebugTree(), nil
@@ -46,7 +47,7 @@ func IsNoParse(tokens []rd.Token) bool {
 		return false
 	}
 
-	if ct, ok := tokens[0].(chroma.Token); ok {
+	if ct, ok := tokens[0].(token.T); ok {
 		if ct.Type == chroma.Comment && strings.HasPrefix(ct.Value, "# cffmt:no") {
 			return true
 		}

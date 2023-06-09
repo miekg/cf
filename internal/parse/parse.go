@@ -154,7 +154,7 @@ More:
 	Constraint(b)
 	Comments(b)
 	// next token is , we have more Constraints, otherwise return
-	if ok = b.Match(token.T{Type: chroma.Punctuation, Value: ","}); ok {
+	if ok = Match(b, token.T{Type: chroma.Punctuation, Value: ","}); ok {
 		Comments(b)
 		goto More
 	}
@@ -248,7 +248,7 @@ More:
 	GaItem(b) // if !ok this is an actual error?
 
 	// if next thing is a , we have another GaItems, otherwise return
-	if ok = b.Match(token.T{Type: chroma.Punctuation, Value: ","}); ok {
+	if ok = Match(b, token.T{Type: chroma.Punctuation, Value: ","}); ok {
 		// TODO: should not add this to the AST.
 		goto More
 	}
@@ -305,7 +305,7 @@ More:
 	Litem(b)
 
 	// next token is , we have more Litems, otherwise return
-	if ok = b.Match(token.T{Type: chroma.Punctuation, Value: ","}); ok {
+	if ok = Match(b, token.T{Type: chroma.Punctuation, Value: ","}); ok {
 		goto More
 	}
 	return true
@@ -362,7 +362,7 @@ More:
 	Aitem(b)
 
 	// next token is , we have more Aitems, otherwise return
-	if ok = b.Match(token.T{Type: chroma.Punctuation, Value: ","}); ok {
+	if ok = Match(b, token.T{Type: chroma.Punctuation, Value: ","}); ok {
 		goto More
 	}
 	return true

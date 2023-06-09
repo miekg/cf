@@ -92,5 +92,5 @@ func Selection(b *rd.Builder) (ok bool) {
 	if !FatArrow(b) {
 		return false
 	}
-	return Rval(b) && b.Match(token.T{Type: chroma.Punctuation, Value: ";"})
+	return Rval(b) && Match(b, token.T{Type: chroma.Punctuation, Value: ";"})
 }
