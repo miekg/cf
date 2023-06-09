@@ -3,12 +3,13 @@ package parse
 import (
 	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf/internal/rd"
+	"github.com/miekg/cf/internal/token"
 )
 
-func Equal(a rd.Token, t chroma.Token) bool {
-	return a.(chroma.Token).Type == t.Type && a.(chroma.Token).Value == t.Value
+func Equal(a rd.Token, t token.T) bool {
+	return a.(token.T).Type == t.Type && a.(token.T).Value == t.Value
 }
-func EqualType(a rd.Token, tt chroma.TokenType) bool { return a.(chroma.Token).Type == tt }
+func EqualType(a rd.Token, tt chroma.TokenType) bool { return a.(token.T).Type == tt }
 
 // MatchType matches the next token type to tt. If OK the token is added to the tree.
 func MatchType(b *rd.Builder, tt chroma.TokenType) bool {
@@ -26,7 +27,7 @@ func MatchType(b *rd.Builder, tt chroma.TokenType) bool {
 }
 
 // Match matches the next token type to tt. If OK the token is added to the tree.
-func Match(b *rd.Builder, t chroma.Token) bool {
+func Match(b *rd.Builder, t token.T) bool {
 	next, ok := b.Peek(1)
 	if !ok {
 		return false
@@ -41,7 +42,7 @@ func Match(b *rd.Builder, t chroma.Token) bool {
 }
 
 // MatchDiscard matches the next token type to tt. If OK the token is not added to the tree, but discarded.
-func MatchDiscard(b *rd.Builder, t chroma.Token) bool {
+func MatchDiscard(b *rd.Builder, t token.T) bool {
 	next, ok := b.Peek(1)
 	if !ok {
 		return false
@@ -56,7 +57,7 @@ func MatchDiscard(b *rd.Builder, t chroma.Token) bool {
 }
 
 // Peek will peek the next token.
-func Peek(b *rd.Builder, t chroma.Token) bool {
+func Peek(b *rd.Builder, t token.T) bool {
 	next, ok := b.Peek(1)
 	if !ok {
 		return false
@@ -77,7 +78,7 @@ func PeekClassGuard(b *rd.Builder) (ok bool) {
 	if !ok {
 		return false
 	}
-	if !Equal(peek2, chroma.Token{Type: chroma.Punctuation, Value: "::"}) {
+	if !Equal(peek2, token.T{Type: chroma.Punctuation, Value: "::"}) {
 		return false
 	}
 	return true
@@ -96,7 +97,7 @@ func PeekPromiseGuard(b *rd.Builder) (ok bool) {
 	if !ok {
 		return false
 	}
-	if !Equal(peek2, chroma.Token{Type: chroma.Punctuation, Value: ":"}) {
+	if !Equal(peek2, token.T{Type: chroma.Punctuation, Value: ":"}) {
 		return false
 	}
 	return true

@@ -1,6 +1,8 @@
 package parse
 
 import (
+	"strings"
+
 	"github.com/alecthomas/chroma/v2"
 	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/miekg/cf/internal/rd"
@@ -15,9 +17,11 @@ func Lex(specification string) ([]rd.Token, error) {
 		return nil, err
 	}
 	// Compresses LiteralString* into a single Qstring
-	pt := chroma.Token{Type: token.None}
+	pt := token.T{Type: token.None}
+	line := 1
 	//defer println("*****")
-	for _, t := range iter.Tokens() {
+	for _, t1 := range iter.Tokens() {
+		t := token.T{Type: t1.Type, Value: t1.Value, Line: line}
 		//fmt.Printf("%T %v\n", t, t)
 		switch t.Type {
 		case chroma.LiteralString, chroma.LiteralStringInterpol, chroma.LiteralStringEscape:
@@ -27,13 +31,14 @@ func Lex(specification string) ([]rd.Token, error) {
 			}
 			pt.Type = token.Qstring
 			pt.Value += t.Value
+			pt.Line = line
 
 		case chroma.Operator:
 			if t.Value == "=>" {
-				tokens = append(tokens, rd.Token(chroma.Token{Type: token.FatArrow, Value: t.Value}))
+				tokens = append(tokens, rd.Token(token.T{Type: token.FatArrow, Value: t.Value, Line: line}))
 			}
 			if t.Value == "->" {
-				tokens = append(tokens, rd.Token(chroma.Token{Type: token.ThinArrow, Value: t.Value}))
+				tokens = append(tokens, rd.Token(token.T{Type: token.ThinArrow, Value: t.Value, Line: line}))
 			}
 
 		case chroma.Text:
@@ -42,6 +47,7 @@ func Lex(specification string) ([]rd.Token, error) {
 			}
 			pt.Type = token.None
 			pt.Value = ""
+			line += strings.Count(t.Value, "\n")
 
 		default:
 			if pt.Type != token.None {

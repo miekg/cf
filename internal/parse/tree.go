@@ -5,6 +5,7 @@ import (
 
 	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf/internal/rd"
+	"github.com/miekg/cf/internal/token"
 )
 
 type printFunc func(string)
@@ -12,7 +13,7 @@ type printFunc func(string)
 func printChildrenOfType(w io.Writer, t *rd.Tree, tt chroma.TokenType, f printFunc) {
 	detach := []*rd.Tree{}
 	for _, c := range t.Subtrees {
-		if ct, ok := c.Data().(chroma.Token); ok {
+		if ct, ok := c.Data().(token.T); ok {
 			if ct.Type == tt {
 				f(ct.Value)
 				detach = append(detach, c)
@@ -26,7 +27,7 @@ func printChildrenOfType(w io.Writer, t *rd.Tree, tt chroma.TokenType, f printFu
 
 func printFirstChildOfType(w io.Writer, t *rd.Tree, tt chroma.TokenType, f printFunc) {
 	for _, c := range t.Subtrees {
-		if ct, ok := c.Data().(chroma.Token); ok {
+		if ct, ok := c.Data().(token.T); ok {
 			if ct.Type == tt {
 				f(ct.Value)
 				t.Detach(c)

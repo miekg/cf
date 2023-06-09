@@ -3,13 +3,14 @@ package parse
 import (
 	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf/internal/rd"
+	"github.com/miekg/cf/internal/token"
 )
 
 func Body(b *rd.Builder) (ok bool) {
 	b.Enter("Body")
 	defer b.Exit(&ok)
 
-	if !Match(b, chroma.Token{Type: chroma.Keyword, Value: "body"}) {
+	if !Match(b, token.T{Type: chroma.Keyword, Value: "body"}) {
 		return false
 	}
 	if !MatchType(b, chroma.Keyword) {
@@ -19,7 +20,7 @@ func Body(b *rd.Builder) (ok bool) {
 		return false
 	}
 	// if next is ( -> params, if { open the body
-	if Peek(b, chroma.Token{Type: chroma.Punctuation, Value: "("}) {
+	if Peek(b, token.T{Type: chroma.Punctuation, Value: "("}) {
 		if !ArgList(b) {
 			return false
 		}
@@ -28,12 +29,12 @@ func Body(b *rd.Builder) (ok bool) {
 	Comments(b)
 
 	// now we should see {
-	if !MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "{"}) {
+	if !MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: "{"}) {
 		return false
 	}
 
 	defer Comments(b)
-	return BodyBody(b) && Match(b, chroma.Token{Type: chroma.Punctuation, Value: "}"})
+	return BodyBody(b) && Match(b, token.T{Type: chroma.Punctuation, Value: "}"})
 }
 
 func BodyBody(b *rd.Builder) (ok bool) {
@@ -47,7 +48,7 @@ More:
 	ClassGuardSelections(b)
 	BodySelections(b)
 
-	if !Peek(b, chroma.Token{Type: chroma.Punctuation, Value: "}"}) {
+	if !Peek(b, token.T{Type: chroma.Punctuation, Value: "}"}) {
 		goto More
 	}
 	return true
@@ -60,7 +61,7 @@ func ClassGuardSelections(b *rd.Builder) (ok bool) {
 	if !MatchType(b, chroma.NameClass) {
 		return false
 	}
-	if !MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "::"}) {
+	if !MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: "::"}) {
 		return false
 	}
 	return BodySelections(b)
@@ -91,5 +92,5 @@ func Selection(b *rd.Builder) (ok bool) {
 	if !FatArrow(b) {
 		return false
 	}
-	return Rval(b) && b.Match(chroma.Token{Type: chroma.Punctuation, Value: ";"})
+	return Rval(b) && b.Match(token.T{Type: chroma.Punctuation, Value: ";"})
 }

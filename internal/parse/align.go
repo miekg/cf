@@ -5,11 +5,12 @@ import (
 
 	"github.com/alecthomas/chroma/v2"
 	"github.com/miekg/cf/internal/rd"
+	"github.com/miekg/cf/internal/token"
 )
 
 func constraintPreventSingleLine(constraint *rd.Tree) bool {
 	for _, c := range constraint.Subtrees {
-		ct, ok := c.Data().(chroma.Token)
+		ct, ok := c.Data().(token.T)
 		if !ok {
 			return false
 		}
@@ -92,11 +93,11 @@ func alignConstraints(tree *rd.Tree) {
 		if constraint != "Constraint" {
 			continue
 		}
-		token, ok := c.Subtrees[0].Data().(chroma.Token)
+		tok, ok := c.Subtrees[0].Data().(token.T)
 		if !ok {
 			continue
 		}
-		if l := len(token.Value); l > max {
+		if l := len(tok.Value); l > max {
 			max = l
 		}
 		align = append(align, c)
@@ -124,7 +125,7 @@ func alignPromisers(tree *rd.Tree) {
 			continue
 		}
 		// check for comments in between. TODO(miek)
-		token, ok := c.Subtrees[0].Data().(chroma.Token)
+		token, ok := c.Subtrees[0].Data().(token.T)
 		if !ok {
 			continue
 		}
@@ -165,7 +166,7 @@ func alignPromisersKeywords(tree *rd.Tree) {
 		if len(c.Subtrees[1].Subtrees) < 1 {
 			continue
 		}
-		token, ok := c.Subtrees[1].Subtrees[0].Data().(chroma.Token)
+		token, ok := c.Subtrees[1].Subtrees[0].Data().(token.T)
 		if !ok {
 			continue
 		}
@@ -202,7 +203,7 @@ func alignSelections(tree *rd.Tree) {
 		if selection != "Selection" {
 			continue
 		}
-		token, ok := c.Subtrees[0].Data().(chroma.Token)
+		token, ok := c.Subtrees[0].Data().(token.T)
 		if !ok {
 			continue
 		}
@@ -219,10 +220,10 @@ func pad(trees []*rd.Tree, max int) {
 		return
 	}
 	for _, t := range trees {
-		token := t.Subtrees[0].Symbol.(chroma.Token)
-		pad := max - len(token.Value)
-		token.Value += strings.Repeat(" ", pad)
-		t.Subtrees[0].Symbol = chroma.Token{Type: token.Type, Value: token.Value}
+		tok := t.Subtrees[0].Symbol.(token.T)
+		pad := max - len(tok.Value)
+		tok.Value += strings.Repeat(" ", pad)
+		t.Subtrees[0].Symbol = token.T{Type: tok.Type, Value: tok.Value}
 	}
 }
 

@@ -33,7 +33,7 @@ func Bundle(b *rd.Builder) (ok bool) {
 	b.Enter("Bundle")
 	defer b.Exit(&ok)
 
-	if !Match(b, chroma.Token{Type: chroma.Keyword, Value: "bundle"}) {
+	if !Match(b, token.T{Type: chroma.Keyword, Value: "bundle"}) {
 		return false
 	}
 	if !MatchType(b, chroma.Keyword) {
@@ -43,7 +43,7 @@ func Bundle(b *rd.Builder) (ok bool) {
 		return false
 	}
 	// if next is ( -> params, if { open the body
-	if Peek(b, chroma.Token{Type: chroma.Punctuation, Value: "("}) {
+	if Peek(b, token.T{Type: chroma.Punctuation, Value: "("}) {
 		if !ArgList(b) {
 			return false
 		}
@@ -52,12 +52,12 @@ func Bundle(b *rd.Builder) (ok bool) {
 	Comments(b)
 
 	// now we should see {
-	if !MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "{"}) {
+	if !MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: "{"}) {
 		return false
 	}
 
 	defer Comments(b)
-	return BundleBody(b) && MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "}"})
+	return BundleBody(b) && MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: "}"})
 }
 
 func BundleBody(b *rd.Builder) (ok bool) {
@@ -108,7 +108,7 @@ func ClassGuardPromises(b *rd.Builder) (ok bool) {
 	if !MatchType(b, chroma.NameClass) {
 		return false
 	}
-	if !MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "::"}) {
+	if !MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: "::"}) {
 		return false
 	}
 	return Promises(b)
@@ -138,7 +138,7 @@ func Promise(b *rd.Builder) (ok bool) {
 	Comments(b)
 
 	// zero or more constraints, and then a closing ;
-	return PromiseConstraints(b) && Match(b, chroma.Token{Type: chroma.Punctuation, Value: ";"})
+	return PromiseConstraints(b) && Match(b, token.T{Type: chroma.Punctuation, Value: ";"})
 }
 
 func PromiseConstraints(b *rd.Builder) (ok bool) {
@@ -146,7 +146,7 @@ func PromiseConstraints(b *rd.Builder) (ok bool) {
 	b.Exit(&ok)
 
 	// if no constraint found, we don't have any, this is OK
-	ok = Peek(b, chroma.Token{Type: chroma.Punctuation, Value: ";"})
+	ok = Peek(b, token.T{Type: chroma.Punctuation, Value: ";"})
 	if ok {
 		return true // empty contraints list
 	}
@@ -154,7 +154,7 @@ More:
 	Constraint(b)
 	Comments(b)
 	// next token is , we have more Constraints, otherwise return
-	if ok = b.Match(chroma.Token{Type: chroma.Punctuation, Value: ","}); ok {
+	if ok = b.Match(token.T{Type: chroma.Punctuation, Value: ","}); ok {
 		Comments(b)
 		goto More
 	}
@@ -220,7 +220,7 @@ func Function(b *rd.Builder) (ok bool) {
 		return false
 	}
 	// Check for Identifier
-	if !Peek(b, chroma.Token{Type: chroma.Punctuation, Value: "("}) {
+	if !Peek(b, token.T{Type: chroma.Punctuation, Value: "("}) {
 		return false // no ( after name, this is not a function
 	}
 
@@ -230,16 +230,16 @@ func Function(b *rd.Builder) (ok bool) {
 func GiveArgList(b *rd.Builder) (ok bool) {
 	b.Enter("GiveArgList")
 	defer b.Exit(&ok)
-	if !MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "("}) {
+	if !MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: "("}) {
 		return false
 	}
-	return GaItems(b) && MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: ")"})
+	return GaItems(b) && MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: ")"})
 }
 
 func GaItems(b *rd.Builder) (ok bool) {
 	//b.Enter("GaItems")   - don't add in AST.
 	//defer b.Exit(&ok)
-	ok = Peek(b, chroma.Token{Type: chroma.Punctuation, Value: ")"})
+	ok = Peek(b, token.T{Type: chroma.Punctuation, Value: ")"})
 	if ok {
 		return true // empty function arglist
 	}
@@ -248,7 +248,7 @@ More:
 	GaItem(b) // if !ok this is an actual error?
 
 	// if next thing is a , we have another GaItems, otherwise return
-	if ok = b.Match(chroma.Token{Type: chroma.Punctuation, Value: ","}); ok {
+	if ok = b.Match(token.T{Type: chroma.Punctuation, Value: ","}); ok {
 		// TODO: should not add this to the AST.
 		goto More
 	}
@@ -286,16 +286,16 @@ func List(b *rd.Builder) (ok bool) {
 	b.Enter("List")
 	defer b.Exit(&ok)
 
-	if !MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "{"}) {
+	if !MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: "{"}) {
 		return false
 	}
-	return Litems(b) && MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "}"})
+	return Litems(b) && MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: "}"})
 }
 
 func Litems(b *rd.Builder) (ok bool) {
 	//b.Enter("Litems")   - don't add in AST.
 	//defer b.Exit(&ok)
-	ok = Peek(b, chroma.Token{Type: chroma.Punctuation, Value: "}"})
+	ok = Peek(b, token.T{Type: chroma.Punctuation, Value: "}"})
 	if ok {
 		return true // empty list
 	}
@@ -305,7 +305,7 @@ More:
 	Litem(b)
 
 	// next token is , we have more Litems, otherwise return
-	if ok = b.Match(chroma.Token{Type: chroma.Punctuation, Value: ","}); ok {
+	if ok = b.Match(token.T{Type: chroma.Punctuation, Value: ","}); ok {
 		goto More
 	}
 	return true
@@ -344,16 +344,16 @@ func ArgList(b *rd.Builder) (ok bool) {
 	b.Enter("ArgList")
 	defer b.Exit(&ok)
 
-	if !MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: "("}) {
+	if !MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: "("}) {
 		return false
 	}
-	return Aitems(b) && MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: ")"})
+	return Aitems(b) && MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: ")"})
 }
 
 func Aitems(b *rd.Builder) (ok bool) {
 	//b.Enter("Aitems")   - don't add in AST.
 	//defer b.Exit(&ok)
-	ok = Peek(b, chroma.Token{Type: chroma.Punctuation, Value: ")"})
+	ok = Peek(b, token.T{Type: chroma.Punctuation, Value: ")"})
 	if ok {
 		return true // empty list.. fails currently
 	}
@@ -362,7 +362,7 @@ More:
 	Aitem(b)
 
 	// next token is , we have more Aitems, otherwise return
-	if ok = b.Match(chroma.Token{Type: chroma.Punctuation, Value: ","}); ok {
+	if ok = b.Match(token.T{Type: chroma.Punctuation, Value: ","}); ok {
 		goto More
 	}
 	return true
@@ -389,7 +389,7 @@ func PromiseGuard(b *rd.Builder) (ok bool) {
 	if !MatchType(b, chroma.KeywordDeclaration) {
 		return false
 	}
-	if !MatchDiscard(b, chroma.Token{Type: chroma.Punctuation, Value: ":"}) {
+	if !MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: ":"}) {
 		return false
 	}
 	return true
@@ -452,5 +452,5 @@ func Fmt(b *rd.Builder, a string, i int) {
 	if !ok {
 		return
 	}
-	fmt.Printf("%s %T %v\n", a, tok.(chroma.Token), tok.(chroma.Token))
+	fmt.Printf("%s %T %v\n", a, tok.(token.T), tok.(token.T))
 }
