@@ -196,7 +196,6 @@ func Rval(b *rd.Builder) (ok bool) {
 	if Function(b) {
 		return true
 	}
-	println("RVAL list")
 	if List(b) {
 		return true
 	}
@@ -211,7 +210,6 @@ func Rval(b *rd.Builder) (ok bool) {
 	if NakedVar(b) {
 		return true
 	}
-	println("FALSE")
 	return false
 }
 
