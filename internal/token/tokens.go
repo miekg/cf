@@ -16,3 +16,5 @@ type T struct {
 	Value string
 	Line  int
 }
+
+func (t T) String() string { return "{" + t.Type.String() + " " + t.Value + "}" }
