@@ -260,7 +260,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			fmt.Fprintf(w, "}\n")
 
 		case "BodyBody":
-			fmt.Fprintf(w, "\n}\n") // needs extra new line
+			fmt.Fprintf(w, "\n}\n") // needs extra new line, TODO(miek): makes empty body have new line
 
 		case "PromiseGuard":
 			fmt.Fprint(w, ":\n\n")
