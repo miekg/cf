@@ -8,6 +8,13 @@ import (
 	"github.com/miekg/cf/internal/token"
 )
 
+// We have an infinite parsing loop somewhere, if we break it we get parsing
+// errors in the test data we have....Meaning we depend on a 'return true' that
+// should be a 'false'
+// Just quit after 1000(?) loops, until we get a good handle on this. Stuff is fast
+// enough, that you don't notice and you get a nice error.
+const LoopBreak = 1000
+
 func Specification(b *rd.Builder) (ok bool) {
 	b.Enter("Specification")
 	defer b.Exit(&ok)
@@ -17,7 +24,6 @@ func Specification(b *rd.Builder) (ok bool) {
 More:
 	ok1 := Bundle(b)
 	ok2 := Body(b)
-
 	if !ok1 && !ok2 {
 		return false
 	}
@@ -66,13 +72,20 @@ func BundleBody(b *rd.Builder) (ok bool) {
 
 	Comments(b)
 	Macro(b)
+	i := 0
 More:
-
+	i++
 	// Zero or more promiseguards (single : ) and then zero more classpromises.
-	PromiseGuard(b)
-	ClassPromises(b)
+	ok1 := PromiseGuard(b)
+	ok2 := ClassPromises(b)
+	if !ok1 && !ok2 {
+		return false
+	}
 
 	if PeekPromiseGuard(b) {
+		if i > LoopBreak {
+			return false
+		}
 		goto More
 	}
 	// PeekClassPromise as well TODO(miek)

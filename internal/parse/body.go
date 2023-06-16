@@ -43,12 +43,20 @@ func BodyBody(b *rd.Builder) (ok bool) {
 
 	Comments(b)
 	Macro(b)
+	i := 0
 More:
+	i++
 	// classguardselection and selections or just selections
-	ClassGuardSelections(b)
-	BodySelections(b)
+	ok1 := ClassGuardSelections(b)
+	ok2 := BodySelections(b)
+	if !ok1 && !ok2 {
+		return false
+	}
 
 	if !Peek(b, token.T{Type: chroma.Punctuation, Value: "}"}) {
+		if i > LoopBreak {
+			return false
+		}
 		goto More
 	}
 	return true
