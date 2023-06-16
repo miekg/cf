@@ -193,11 +193,13 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			case 1:
 				if p.first { // top-level comments
 					fmt.Fprintln(w)
+					p.first = false
 				}
 				fmt.Fprintf(w, "%s", v.Value) // no indentation
 			case 2: // comments between bundle and opening {
 				if p.first { // top-level comments
 					fmt.Fprintln(w)
+					p.first = false
 				}
 				if w.col > 0 {
 					fmt.Fprintln(w)
@@ -220,7 +222,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 					fmt.Fprintf(w, "%s", lindent)
 				}
 			}
-			if strings.HasPrefix(v.Value, "# cffmt:list-nl") {
+			if strings.HasPrefix(v.Value, "# cffmt:list") {
 				p.multilineList = true
 			}
 

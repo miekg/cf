@@ -1,0 +1,9 @@
+body common control
+{
+}
+
+# sync_dir is a bundle
+# are present in dest
+bundle agent sync_dir
+{
+}
