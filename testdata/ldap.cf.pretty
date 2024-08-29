@@ -1,0 +1,14 @@
+bundle agent ldap_server
+{
+  files:
+
+    "/etc/ldap/schema/rfc2307bis.schema"
+      copy_from => no_backup_rdcp("$(def.distr_files_dir)/etc/ldap/schema/rfc2307bis.schema", $(sys.policy_hub)),
+      perms     => mog(0644, root, root),
+      classes   => if_repaired("slapd_updated");
+
+    IsLdapServer.ubuntu_20::
+      "/var/lib/ldap/."
+        create => "true",
+        perms  => mog(0750, openldap, openldap);
+}
