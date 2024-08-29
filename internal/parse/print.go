@@ -77,6 +77,9 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "ClassGuardPromises":
 			first := firstOfType(parent, t, "ClassGuardPromises")
+			if first { // double check if we really didn't have something above
+				first = sequenceOfChild(parent, t) == 0
+			}
 			if !first {
 				fmt.Fprintln(w)
 			}
