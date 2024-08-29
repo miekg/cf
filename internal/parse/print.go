@@ -242,6 +242,10 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			fmt.Fprintf(w, " %s ", v.Value)
 
 		case chroma.Punctuation:
+			// This is an hack to only print ":" for NamespaceFunction, other puncs. are printed inline.
+			if v.Value == ":" {
+				fmt.Fprintf(w, "%s", v.Value)
+			}
 
 		default:
 			fmt.Fprintf(w, "%v\n", v)
