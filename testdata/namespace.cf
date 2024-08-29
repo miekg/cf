@@ -1,0 +1,6 @@
+bundle agent hello_world
+{
+  reports:
+      "$(this.namespace):$(this.bundle): Hello World!"
+        action => default:nolock;
+}

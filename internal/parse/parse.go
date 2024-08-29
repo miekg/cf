@@ -212,8 +212,7 @@ func Rval(b *rd.Builder) (ok bool) {
 	if List(b) {
 		return true
 	}
-	// Identifier
-	// NameVariable here too?
+	// Identifier, NameVariable here too?
 	if MatchType(b, chroma.NameFunction) {
 		return true
 	}
@@ -223,7 +222,28 @@ func Rval(b *rd.Builder) (ok bool) {
 	if NakedVar(b) {
 		return true
 	}
+	if NamespaceFunction(b) {
+		return true
+	}
 	return false
+}
+
+// NamespaceFunction parses the (relative?) new syntax "default:function", this is lexed as:
+// KeywordDeclaration Punctuation(:) NameFunction. This functions check for that.
+// It adds a Function to the AST.
+func NamespaceFunction(b *rd.Builder) (ok bool) {
+	b.Enter("NamespaceFunction")
+	defer b.Exit(&ok)
+	if !MatchType(b, chroma.KeywordDeclaration) {
+		return false
+	}
+	if !Match(b, token.T{Type: chroma.Punctuation, Value: ":"}) {
+		return false
+	}
+	if !MatchType(b, chroma.NameFunction) {
+		return false
+	}
+	return true
 }
 
 func Function(b *rd.Builder) (ok bool) {
