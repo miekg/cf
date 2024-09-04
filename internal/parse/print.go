@@ -109,8 +109,8 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			// remove 2 spaces from indent.
 			fmt.Fprintf(w, "%s", indent[:len(indent)-2])
 
-		case "Constraint":
-			single := countOfType(parent, "Constraint") == 1
+		case token.Constraint:
+			single := countOfType(parent, token.Constraint) == 1
 			if single {
 				if constraintPreventSingleLine(t) {
 					fmt.Fprintf(w, "\n%s", indent)

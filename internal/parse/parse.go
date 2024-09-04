@@ -176,7 +176,7 @@ More:
 }
 
 func Constraint(b *rd.Builder) (ok bool) {
-	b.Enter("Constraint")
+	b.Enter(token.Constraint)
 	defer b.Exit(&ok)
 
 	Comments(b)

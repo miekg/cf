@@ -13,7 +13,7 @@ func remove(tree *rd.Tree) {
 }
 
 func removeEmptyPromiseGuards(tree *rd.Tree) {
-	// only look at the top level and iterarte of the children ourselves.
+	// only look at the top level and iterate of the children ourselves.
 	// the ast isn't perfect here, but it is a promiseguard followed by an empty
 	// ClassPromise
 	//      ├─ PromiseGuard
