@@ -52,8 +52,9 @@ func main() {
 	}
 	if *flagList {
 		groups := List(parseTree)
-		for i := range groups {
-			fmt.Println(groups[i].Name)
+		keys := groups.Keys()
+		for _, k := range keys {
+			fmt.Println(k)
 		}
 	}
 }
@@ -80,8 +81,8 @@ The ast looks like:
 
 For each Promise we want to items from the Rval after the FatArrow
 */
-func List(tree *rd.Tree) []Group {
-	groups := []Group{}
+func List(tree *rd.Tree) Groups {
+	groups := Groups{}
 	// also check top level Class, so we only get "vars".
 	tvf := parse.TreeVisitorFunc(func(tree *rd.Tree, entering bool) parse.WalkStatus {
 		if !entering {
@@ -135,7 +136,7 @@ func List(tree *rd.Tree) []Group {
 					}
 				}
 			}
-			groups = append(groups, g)
+			groups[g.Name] = g.Members
 		}
 
 		return parse.GoToNext
