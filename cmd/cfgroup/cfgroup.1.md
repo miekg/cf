@@ -13,16 +13,26 @@ cfgroup - list or query CFEngine configuration
 
 ## Synopsis
 
-cfgroup  *[OPTION]*... [*[FILE]*]
+cfgroup  *[OPTION]*... *[GROUP]*...
 
 ## Description
 
-Cfgroup will list or query CFengine configuration questions. Note this is an internal tool that may
+Cfgroup will list or query CFengine configuration details. Note this is an internal tool that may
 or may not be of use to you.
+
+Cfgroup lists hostnames that are part of specified groups. Data sources are group.cf,
+functionals.cf, promises.cf and schedule.cf. If *GROUP*s are given on the command line the members
+of those groups are printed.
+
+For find those files the following algorithm is used:
+
+* if the cwd is inside a git repository and the root is called 'cfengine' it will use the files from
+    the current git repository.
+* if the cwd is not in a cfegine git repository **cfgroup** will try /var/cfengine.
 
 Options are:
 
-`-l` *[GROUP]*....
+`-l`
 :   print all group to standard output. If groups are listed the members of those groups are
     outputted to standard output.
 

@@ -25,6 +25,10 @@ func main() {
 		buffer []byte
 	)
 
+	// implements groups on the commandline
+
+	// figure put _where_ to find the cfengine files
+
 	switch flag.NArg() {
 	case 0:
 		buffer, err = io.ReadAll(os.Stdin)

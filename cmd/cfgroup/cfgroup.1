@@ -8,108 +8,36 @@ cfgroup - list or query CFEngine configuration
 
 .SH "SYNOPSIS"
 .PP
-cfgroup  \fI[OPTION]\fP... [\fI[FILE]\fP]
+cfgroup  \fI[OPTION]\fP... \fI[GROUP]\fP...
 
 .SH "DESCRIPTION"
 .PP
-Cfgroup will list or query CFengine configuration questions.
+Cfgroup will list or query CFengine configuration details. Note this is an internal tool that may
+or may not be of use to you.
+
+.PP
+Cfgroup lists hostnames that are part of specified groups. Data sources are group.cf,
+functionals.cf, promises.cf and schedule.cf. If \fIGROUP\fPs are given on the command line the members
+of those groups are printed.
+
+.PP
+For find those files the following algorithm is used:
+
+.IP \(bu 4
+if the cwd is inside a git repository and the root is called 'cfengine' it will use the files from
+the current git repository.
+.IP \(bu 4
+if the cwd is not in a cfegine git repository \fBcfgroup\fP will try /var/cfengine.
+
 
 .PP
 Options are:
 
 .TP
-\fB\fC-a\fR
-print the AST to standard error
-.TP
-\fB\fC-p\fR
-print the pretty printed document to standard output (defaults to true)
-.TP
 \fB\fC-l\fR
-show lexer tokens
-.TP
-\fB\fC-d\fR
-when parsing fails print the debug tree
-.TP
-\fB\fC-v\fR
-show version and then exit
+print all group to standard output. If groups are listed the members of those groups are
+outputted to standard output.
 
-
-.PP
-A few examples on how things are formatted:
-
-.PP
-.RS
-
-.nf
-"/etc/apparmor.d"
-             delete => tidy,
-     depth\_search => recurse("0"),
-             file\_select => by\_name("session");
-
-.fi
-.RE
-
-.PP
-Becomes:
-
-.PP
-.RS
-
-.nf
-"/etc/apparmor.d"
-  delete       => tidy,
-  depth\_search => recurse("0"),
-  file\_select  => by\_name("lightdm\-guest\-session");
-
-.fi
-.RE
-
-.PP
-If the first line of the file contains the comment: \fB\fC# cffmt:no\fR  it will not be pretty printed.
-Another directive is \fB\fC# cffmt:list\fR which says the \fInext\fP list will have each item printed on a
-new line. For example:
-
-.PP
-.RS
-
-.nf
-"Clients"         or => { aaa, bbb, ccc, dddd, eee, fff,
-  ggg, hhhh };
-
-.fi
-.RE
-
-.PP
-Normally to:
-
-.PP
-.RS
-
-.nf
-"Clients"         or => { aaa, bbb, ccc, dddd, eee, fff, ggg, hhhh };
-
-.fi
-.RE
-
-.PP
-But with \fB\fC# cffmt:list\fR:
-
-.PP
-.RS
-
-.nf
-# cffmt:list
-"Clients"         or => { aaa,
-                          bbb,
-                          ccc,
-                          dddd,
-                          eee,
-                          fff,
-                          ggg,
-                          hhhh };
-
-.fi
-.RE
 
 .SH "SEE ALSO"
 .PP
