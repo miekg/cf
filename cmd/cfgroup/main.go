@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -22,6 +23,7 @@ var (
 	flagFiles   = flag.String("i", "", "comma seperated list of files to parse")
 	flagReverse = flag.String("r", "", "show the groups/classes for this specific host")
 	flagDebug   = flag.Bool("d", false, "enable debug logging")
+	flagNot     = flag.String("x", "", "list hosts that are in GROUP, but not in this group")
 )
 
 const (
@@ -93,6 +95,26 @@ func main() {
 
 	if *flagReverse != "" {
 		Print(os.Stdout, groups.Search(*flagReverse))
+		return
+	}
+	if *flagNot != "" {
+		exclude := groups.Members([]string{*flagNot})
+		all := groups.Members(flag.Args())
+		seen := map[string]struct{}{}
+		// remove exclude from all
+		for _, a := range all {
+			seen[a] = struct{}{}
+		}
+		for _, e := range exclude {
+			delete(seen, e)
+		}
+		// re-assemble to slice, so we can use Print
+		members := []string{}
+		for k := range seen {
+			members = append(members, k)
+		}
+		sort.Strings(members)
+		Print(os.Stdout, members)
 		return
 	}
 

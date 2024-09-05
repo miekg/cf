@@ -29,6 +29,7 @@ For find those files the following algorithm is used:
 * if the cwd is inside a git repository and the basename is called 'cfengine' it will use the files from
     the current git repository.
 * if the cwd is not in a cfengine git repository **cfgroup** will try /var/cfengine.
+* if `-i` is specified, use _those_ file.
 
 Options are:
 
@@ -41,6 +42,10 @@ used for testing, but also useful to force cfgroup to parse a specific set of fi
 
 `-r` *HOST*
 :   reverse lookup, show the classes for this specific host.
+
+`-x` *GROUP*
+:   list the hostnames from all named *GROUP*s that are _not also_ in this specific *GROUP*. Mostly
+    used to filter out IsInactive hosts: `cfgroup -x IsInactive IsWebserver` as an example.
 
 `-d`
 :   enable debug logging.

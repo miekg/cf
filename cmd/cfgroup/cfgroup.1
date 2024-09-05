@@ -28,30 +28,40 @@ if the cwd is inside a git repository and the basename is called 'cfengine' it w
 the current git repository.
 .IP \(bu 4
 if the cwd is not in a cfengine git repository \fBcfgroup\fP will try /var/cfengine.
+.IP \(bu 4
+if \fB\fC-i\fR is specified, use \fIthose\fP file.
 
 
 .PP
 Options are:
 
-.PP
+.TP
 \fB\fC-i\fR \fIFILE\fP[,\fIFILE\fP]...
-
-.PP
 A single \fIFILE\fP or a comma seperated list of \fIFILE\fP,\fIFILE\fP that should be used as input, typically
 used for testing, but also useful to force cfgroup to parse a specific set of files.
-
 .TP
 \fB\fC-l\fR
 print all groups to standard output.
 .TP
 \fB\fC-r\fR \fIHOST\fP
 reverse lookup, show the classes for this specific host.
+.TP
+\fB\fC-x\fR \fIGROUP\fP
+list the hostnames from all named \fIGROUP\fPs that are \fInot also\fP in this specific \fIGROUP\fP. Mostly
+used to filter out IsInactive hosts: \fB\fCcfgroup -x IsInactive IsWebserver\fR as an example.
+.TP
+\fB\fC-d\fR
+enable debug logging.
 
 
 .SH "SEE ALSO"
 .PP
 See the project's README for more details. Development takes place on GitHub
 \[la]https://github.com/miekg/cf\[ra].
+
+.SH "TODO"
+.PP
+Implementing the \fB\fC-o\fR and \fB\fC-n\fR options from the old cfgroup as well.
 
 .SH "AUTHOR"
 .PP
