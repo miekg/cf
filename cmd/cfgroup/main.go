@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/miekg/cf"
 	"github.com/miekg/cf/internal/parse"
@@ -15,7 +15,8 @@ import (
 )
 
 var (
-	flagList = flag.Bool("l", false, "list all defined groups")
+	flagList  = flag.Bool("l", false, "list all defined groups")
+	flagFiles = flag.String("i", "", "comma seperated list of files to parse")
 )
 
 func main() {
@@ -27,40 +28,52 @@ func main() {
 
 	// implements groups on the commandline
 
-	// figure put _where_ to find the cfengine files
+	// FIXME(miek): do something with stdin?
 
-	switch flag.NArg() {
-	case 0:
-		buffer, err = io.ReadAll(os.Stdin)
-	case 1:
-		buffer, err = os.ReadFile(flag.Arg(0))
-	default:
-		log.Fatal("Too many arguments")
-	}
-	if err != nil {
-		log.Fatal(err)
-	}
+	var (
+		tree   *rd.Tree
+		debug  *rd.DebugTree
+		groups Groups
+	)
 
-	tokens, err := cf.Lex(string(buffer))
-	if err != nil {
-		log.Fatal(err)
-	}
-	if cf.IsNoParse(tokens) {
-		fmt.Printf("%s", buffer)
-		return
-	}
+	files := strings.Split(*flagFiles, ",")
+	// FIXME(miek): get cfengine files from usual location ,
+	// git rev-parse --show-toplevel
+	// otherwise default location
 
-	parseTree, debugTree, err := cf.ParseTokens(tokens)
-	if parseTree == nil && debugTree == nil && err == nil {
-		return
-	}
-	if *flagList {
-		groups := List(parseTree)
-		keys := groups.Keys()
-		for _, k := range keys {
-			fmt.Println(k)
+	for _, f := range files {
+		f = strings.TrimSpace(f)
+		if f == "" {
+			continue
 		}
+		buffer, err = os.ReadFile(f)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		tokens, err := cf.Lex(string(buffer))
+		if err != nil {
+			log.Fatal(err)
+		}
+		if cf.IsNoParse(tokens) {
+			fmt.Printf("%s", buffer)
+			return
+		}
+
+		tree, debug, err = cf.ParseTokens(tokens)
+		if tree == nil && debug == nil && err == nil {
+			return
+		}
+		groups = List(tree)
 	}
+
+	if *flagList {
+		Print(os.Stdout, groups.Names())
+		return
+	}
+
+	// no options, expect a last on group
+	Print(os.Stdout, groups.Members(flag.Args()))
 }
 
 /*

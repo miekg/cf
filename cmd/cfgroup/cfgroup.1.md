@@ -32,9 +32,13 @@ For find those files the following algorithm is used:
 
 Options are:
 
+`-i` *FILE*[,*FILE*]...
+
+A single *FILE* or a comma seperated list of *FILE*,*FILE* that should be used as input, typically
+used for testing, but also useful to force cfgroup to parse a specific set of files.
+
 `-l`
-:   print all group to standard output. If groups are listed the members of those groups are
-    outputted to standard output.
+:   print all group to standard output.
 
 ## See Also
 
