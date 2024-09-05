@@ -26,9 +26,9 @@ of those groups are printed.
 
 For find those files the following algorithm is used:
 
-* if the cwd is inside a git repository and the root is called 'cfengine' it will use the files from
+* if the cwd is inside a git repository and the basename is called 'cfengine' it will use the files from
     the current git repository.
-* if the cwd is not in a cfegine git repository **cfgroup** will try /var/cfengine.
+* if the cwd is not in a cfengine git repository **cfgroup** will try /var/cfengine.
 
 Options are:
 
