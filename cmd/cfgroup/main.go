@@ -125,7 +125,7 @@ func main() {
 }
 
 /*
-List walks the ast and returns the "members" of each promise. This only works is it's fed cfgroup.cf.
+List walks the ast and returns the "members" of each promise. This only works is it's fed groups.cf and friends.
 
 The ast looks like:
 
@@ -183,18 +183,19 @@ func List(tree *rd.Tree) Groups {
 						if !ok {
 							continue
 						}
-						if l == token.List {
-							for _, s4 := range s3.Subtrees {
-								li, ok := s4.Data().(string)
-								if !ok {
-									continue
-								}
-								if li == token.Litem {
-									// there should be one 1 item here, just grab it
-									s5 := s4.Subtrees[0]
-									if t, ok := s5.Data().(token.T); ok {
-										g.Members = append(g.Members, t.Value)
-									}
+						if l != token.List {
+							continue
+						}
+						for _, s4 := range s3.Subtrees {
+							li, ok := s4.Data().(string)
+							if !ok {
+								continue
+							}
+							if li == token.Litem {
+								// there should be one 1 item here, just grab it
+								s5 := s4.Subtrees[0]
+								if t, ok := s5.Data().(token.T); ok {
+									g.Members = append(g.Members, t.Value)
 								}
 							}
 						}
