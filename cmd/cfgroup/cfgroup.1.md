@@ -57,6 +57,9 @@ used for testing, but also useful to force cfgroup to parse a specific set of fi
 `-d`
 :   enable debug logging.
 
+`-v`
+:   show version.
+
 ## See Also
 
 See the project's README for more details. Development takes place on [GitHub](https://github.com/miekg/cf).

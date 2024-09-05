@@ -25,6 +25,7 @@ var (
 	flagFiles   = flag.String("i", "", "comma seperated list of files to parse")
 	flagReverse = flag.String("r", "", "show the groups/classes for this specific host")
 	flagNot     = flag.String("x", "", "list hosts that are in GROUP, but not in this group")
+	flagVersion = flag.Bool("v", false, "show version")
 )
 
 const (
@@ -34,10 +35,16 @@ const (
 	Functionalscf = Prefixcf + "functionals.cf"
 )
 
+var version = "n/a"
+
 var Filescf = []string{Groupcf, Promisescf, Functionalscf}
 
 func main() {
 	flag.Parse()
+	if *flagVersion {
+		fmt.Println(version)
+		os.Exit(0)
+	}
 
 	if *flagDebug {
 		log.D.Set()
