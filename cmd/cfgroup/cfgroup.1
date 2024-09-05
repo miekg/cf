@@ -47,8 +47,15 @@ print all groups to standard output.
 reverse lookup, show the classes for this specific host.
 .TP
 \fB\fC-x\fR \fIGROUP\fP
-list the hostnames from all named \fIGROUP\fPs that are \fInot also\fP in this specific \fIGROUP\fP. Mostly
+list the hostnames from all specified \fIGROUP\fPs that are \fInot also\fP in this specific \fIGROUP\fP. Mostly
 used to filter out IsInactive hosts: \fB\fCcfgroup -x IsInactive IsWebserver\fR as an example.
+.TP
+\fB\fC-o\fR
+list the hostnames that only appear \fIonce\fP in the specified \fIGROUP\fPs.
+.TP
+\fB\fC-n\fR
+list the hostnames that only appear \fImore than once\fP in the specified \fIGROUP\fPs, i.e. the
+opposite of \fB\fC-o\fR.
 .TP
 \fB\fC-d\fR
 enable debug logging.
