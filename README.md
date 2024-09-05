@@ -54,7 +54,7 @@ from the output:
 
 ~~~ cfengine
 any::
-  "Clients" or => { machine3, machine32 }
+  "Clients" or => { machine3, machine32 };
 
 commands:
 
@@ -65,7 +65,7 @@ Becomes:
 
 ~~~ cfengine
 any::
-  "Clients" or => { machine3, machine32 }
+  "Clients" or => { machine3, machine32 };
 ~~~
 
 Cf aligns fat-arrows in constraint expressions, this is also true for selections in bodies.
