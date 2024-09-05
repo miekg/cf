@@ -20,14 +20,15 @@ import (
 var (
 	flagList    = flag.Bool("l", false, "list all defined groups")
 	flagFiles   = flag.String("i", "", "comma seperated list of files to parse")
-	flagReverse = flag.String("r", "", "show the classes for this specific host")
+	flagReverse = flag.String("r", "", "show the groups/classes for this specific host")
 	flagDebug   = flag.Bool("d", false, "enable debug logging")
 )
 
 const (
-	Groupcf       = "groups.cf"
-	Promisescf    = "promises.cf"
-	Functionalscf = "functionals.cf"
+	Prefixcf      = "/masterfiles/adm/"
+	Groupcf       = Prefixcf + "groups.cf"
+	Promisescf    = Prefixcf + "promises.cf"
+	Functionalscf = Prefixcf + "functionals.cf"
 )
 
 var Filescf = []string{Groupcf, Promisescf, Functionalscf}
@@ -43,19 +44,17 @@ func main() {
 		log.D.Set()
 	}
 
-	cffiles := IsGit()
-	log.Debugf("Using %v unless -i is given", cffiles)
-
-	// TODO(miek): do something with stdin?
+	files := strings.Split(*flagFiles, ",")
+	if *flagFiles == "" {
+		files = IsGit()
+		log.Debugf("Using %v", files)
+	}
 
 	var (
 		tree  *rd.Tree
 		debug *rd.DebugTree
 	)
-
 	groups := Groups{}
-	files := strings.Split(*flagFiles, ",")
-
 	for _, f := range files {
 		f = strings.TrimSpace(f)
 		if f == "" {
