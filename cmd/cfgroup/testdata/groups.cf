@@ -1,0 +1,8 @@
+bundle common groups
+{
+  classes:
+
+    any::
+      "IsInactive"  or => { webserver1 };
+      "IsWebserver" or => { webserver1, webserver2, webserver2};
+}

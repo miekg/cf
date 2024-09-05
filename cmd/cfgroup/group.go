@@ -3,11 +3,59 @@ package main
 import (
 	"fmt"
 	"io"
+	"os"
 	"sort"
+	"strings"
+
+	"github.com/miekg/cf"
+	"github.com/miekg/cf/internal/rd"
+	"go.science.ru.nl/log"
 )
 
 // Group represents a CFengine group. The key in the map is the groupname and the slice are it's members.
 type Groups map[string][]string
+
+// Parse parses files and returns a Groups. On error the execution is log.Fatal-ed.
+func Parse(files []string) Groups {
+	var (
+		err    error
+		buffer []byte
+		tree   *rd.Tree
+		debug  *rd.DebugTree
+	)
+	groups := Groups{}
+	for _, f := range files {
+		f = strings.TrimSpace(f)
+		if f == "" {
+			continue
+		}
+		log.Debugf("Parsing %s", f)
+		buffer, err = os.ReadFile(f)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		tokens, err := cf.Lex(string(buffer))
+		if err != nil {
+			log.Fatal(err)
+		}
+		if cf.IsNoParse(tokens) {
+			fmt.Printf("%s", buffer)
+			return groups
+		}
+
+		tree, debug, err = cf.ParseTokens(tokens)
+		if err != nil {
+			log.Fatalf("Can not parse %s: %s", f, err)
+		}
+		if tree == nil && debug == nil {
+			log.Fatalf("Can not parse %s", f)
+		}
+		g1 := List(tree)
+		groups = groups.Merge(g1)
+	}
+	return groups
+}
 
 // Names returns all group names (sorted).
 func (g Groups) Names() []string {

@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/miekg/cf"
 	"github.com/miekg/cf/internal/parse"
 	"github.com/miekg/cf/internal/rd"
 	"github.com/miekg/cf/internal/token"
@@ -39,10 +38,6 @@ var Filescf = []string{Groupcf, Promisescf, Functionalscf}
 
 func main() {
 	flag.Parse()
-	var (
-		err    error
-		buffer []byte
-	)
 
 	if *flagDebug {
 		log.D.Set()
@@ -54,41 +49,7 @@ func main() {
 		log.Debugf("Using %v", files)
 	}
 
-	var (
-		tree  *rd.Tree
-		debug *rd.DebugTree
-	)
-	groups := Groups{}
-	for _, f := range files {
-		f = strings.TrimSpace(f)
-		if f == "" {
-			continue
-		}
-		log.Debugf("Parsing %s", f)
-		buffer, err = os.ReadFile(f)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		tokens, err := cf.Lex(string(buffer))
-		if err != nil {
-			log.Fatal(err)
-		}
-		if cf.IsNoParse(tokens) {
-			fmt.Printf("%s", buffer)
-			return
-		}
-
-		tree, debug, err = cf.ParseTokens(tokens)
-		if err != nil {
-			log.Fatalf("Can not parse %s: %s", f, err)
-		}
-		if tree == nil && debug == nil {
-			log.Fatalf("Can not parse %s", f)
-		}
-		g1 := List(tree)
-		groups = groups.Merge(g1)
-	}
+	groups := Parse(files)
 
 	if *flagList {
 		Print(os.Stdout, groups.Names())
