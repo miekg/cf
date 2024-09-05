@@ -70,7 +70,16 @@ func (g Groups) Search(name string) []string {
 
 	}
 
+	sort.Strings(groups)
 	return groups
+}
+
+// Merge merges two groups into one.
+func (g Groups) Merge(g1 Groups) Groups {
+	for k, members := range g1 {
+		g[k] = append(g[k], members...)
+	}
+	return g
 }
 
 // Group is a single group, mostly used for building a Groups.

@@ -28,10 +28,9 @@ const (
 	Groupcf       = "groups.cf"
 	Promisescf    = "promises.cf"
 	Functionalscf = "functionals.cf"
-	Schedulecf    = "schedule.cf" // don't want this - remove
 )
 
-var Filescf = []string{Groupcf, Promisescf, Functionalscf, Schedulecf}
+var Filescf = []string{Groupcf, Promisescf, Functionalscf}
 
 func main() {
 	flag.Parse()
@@ -50,11 +49,11 @@ func main() {
 	// TODO(miek): do something with stdin?
 
 	var (
-		tree   *rd.Tree
-		debug  *rd.DebugTree
-		groups Groups
+		tree  *rd.Tree
+		debug *rd.DebugTree
 	)
 
+	groups := Groups{}
 	files := strings.Split(*flagFiles, ",")
 
 	for _, f := range files {
@@ -62,6 +61,7 @@ func main() {
 		if f == "" {
 			continue
 		}
+		log.Debugf("Parsing %s", f)
 		buffer, err = os.ReadFile(f)
 		if err != nil {
 			log.Fatal(err)
@@ -83,7 +83,8 @@ func main() {
 		if tree == nil && debug == nil {
 			log.Fatalf("Can not parse %s", f)
 		}
-		groups = List(tree)
+		g1 := List(tree)
+		groups = groups.Merge(g1)
 	}
 
 	if *flagList {

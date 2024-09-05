@@ -33,8 +33,7 @@ For find those files the following algorithm is used:
 Options are:
 
 `-i` *FILE*[,*FILE*]...
-
-A single *FILE* or a comma seperated list of *FILE*,*FILE* that should be used as input, typically
+: A single *FILE* or a comma seperated list of *FILE*,*FILE* that should be used as input, typically
 used for testing, but also useful to force cfgroup to parse a specific set of files.
 
 `-l`
@@ -43,9 +42,16 @@ used for testing, but also useful to force cfgroup to parse a specific set of fi
 `-r` *HOST*
 :   reverse lookup, show the classes for this specific host.
 
+`-d`
+:   enable debug logging.
+
 ## See Also
 
 See the project's README for more details. Development takes place on [GitHub](https://github.com/miekg/cf).
+
+## TODO
+
+Implementing the `-o` and `-n` options from the old cfgroup as well.
 
 ## Author
 
