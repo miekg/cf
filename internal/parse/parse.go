@@ -141,7 +141,7 @@ func Promises(b *rd.Builder) (ok bool) {
 }
 
 func Promise(b *rd.Builder) (ok bool) {
-	b.Enter("Promise")
+	b.Enter(token.Promise)
 	defer b.Exit(&ok)
 
 	if !MatchType(b, token.Qstring) {
@@ -316,7 +316,7 @@ func GaItem(b *rd.Builder) (ok bool) {
 }
 
 func List(b *rd.Builder) (ok bool) {
-	b.Enter("List")
+	b.Enter(token.List)
 	defer b.Exit(&ok)
 
 	if !MatchDiscard(b, token.T{Type: chroma.Punctuation, Value: "{"}) {
@@ -326,7 +326,7 @@ func List(b *rd.Builder) (ok bool) {
 }
 
 func Litems(b *rd.Builder) (ok bool) {
-	//b.Enter("Litems")   - don't add in AST.
+	//b.Enter(token.Litems)   - don't add in AST.
 	//defer b.Exit(&ok)
 	ok = Peek(b, token.T{Type: chroma.Punctuation, Value: "}"})
 	if ok {
@@ -345,7 +345,7 @@ More:
 }
 
 func Litem(b *rd.Builder) (ok bool) {
-	b.Enter("Litem")
+	b.Enter(token.Litem)
 	defer b.Exit(&ok)
 
 	// comments in lists work, with the current printing because then insert a new line

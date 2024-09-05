@@ -97,7 +97,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				fmt.Fprintf(w, "%s%s::\n", indent, v)
 			})
 
-		case "Promise":
+		case token.Promise:
 			fmt.Fprintf(w, "%s", indent)
 			printFirstChildOfType(w, t, token.Qstring, func(v string) {
 				v1 := indentMultilineQstring(v, indent)
@@ -135,20 +135,20 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "GaItem":
 
-		case "List":
+		case token.List:
 			if len(t.Subtrees) == 0 {
 				fmt.Fprintf(w, "{")
 			} else {
 				fmt.Fprintf(w, "{ ")
 			}
 			w.bracecol = w.col
-			litems := countOfType(t, "Litem")
+			litems := countOfType(t, token.Litem)
 			comments := countOfType(t, "Comment")
 			if litems+comments <= 10 && comments > 0 {
 				p.multilineList = true
 			}
 
-		case "Litem":
+		case token.Litem:
 		}
 
 	case token.T:
@@ -283,8 +283,8 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 
 		case "ClassGuardSelections":
 
-		case "Promise":
-			last := lastOfType(parent, t, "Promise")
+		case token.Promise:
+			last := lastOfType(parent, t, token.Promise)
 			single := promisersAllHaveSingleConstraint(parent)
 			fmt.Fprint(w, ";\n")
 			if !last && !single {
@@ -298,8 +298,8 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				fmt.Fprintln(w)
 			}
 
-		case "Constraint":
-			last := lastOfType(parent, t, "Constraint")
+		case token.Constraint:
+			last := lastOfType(parent, t, token.Constraint)
 			if !last {
 				fmt.Fprint(w, ",")
 			}
@@ -323,7 +323,7 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 				fmt.Fprintf(w, ", ")
 			}
 
-		case "List":
+		case token.List:
 			if len(t.Subtrees) == 0 {
 				fmt.Fprintf(w, "}")
 			} else {
@@ -332,8 +332,8 @@ func (p *Printer) print(w *tw, t *rd.Tree, depth int, parent *rd.Tree) {
 			w.bracecol = -1
 			p.multilineList = false
 
-		case "Litem":
-			last := lastOfType(parent, t, "Litem")
+		case token.Litem:
+			last := lastOfType(parent, t, token.Litem)
 			if !last {
 				fmt.Fprintf(w, ", ")
 				if p.multilineList {
