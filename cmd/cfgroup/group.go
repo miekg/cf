@@ -89,7 +89,7 @@ type Group struct {
 }
 
 // Print prints each element of sx on a single line to w. Duplicate elements are suppressed and the list is assumed
-// to be sorted.
+// to be sorted so duplicates can be suppressed.
 func Print(w io.Writer, sx []string) {
 	prev := ""
 	for _, s := range sx {

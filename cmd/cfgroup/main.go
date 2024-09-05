@@ -20,9 +20,11 @@ import (
 
 var (
 	flagList    = flag.Bool("l", false, "list all defined groups")
+	flagDebug   = flag.Bool("d", false, "enable debug logging")
+	flagOnce    = flag.Bool("o", false, "list hosts that are only used once")
+	flagMore    = flag.Bool("n", false, "list hosts that are used more than once")
 	flagFiles   = flag.String("i", "", "comma seperated list of files to parse")
 	flagReverse = flag.String("r", "", "show the groups/classes for this specific host")
-	flagDebug   = flag.Bool("d", false, "enable debug logging")
 	flagNot     = flag.String("x", "", "list hosts that are in GROUP, but not in this group")
 )
 
@@ -115,6 +117,45 @@ func main() {
 		}
 		sort.Strings(members)
 		Print(os.Stdout, members)
+		return
+	}
+
+	if *flagOnce {
+		members := groups.Members(flag.Args())
+		seen := map[string]int{}
+		for _, m := range members {
+			seen[m]++
+		}
+		prev := ""
+		for _, m := range members {
+			if seen[m] != 1 {
+				continue
+			}
+			if m == prev {
+				continue
+			}
+			fmt.Fprintln(os.Stdout, m)
+			prev = m
+		}
+		return
+	}
+	if *flagMore {
+		members := groups.Members(flag.Args())
+		seen := map[string]int{}
+		for _, m := range members {
+			seen[m]++
+		}
+		prev := ""
+		for _, m := range members {
+			if seen[m] < 2 {
+				continue
+			}
+			if m == prev {
+				continue
+			}
+			fmt.Fprintln(os.Stdout, m)
+			prev = m
+		}
 		return
 	}
 

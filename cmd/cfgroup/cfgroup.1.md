@@ -44,8 +44,15 @@ used for testing, but also useful to force cfgroup to parse a specific set of fi
 :   reverse lookup, show the classes for this specific host.
 
 `-x` *GROUP*
-:   list the hostnames from all named *GROUP*s that are _not also_ in this specific *GROUP*. Mostly
+:   list the hostnames from all specified *GROUP*s that are _not also_ in this specific *GROUP*. Mostly
     used to filter out IsInactive hosts: `cfgroup -x IsInactive IsWebserver` as an example.
+
+`-o`
+:   list the hostnames that only appear _once_ in the specified *GROUP*s.
+
+`-n`
+:   list the hostnames that only appear _more than once_ in the specified *GROUP*s, i.e. the
+    opposite of `-o`.
 
 `-d`
 :   enable debug logging.
