@@ -33,10 +33,19 @@ if the cwd is not in a cfegine git repository \fBcfgroup\fP will try /var/cfengi
 .PP
 Options are:
 
+.PP
+\fB\fC-i\fR \fIFILE\fP[,\fIFILE\fP]...
+
+.PP
+A single \fIFILE\fP or a comma seperated list of \fIFILE\fP,\fIFILE\fP that should be used as input, typically
+used for testing, but also useful to force cfgroup to parse a specific set of files.
+
 .TP
 \fB\fC-l\fR
-print all group to standard output. If groups are listed the members of those groups are
-outputted to standard output.
+print all groups to standard output.
+.TP
+\fB\fC-r\fR \fIHOST\fP
+reverse lookup, show the classes for this specific host.
 
 
 .SH "SEE ALSO"

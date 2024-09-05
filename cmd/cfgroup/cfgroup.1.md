@@ -38,7 +38,10 @@ A single *FILE* or a comma seperated list of *FILE*,*FILE* that should be used a
 used for testing, but also useful to force cfgroup to parse a specific set of files.
 
 `-l`
-:   print all group to standard output.
+:   print all groups to standard output.
+
+`-r` *HOST*
+:   reverse lookup, show the classes for this specific host.
 
 ## See Also
 

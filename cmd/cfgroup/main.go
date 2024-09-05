@@ -15,8 +15,9 @@ import (
 )
 
 var (
-	flagList  = flag.Bool("l", false, "list all defined groups")
-	flagFiles = flag.String("i", "", "comma seperated list of files to parse")
+	flagList    = flag.Bool("l", false, "list all defined groups")
+	flagFiles   = flag.String("i", "", "comma seperated list of files to parse")
+	flagReverse = flag.String("r", "", "show the classes for this specific host")
 )
 
 func main() {
