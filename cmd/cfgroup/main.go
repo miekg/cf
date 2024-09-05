@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
-	"log"
 	"os"
+	"os/exec"
+	"path"
 	"strconv"
 	"strings"
 
@@ -12,13 +14,24 @@ import (
 	"github.com/miekg/cf/internal/parse"
 	"github.com/miekg/cf/internal/rd"
 	"github.com/miekg/cf/internal/token"
+	"go.science.ru.nl/log"
 )
 
 var (
 	flagList    = flag.Bool("l", false, "list all defined groups")
 	flagFiles   = flag.String("i", "", "comma seperated list of files to parse")
 	flagReverse = flag.String("r", "", "show the classes for this specific host")
+	flagDebug   = flag.Bool("d", false, "enable debug logging")
 )
+
+const (
+	Groupcf       = "groups.cf"
+	Promisescf    = "promises.cf"
+	Functionalscf = "functionals.cf"
+	Schedulecf    = "schedule.cf" // don't want this - remove
+)
+
+var Filescf = []string{Groupcf, Promisescf, Functionalscf, Schedulecf}
 
 func main() {
 	flag.Parse()
@@ -27,9 +40,14 @@ func main() {
 		buffer []byte
 	)
 
-	// implements groups on the commandline
+	if *flagDebug {
+		log.D.Set()
+	}
 
-	// FIXME(miek): do something with stdin?
+	cffiles := IsGit()
+	log.Debugf("Using %v unless -i is given", cffiles)
+
+	// TODO(miek): do something with stdin?
 
 	var (
 		tree   *rd.Tree
@@ -38,9 +56,6 @@ func main() {
 	)
 
 	files := strings.Split(*flagFiles, ",")
-	// FIXME(miek): get cfengine files from usual location ,
-	// git rev-parse --show-toplevel
-	// otherwise default location
 
 	for _, f := range files {
 		f = strings.TrimSpace(f)
@@ -62,8 +77,11 @@ func main() {
 		}
 
 		tree, debug, err = cf.ParseTokens(tokens)
-		if tree == nil && debug == nil && err == nil {
-			return
+		if err != nil {
+			log.Fatalf("Can not parse %s: %s", f, err)
+		}
+		if tree == nil && debug == nil {
+			log.Fatalf("Can not parse %s", f)
 		}
 		groups = List(tree)
 	}
@@ -73,7 +91,12 @@ func main() {
 		return
 	}
 
-	// no options, expect a last on group
+	if *flagReverse != "" {
+		Print(os.Stdout, groups.Search(*flagReverse))
+		return
+	}
+
+	// No options, expect at least a group.
 	Print(os.Stdout, groups.Members(flag.Args()))
 }
 
@@ -161,4 +184,33 @@ func List(tree *rd.Tree) Groups {
 	})
 	parse.Walk(tree, tvf)
 	return groups
+}
+
+// IsGit returns the list of files of interest if the current cwd sits in a cfengine repository.
+func IsGit() []string {
+	paths := make([]string, len(Filescf))
+
+	ctx := context.TODO()
+	cmd := exec.CommandContext(ctx, "git", "rev-parse", "--show-toplevel")
+	cmd.Env = []string{"GIT_CONFIG_GLOBAL=/dev/null", "GIT_CONFIG_SYSTEM=/dev/null"}
+
+	buf, err := cmd.CombinedOutput()
+	if err != nil {
+		// not a git repo
+		for i, f := range Filescf {
+			paths[i] = path.Join("/var/cfengine", f)
+		}
+		return paths
+	}
+	gitrepo := strings.TrimSpace(string(buf))
+	// out should be a single line, that is the path of the git repo, check if the basename is 'cfengine'
+	base := path.Base(gitrepo)
+	prefix := "/var/cfengine"
+	if base == "cfengine" {
+		prefix = gitrepo
+	}
+	for i, f := range Filescf {
+		paths[i] = path.Join(prefix, f)
+	}
+	return paths
 }
