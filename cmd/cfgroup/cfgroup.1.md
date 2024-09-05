@@ -21,15 +21,15 @@ Cfgroup will list or query CFengine configuration details. Note this is an inter
 or may not be of use to you.
 
 Cfgroup lists hostnames that are part of specified groups. Data sources are group.cf,
-functionals.cf, promises.cf and schedule.cf. If *GROUP*s are given on the command line the members
+functionals.cf and  promises.cf. If *GROUP*s are given on the command line the members
 of those groups are printed.
 
-For find those files the following algorithm is used:
+For finding those files the following algorithm is used:
 
 * if the cwd is inside a git repository and the basename is called 'cfengine' it will use the files from
     the current git repository.
 * if the cwd is not in a cfengine git repository **cfgroup** will try /var/cfengine.
-* if `-i` is specified, use _those_ file.
+* if `-i` is specified, use _those_ files.
 
 Options are:
 
@@ -45,7 +45,7 @@ used for testing, but also useful to force cfgroup to parse a specific set of fi
 
 `-x` *GROUP*
 :   list the hostnames from all specified *GROUP*s that are _not also_ in this specific *GROUP*. Mostly
-    used to filter out IsInactive hosts: `cfgroup -x IsInactive IsWebserver` as an example.
+    used to filter out "IsInactive" hosts: `cfgroup -x IsInactive IsWebserver` as an example.
 
 `-o`
 :   list the hostnames that only appear _once_ in the specified *GROUP*s.
@@ -60,10 +60,6 @@ used for testing, but also useful to force cfgroup to parse a specific set of fi
 ## See Also
 
 See the project's README for more details. Development takes place on [GitHub](https://github.com/miekg/cf).
-
-## TODO
-
-Implementing the `-o` and `-n` options from the old cfgroup as well.
 
 ## Author
 

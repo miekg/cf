@@ -17,11 +17,11 @@ or may not be of use to you.
 
 .PP
 Cfgroup lists hostnames that are part of specified groups. Data sources are group.cf,
-functionals.cf, promises.cf and schedule.cf. If \fIGROUP\fPs are given on the command line the members
+functionals.cf and  promises.cf. If \fIGROUP\fPs are given on the command line the members
 of those groups are printed.
 
 .PP
-For find those files the following algorithm is used:
+For finding those files the following algorithm is used:
 
 .IP \(bu 4
 if the cwd is inside a git repository and the basename is called 'cfengine' it will use the files from
@@ -29,7 +29,7 @@ the current git repository.
 .IP \(bu 4
 if the cwd is not in a cfengine git repository \fBcfgroup\fP will try /var/cfengine.
 .IP \(bu 4
-if \fB\fC-i\fR is specified, use \fIthose\fP file.
+if \fB\fC-i\fR is specified, use \fIthose\fP files.
 
 
 .PP
@@ -48,7 +48,7 @@ reverse lookup, show the classes for this specific host.
 .TP
 \fB\fC-x\fR \fIGROUP\fP
 list the hostnames from all specified \fIGROUP\fPs that are \fInot also\fP in this specific \fIGROUP\fP. Mostly
-used to filter out IsInactive hosts: \fB\fCcfgroup -x IsInactive IsWebserver\fR as an example.
+used to filter out "IsInactive" hosts: \fB\fCcfgroup -x IsInactive IsWebserver\fR as an example.
 .TP
 \fB\fC-o\fR
 list the hostnames that only appear \fIonce\fP in the specified \fIGROUP\fPs.
@@ -65,10 +65,6 @@ enable debug logging.
 .PP
 See the project's README for more details. Development takes place on GitHub
 \[la]https://github.com/miekg/cf\[ra].
-
-.SH "TODO"
-.PP
-Implementing the \fB\fC-o\fR and \fB\fC-n\fR options from the old cfgroup as well.
 
 .SH "AUTHOR"
 .PP
