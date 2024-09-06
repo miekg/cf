@@ -1,14 +1,23 @@
 package main
 
 import (
+	"io"
+	"os"
 	"sort"
 	"testing"
 )
 
-func TestOnce(t *testing.T) {
-	groups := Parse([]string{"testdata/groups.cf"})
+// FIXME(miek): tests duplicated code, instead of calling a function.
 
-	// FIXME(miek): duplicated code
+func testgroups(t *testing.T) Groups {
+	f, _ := os.Open("testdata/groups.cf")
+	groups, _ := Parse([]io.Reader{f})
+	return groups
+}
+
+func TestOnce(t *testing.T) {
+	groups := testgroups(t)
+
 	members := groups.Members([]string{"IsWebserver"})
 	seen := map[string]int{}
 	for _, m := range members {
@@ -37,7 +46,7 @@ func TestOnce(t *testing.T) {
 }
 
 func TestExclude(t *testing.T) {
-	groups := Parse([]string{"testdata/groups.cf"})
+	groups := testgroups(t)
 
 	exclude := groups.Members([]string{"IsInactive"})
 	all := groups.Members([]string{"IsWebserver"})

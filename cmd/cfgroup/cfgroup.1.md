@@ -26,16 +26,12 @@ of those groups are printed.
 
 For finding those files the following algorithm is used:
 
+* if files are piped into cgroup's standard input, that data is used.
 * if the cwd is inside a git repository and the basename is called 'cfengine' it will use the files from
     the current git repository.
 * if the cwd is not in a cfengine git repository **cfgroup** will try /var/cfengine.
-* if `-i` is specified, use _those_ files.
 
 Options are:
-
-`-i` *FILE*[,*FILE*]...
-: A single *FILE* or a comma seperated list of *FILE*,*FILE* that should be used as input, typically
-used for testing, but also useful to force cfgroup to parse a specific set of files.
 
 `-l`
 :   print all groups to standard output.
@@ -59,6 +55,12 @@ used for testing, but also useful to force cfgroup to parse a specific set of fi
 
 `-v`
 :   show version.
+
+## Examples
+
+Feed cfgroup multiple files on standard input, and list the defined classes:
+
+    cat /home/miek/src/gitlab.cncz.nl/sys/cfengine/masterfiles/adm/{groups.cf,functionals.cf} | ./cfgroup -l
 
 ## See Also
 

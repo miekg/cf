@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path"
@@ -11,6 +12,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/mattn/go-isatty"
 	"github.com/miekg/cf/internal/parse"
 	"github.com/miekg/cf/internal/rd"
 	"github.com/miekg/cf/internal/token"
@@ -50,13 +52,26 @@ func main() {
 		log.D.Set()
 	}
 
-	files := strings.Split(*flagFiles, ",")
-	if *flagFiles == "" {
-		files = IsGit()
+	groups := Groups{}
+	var err error
+	if !isatty.IsTerminal(os.Stdin.Fd()) {
+		log.Debug("Using standard input")
+		if groups, err = Parse([]io.Reader{os.Stdin}); err != nil {
+			log.Fatalf("Failed to parse %s: %s", "standard input", err)
+		}
+	} else {
+		files := IsGit()
 		log.Debugf("Using %v", files)
+		rs := make([]io.Reader, len(files))
+		for i, f := range files {
+			if rs[i], err = os.Open(f); err != nil {
+				log.Fatalf("Failed to open %s: %s", f, err)
+			}
+		}
+		if groups, err = Parse(rs); err != nil {
+			log.Fatalf("Failed to parse file: %s", err)
+		}
 	}
-
-	groups := Parse(files)
 
 	if *flagList {
 		Print(os.Stdout, groups.Names())

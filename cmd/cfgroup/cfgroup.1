@@ -24,21 +24,17 @@ of those groups are printed.
 For finding those files the following algorithm is used:
 
 .IP \(bu 4
+if files are piped into cgroup's standard input, that data is used.
+.IP \(bu 4
 if the cwd is inside a git repository and the basename is called 'cfengine' it will use the files from
 the current git repository.
 .IP \(bu 4
 if the cwd is not in a cfengine git repository \fBcfgroup\fP will try /var/cfengine.
-.IP \(bu 4
-if \fB\fC-i\fR is specified, use \fIthose\fP files.
 
 
 .PP
 Options are:
 
-.TP
-\fB\fC-i\fR \fIFILE\fP[,\fIFILE\fP]...
-A single \fIFILE\fP or a comma seperated list of \fIFILE\fP,\fIFILE\fP that should be used as input, typically
-used for testing, but also useful to force cfgroup to parse a specific set of files.
 .TP
 \fB\fC-l\fR
 print all groups to standard output.
@@ -63,6 +59,19 @@ enable debug logging.
 \fB\fC-v\fR
 show version.
 
+
+.SH "EXAMPLES"
+.PP
+Feed cfgroup multiple files on standard input, and list the defined classes:
+
+.PP
+.RS
+
+.nf
+cat /home/miek/src/gitlab.cncz.nl/sys/cfengine/masterfiles/adm/{groups.cf,functionals.cf} | ./cfgroup \-l
+
+.fi
+.RE
 
 .SH "SEE ALSO"
 .PP

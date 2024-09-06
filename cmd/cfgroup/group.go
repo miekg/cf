@@ -3,9 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
-	"os"
 	"sort"
-	"strings"
 
 	"github.com/miekg/cf"
 	"github.com/miekg/cf/internal/rd"
@@ -16,7 +14,7 @@ import (
 type Groups map[string][]string
 
 // Parse parses files and returns a Groups. On error the execution is log.Fatal-ed.
-func Parse(files []string) Groups {
+func Parse(rs []io.Reader) (Groups, error) {
 	var (
 		err    error
 		buffer []byte
@@ -24,13 +22,8 @@ func Parse(files []string) Groups {
 		debug  *rd.DebugTree
 	)
 	groups := Groups{}
-	for _, f := range files {
-		f = strings.TrimSpace(f)
-		if f == "" {
-			continue
-		}
-		log.Debugf("Parsing %s", f)
-		buffer, err = os.ReadFile(f)
+	for _, r := range rs {
+		buffer, err = io.ReadAll(r)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -39,22 +32,18 @@ func Parse(files []string) Groups {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if cf.IsNoParse(tokens) {
-			fmt.Printf("%s", buffer)
-			return groups
-		}
 
 		tree, debug, err = cf.ParseTokens(tokens)
 		if err != nil {
-			log.Fatalf("Can not parse %s: %s", f, err)
+			return groups, err
 		}
 		if tree == nil && debug == nil {
-			log.Fatalf("Can not parse %s", f)
+			return groups, err
 		}
 		g1 := List(tree)
 		groups = groups.Merge(g1)
 	}
-	return groups
+	return groups, nil
 }
 
 // Names returns all group names (sorted).
